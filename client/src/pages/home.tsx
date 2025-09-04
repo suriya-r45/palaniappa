@@ -10,6 +10,7 @@ import { Product, HomeSection, HomeSectionItem } from '@shared/schema';
 import { Currency } from '@/lib/currency';
 import { ProductFilters as IProductFilters } from '@shared/cart-schema';
 import { ArrowRight, Star, Sparkles, Crown, Gem, Heart, Watch, Users, Baby, Palette, Wrench, Diamond, TrendingUp } from "lucide-react";
+import WatchAndShop from '@/components/WatchAndShop';
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules';
@@ -2980,6 +2981,9 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* Watch and Shop Section */}
+      <WatchAndShop />
 
       {/* Shop by Budget Section */}
       <ShopByBudgetSection selectedCurrency={selectedCurrency} />

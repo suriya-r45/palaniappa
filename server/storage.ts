@@ -1,4 +1,4 @@
-import { users, products, bills, cartItems, orders, estimates, categories, homeSections, homeSectionItems, shippingZones, shippingMethods, shipments, deliveryAttempts, type User, type InsertUser, type Product, type InsertProduct, type Bill, type InsertBill, type CartItemRow, type InsertCartItem, type Order, type InsertOrder, type CartItem, type Estimate, type InsertEstimate, type Category, type InsertCategory, type HomeSection, type InsertHomeSection, type HomeSectionItem, type InsertHomeSectionItem, type ShippingZone, type ShippingMethod, type Shipment, type DeliveryAttempt } from "@shared/schema";
+import { users, products, bills, cartItems, orders, estimates, categories, homeSections, homeSectionItems, shippingZones, shippingMethods, shipments, deliveryAttempts, videos, type User, type InsertUser, type Product, type InsertProduct, type Bill, type InsertBill, type CartItemRow, type InsertCartItem, type Order, type InsertOrder, type CartItem, type Estimate, type InsertEstimate, type Category, type InsertCategory, type HomeSection, type InsertHomeSection, type HomeSectionItem, type InsertHomeSectionItem, type ShippingZone, type ShippingMethod, type Shipment, type DeliveryAttempt, type Video } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, like, and, gte, lte, isNull, or } from "drizzle-orm";
 import bcrypt from "bcryptjs";
@@ -118,6 +118,15 @@ export interface IStorage {
 
   // Shipping Calculation
   calculateShippingCost(country: string, weight: number, value: number, currency: string): Promise<{cost: number, methods: ShippingMethod[]}>;
+
+  // Video operations
+  getAllVideos(): Promise<Video[]>;
+  getFeaturedVideos(): Promise<Video[]>;
+  getVideo(id: string): Promise<Video | undefined>;
+  createVideo(video: Partial<Video>): Promise<Video>;
+  updateVideo(id: string, video: Partial<Video>): Promise<Video | undefined>;
+  deleteVideo(id: string): Promise<boolean>;
+  incrementVideoViews(id: string): Promise<Video | undefined>;
 }
 
 export interface CategoryWithChildren extends Category {
@@ -925,6 +934,78 @@ export class DatabaseStorage implements IStorage {
       cost: lowestCost,
       methods: calculatedMethods
     };
+  }
+
+  // Video operations
+  async getAllVideos(): Promise<Video[]> {
+    const videoResults = await db.select()
+      .from(videos)
+      .leftJoin(products, eq(videos.productId, products.id))
+      .where(eq(videos.isActive, true))
+      .orderBy(desc(videos.displayOrder), desc(videos.createdAt));
+    
+    return videoResults.map(result => ({
+      ...result.videos,
+      product: result.products || undefined
+    }));
+  }
+
+  async getFeaturedVideos(): Promise<Video[]> {
+    const videoResults = await db.select()
+      .from(videos)
+      .leftJoin(products, eq(videos.productId, products.id))
+      .where(and(eq(videos.isActive, true), eq(videos.isFeatured, true)))
+      .orderBy(desc(videos.displayOrder), desc(videos.createdAt));
+    
+    return videoResults.map(result => ({
+      ...result.videos,
+      product: result.products || undefined
+    }));
+  }
+
+  async getVideo(id: string): Promise<Video | undefined> {
+    const [result] = await db.select()
+      .from(videos)
+      .leftJoin(products, eq(videos.productId, products.id))
+      .where(eq(videos.id, id));
+    
+    if (!result) return undefined;
+    
+    return {
+      ...result.videos,
+      product: result.products || undefined
+    };
+  }
+
+  async createVideo(video: Partial<Video>): Promise<Video> {
+    const [createdVideo] = await db.insert(videos)
+      .values(video as any)
+      .returning();
+    return createdVideo;
+  }
+
+  async updateVideo(id: string, video: Partial<Video>): Promise<Video | undefined> {
+    const [updatedVideo] = await db.update(videos)
+      .set(video as any)
+      .where(eq(videos.id, id))
+      .returning();
+    return updatedVideo || undefined;
+  }
+
+  async deleteVideo(id: string): Promise<boolean> {
+    const [deletedVideo] = await db.update(videos)
+      .set({ isActive: false })
+      .where(eq(videos.id, id))
+      .returning();
+    return !!deletedVideo;
+  }
+
+  async incrementVideoViews(id: string): Promise<Video | undefined> {
+    const [updatedVideo] = await db.update(videos)
+      .set({ viewCount: db.select().from(videos).where(eq(videos.id, id)) })
+      .where(eq(videos.id, id))
+      .returning();
+    return updatedVideo || undefined;
   }
 }
 

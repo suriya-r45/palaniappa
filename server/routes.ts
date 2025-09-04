@@ -183,16 +183,16 @@ if (!fs.existsSync(uploadsDir)) {
 
 const upload = multer({
   dest: uploadsDir,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB for videos
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|webp/;
+    const allowedTypes = /jpeg|jpg|png|webp|mp4|mov|avi|webm/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+    const mimetype = /^(image\/(jpeg|jpg|png|webp)|video\/(mp4|quicktime|x-msvideo|webm))$/.test(file.mimetype);
 
     if (mimetype && extname) {
       return cb(null, true);
     } else {
-      cb(new Error("Only image files are allowed"));
+      cb(new Error("Only image and video files are allowed"));
     }
   }
 });
@@ -613,6 +613,155 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error updating product price:', error);
       res.status(500).json({ error: 'Failed to update product price and stock' });
+    }
+  });
+
+  // Video routes
+  app.get("/api/videos", async (req, res) => {
+    try {
+      const { featured } = req.query;
+      let videos;
+      
+      if (featured === 'true') {
+        videos = await storage.getFeaturedVideos();
+      } else {
+        videos = await storage.getAllVideos();
+      }
+      
+      res.json(videos);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch videos" });
+    }
+  });
+
+  app.get("/api/videos/:id", async (req, res) => {
+    try {
+      const video = await storage.getVideo(req.params.id);
+      if (!video) {
+        return res.status(404).json({ message: "Video not found" });
+      }
+      res.json(video);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch video" });
+    }
+  });
+
+  app.post("/api/videos", authenticateToken, requireAdmin, upload.fields([
+    { name: 'video', maxCount: 1 },
+    { name: 'thumbnail', maxCount: 1 }
+  ]), async (req, res) => {
+    try {
+      const videoData = req.body;
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      
+      let videoUrl = '';
+      let thumbnailUrl = '';
+      
+      // Handle video file upload
+      if (files.video && files.video[0]) {
+        const videoFile = files.video[0];
+        const videoFilename = `video-${Date.now()}-${videoFile.originalname}`;
+        const videoFilepath = path.join(uploadsDir, videoFilename);
+        await fs.promises.rename(videoFile.path, videoFilepath);
+        videoUrl = `/uploads/${videoFilename}`;
+      }
+      
+      // Handle thumbnail upload
+      if (files.thumbnail && files.thumbnail[0]) {
+        const thumbnailFile = files.thumbnail[0];
+        const thumbnailFilename = `thumb-${Date.now()}-${thumbnailFile.originalname}`;
+        const thumbnailFilepath = path.join(uploadsDir, thumbnailFilename);
+        await fs.promises.rename(thumbnailFile.path, thumbnailFilepath);
+        thumbnailUrl = `/uploads/${thumbnailFilename}`;
+      }
+      
+      const video = await storage.createVideo({
+        title: videoData.title,
+        description: videoData.description || '',
+        videoUrl,
+        thumbnailUrl,
+        productId: videoData.productId,
+        duration: videoData.duration ? parseInt(videoData.duration) : undefined,
+        isActive: videoData.isActive !== 'false',
+        isFeatured: videoData.isFeatured === 'true',
+        displayOrder: videoData.displayOrder ? parseInt(videoData.displayOrder) : 0
+      });
+      
+      res.status(201).json(video);
+    } catch (error) {
+      console.error('Video creation error:', error);
+      res.status(400).json({ message: "Invalid video data" });
+    }
+  });
+
+  app.put("/api/videos/:id", authenticateToken, requireAdmin, upload.fields([
+    { name: 'video', maxCount: 1 },
+    { name: 'thumbnail', maxCount: 1 }
+  ]), async (req, res) => {
+    try {
+      const videoData = req.body;
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+      
+      let updateData: any = {
+        title: videoData.title,
+        description: videoData.description || '',
+        productId: videoData.productId,
+        duration: videoData.duration ? parseInt(videoData.duration) : undefined,
+        isActive: videoData.isActive !== 'false',
+        isFeatured: videoData.isFeatured === 'true',
+        displayOrder: videoData.displayOrder ? parseInt(videoData.displayOrder) : 0
+      };
+      
+      // Handle video file upload
+      if (files.video && files.video[0]) {
+        const videoFile = files.video[0];
+        const videoFilename = `video-${Date.now()}-${videoFile.originalname}`;
+        const videoFilepath = path.join(uploadsDir, videoFilename);
+        await fs.promises.rename(videoFile.path, videoFilepath);
+        updateData.videoUrl = `/uploads/${videoFilename}`;
+      }
+      
+      // Handle thumbnail upload
+      if (files.thumbnail && files.thumbnail[0]) {
+        const thumbnailFile = files.thumbnail[0];
+        const thumbnailFilename = `thumb-${Date.now()}-${thumbnailFile.originalname}`;
+        const thumbnailFilepath = path.join(uploadsDir, thumbnailFilename);
+        await fs.promises.rename(thumbnailFile.path, thumbnailFilepath);
+        updateData.thumbnailUrl = `/uploads/${thumbnailFilename}`;
+      }
+      
+      const video = await storage.updateVideo(req.params.id, updateData);
+      if (!video) {
+        return res.status(404).json({ message: "Video not found" });
+      }
+      
+      res.json(video);
+    } catch (error) {
+      res.status(400).json({ message: "Invalid video data" });
+    }
+  });
+
+  app.delete("/api/videos/:id", authenticateToken, requireAdmin, async (req, res) => {
+    try {
+      const success = await storage.deleteVideo(req.params.id);
+      if (!success) {
+        return res.status(404).json({ message: "Video not found" });
+      }
+      res.json({ message: "Video deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete video" });
+    }
+  });
+
+  app.post("/api/videos/:id/view", async (req, res) => {
+    try {
+      const video = await storage.incrementVideoViews(req.params.id);
+      if (!video) {
+        return res.status(404).json({ message: "Video not found" });
+      }
+      res.json({ viewCount: video.viewCount });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update view count" });
     }
   });
 

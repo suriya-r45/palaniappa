@@ -223,6 +223,23 @@ export type CartItem = {
   product: Product;
 };
 
+export type Video = {
+  id: string;
+  title: string;
+  description?: string;
+  videoUrl: string;
+  thumbnailUrl?: string;
+  productId: string;
+  duration?: number;
+  viewCount: number;
+  isActive: boolean;
+  isFeatured: boolean;
+  displayOrder: number;
+  createdAt: Date;
+  updatedAt: Date;
+  product?: Product;
+};
+
 // Shipping and Logistics Types
 export type PackageDimensions = {
   length: number; // in cm
@@ -483,6 +500,31 @@ export const categories = pgTable("categories", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Watch and Shop Videos Table
+export const videos = pgTable("videos", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description"),
+  videoUrl: text("video_url").notNull(), // Path to video file
+  thumbnailUrl: text("thumbnail_url"), // Video thumbnail image
+  productId: varchar("product_id").notNull(), // Associated product
+  duration: integer("duration"), // Video duration in seconds
+  viewCount: integer("view_count").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  isFeatured: boolean("is_featured").notNull().default(false),
+  displayOrder: integer("display_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Videos Relations
+export const videosRelations = relations(videos, ({ one }) => ({
+  product: one(products, {
+    fields: [videos.productId],
+    references: [products.id],
+  }),
+}));
+
 // Categories Relations
 export const categoriesRelations = relations(categories, ({ one, many }) => ({
   parent: one(categories, {
@@ -496,7 +538,7 @@ export const categoriesRelations = relations(categories, ({ one, many }) => ({
   products: many(products),
 }));
 
-// Update products relation to include categories
+// Update products relation to include categories and videos
 export const productsRelationsUpdated = relations(products, ({ one, many }) => ({
   category: one(categories, {
     fields: [products.category],
@@ -505,6 +547,7 @@ export const productsRelationsUpdated = relations(products, ({ one, many }) => (
   billItems: many(bills),
   orderItems: many(orders),
   cartItems: many(cartItems),
+  videos: many(videos),
 }));
 
 // Jewelry Categories (Legacy - will be replaced by database categories)
