@@ -11,6 +11,12 @@ import { Currency } from '@/lib/currency';
 import { ProductFilters as IProductFilters } from '@shared/cart-schema';
 import { ArrowRight, Star, Sparkles, Crown, Gem, Heart, Watch, Users, Baby, Palette, Wrench, Diamond, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, EffectCoverflow } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-coverflow';
 import ringsImage from '@assets/new_rings.png';
 
 interface HomeSectionWithItems extends HomeSection {
@@ -1390,172 +1396,63 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // TRUE Curved Product Grid layout - Arc-shaped product arrangement like reference image
+        // Curved Product Showcase - Swiper.js implementation
         if (section.layoutType === 'curved-grid') {
           return (
             <section 
               key={section.id} 
-              className="py-16 relative overflow-hidden bg-gradient-to-br from-slate-50 via-gray-50 to-white" 
+              className="w-full bg-white py-10" 
               data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
             >
-              <div className="container mx-auto px-4 relative z-10">
-                {section.title && (
-                  <div className="text-center mb-12">
-                    <motion.h2 
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8 }}
-                      className="text-3xl md:text-5xl font-light text-gray-800 mb-4" 
-                      style={{ fontFamily: 'Playfair Display, serif' }}
-                    >
-                      {section.title}
-                    </motion.h2>
-                    {section.description && (
-                      <motion.p 
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-lg font-light text-gray-600 max-w-2xl mx-auto" 
-                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                      >
-                        {section.description}
-                      </motion.p>
-                    )}
-                  </div>
-                )}
-                
-                {/* TRUE Curved Grid - Arc Layout */}
-                <div className="relative max-w-7xl mx-auto h-96 md:h-[500px]">
-                  {/* Navigation Arrows */}
-                  <div className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
-                      onClick={() => {
-                        // Scroll left logic can be added here
-                      }}
-                    >
-                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 rotate-180" />
-                    </motion.button>
-                  </div>
-                  
-                  <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
-                      onClick={() => {
-                        // Scroll right logic can be added here
-                      }}
-                    >
-                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                    </motion.button>
-                  </div>
+              <h2 className="text-3xl font-serif text-center mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
+                {section.title || 'Curved Product Showcase'}
+              </h2>
 
-                  {/* Curved Arc Container */}
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    {section.items.map((item, index) => {
-                      const totalItems = section.items.length;
-                      const center = Math.floor(totalItems / 2);
-                      
-                      // Calculate position on arc
-                      const angleStep = 120 / (totalItems - 1); // Total arc of 120 degrees
-                      const angle = (index - center) * angleStep; // Angle from center
-                      const radians = (angle * Math.PI) / 180;
-                      
-                      // Arc radius and positioning
-                      const radius = 280; // Distance from center
-                      const x = Math.sin(radians) * radius; // Horizontal position
-                      const y = Math.cos(radians) * radius * 0.3; // Vertical position (flattened)
-                      
-                      // Scale and rotation for perspective
-                      const distanceFromCenter = Math.abs(index - center);
-                      const scale = 1 - (distanceFromCenter * 0.15); // Center cards larger
-                      const rotateY = -angle * 0.8; // Rotate cards to follow curve
-                      const zIndex = totalItems - distanceFromCenter; // Center cards on top
-                      
-                      return (
-                        <motion.div
-                          key={item.id}
-                          initial={{ opacity: 0, scale: 0.5, y: 100 }}
-                          whileInView={{ 
-                            opacity: 1, 
-                            scale: scale, 
-                            y: 0 
-                          }}
-                          transition={{ 
-                            duration: 0.8, 
-                            delay: index * 0.1,
-                            type: "spring",
-                            stiffness: 100
-                          }}
-                          whileHover={{ 
-                            scale: scale * 1.1,
-                            rotateY: 0,
-                            zIndex: 999,
-                            transition: { duration: 0.3 }
-                          }}
-                          className="absolute cursor-pointer"
-                          style={{
-                            transform: `translateX(${x}px) translateY(${y}px) rotateY(${rotateY}deg) scale(${scale})`,
-                            transformStyle: 'preserve-3d',
-                            zIndex: zIndex,
-                            perspective: '1000px'
-                          }}
-                          onClick={() => window.location.href = `/product/${item.product.id}`}
-                        >
-                          {/* Card with curved perspective */}
-                          <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl border border-gray-100 w-48 md:w-64 group">
-                            {/* Product image */}
-                            <div className="relative aspect-[3/4] overflow-hidden">
-                              {item.product.images && item.product.images.length > 0 ? (
-                                <img 
-                                  src={item.product.images[0]} 
-                                  alt={item.product.name}
-                                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                />
-                              ) : (
-                                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                  <Gem className="w-12 h-12 md:w-16 md:h-16 text-gray-400" />
-                                </div>
-                              )}
-                              
-                              {/* Overlay gradient */}
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                              
-                              {/* Product details overlay */}
-                              <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 text-white">
-                                <h3 className="font-medium text-sm md:text-lg mb-1 line-clamp-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                                  {item.product.name}
-                                </h3>
-                                <div className="text-lg md:text-2xl font-bold" style={{ fontFamily: 'Playfair Display, serif' }}>
-                                  {selectedCurrency === 'INR' ? '₹' : 'BD '}
-                                  {selectedCurrency === 'INR' ? 
-                                    parseFloat(item.product.priceInr).toLocaleString('en-IN') :
-                                    parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
-                                  }
-                                </div>
-                              </div>
-
-                              {/* Hover indicator */}
-                              <motion.div
-                                initial={{ opacity: 0 }}
-                                whileHover={{ opacity: 1 }}
-                                className="absolute top-2 md:top-4 right-2 md:right-4"
-                              >
-                                <div className="w-8 h-8 md:w-10 md:h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors">
-                                  <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
-                                </div>
-                              </motion.div>
-                            </div>
-                          </div>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
+              <Swiper
+                spaceBetween={20}
+                slidesPerView={1.3}
+                centeredSlides={true}
+                loop={true}
+                breakpoints={{
+                  640: { slidesPerView: 2.3 },
+                  1024: { slidesPerView: 3.3 },
+                }}
+              >
+                {section.items.map((item) => (
+                  <SwiperSlide key={item.id}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className="rounded-3xl overflow-hidden shadow-xl bg-white cursor-pointer"
+                      style={{ transform: "rotateY(-5deg)" }}
+                      onClick={() => window.location.href = `/product/${item.product.id}`}
+                    >
+                      {item.product.images && item.product.images.length > 0 ? (
+                        <img
+                          src={item.product.images[0]}
+                          alt={item.product.name}
+                          className="w-full h-72 object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                          <Gem className="w-16 h-16 text-gray-400" />
+                        </div>
+                      )}
+                      <div className="p-4 text-center">
+                        <h3 className="text-lg font-medium mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                          {item.product.name}
+                        </h3>
+                        <p className="text-xl font-bold text-yellow-700" style={{ fontFamily: 'Playfair Display, serif' }}>
+                          {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                          {selectedCurrency === 'INR' ? 
+                            parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                            parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                          }
+                        </p>
+                      </div>
+                    </motion.div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
             </section>
           );
         }
