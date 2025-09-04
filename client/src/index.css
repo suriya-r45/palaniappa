@@ -73,6 +73,34 @@
   }
 }
 
+/* Curved Grid Carousel Styles */
+.swiper-curved-grid {
+  overflow: hidden;
+  position: relative;
+}
+
+.swiper-wrapper {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0 50px;
+}
+
+.swiper-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.swiper-slide {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.swiper-slide:hover {
+  transform: scale(1.02) !important;
+}
+
 @keyframes zenOrbitGlow {
   0%, 100% {
     opacity: 0.6;

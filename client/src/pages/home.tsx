@@ -1390,7 +1390,7 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // Curved Product Grid layout rendering - Elegant curved carousel like reference image
+        // Curved Product Grid layout rendering - Swiper.js based carousel like reference image
         if (section.layoutType === 'curved-grid') {
           return (
             <section 
@@ -1424,62 +1424,22 @@ export default function Home() {
                   </div>
                 )}
                 
-                {/* Curved Product Carousel */}
+                {/* Swiper Curved Product Carousel */}
                 <div className="relative max-w-6xl mx-auto">
-                  {/* Navigation Arrows */}
-                  <div className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
-                      onClick={() => {
-                        const container = document.querySelector(`[data-section-id="${section.id}"] .curved-scroll-container`);
-                        if (container) {
-                          container.scrollBy({ left: -280, behavior: 'smooth' });
-                        }
-                      }}
-                    >
-                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 rotate-180" />
-                    </motion.button>
-                  </div>
-                  
-                  <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20">
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
-                      onClick={() => {
-                        const container = document.querySelector(`[data-section-id="${section.id}"] .curved-scroll-container`);
-                        if (container) {
-                          container.scrollBy({ left: 280, behavior: 'smooth' });
-                        }
-                      }}
-                    >
-                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                    </motion.button>
-                  </div>
-
-                  {/* Horizontal scrollable container with curved overlapping cards */}
-                  <div 
-                    className="curved-scroll-container overflow-x-auto scrollbar-hide"
-                    data-section-id={section.id}
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                  >
-                    <div className="flex items-center gap-0 px-8 md:px-12 py-8" style={{ minWidth: 'max-content' }}>
-                      {section.items.map((item, index) => {
-                        // Create perspective effect with overlapping cards
-                        const isCenter = index === Math.floor(section.items.length / 2);
-                        const distanceFromCenter = Math.abs(index - Math.floor(section.items.length / 2));
-                        const scale = isCenter ? 1 : 0.85 - (distanceFromCenter * 0.05);
-                        const rotateY = index < Math.floor(section.items.length / 2) ? 15 : index > Math.floor(section.items.length / 2) ? -15 : 0;
-                        const zIndex = section.items.length - distanceFromCenter;
-                        const translateX = index * -40; // Overlapping effect
-                        
-                        return (
+                  <div className="swiper-curved-grid">
+                    <div className="swiper-wrapper flex items-center justify-center py-8">
+                      {section.items.map((item, index) => (
+                        <div 
+                          key={item.id} 
+                          className="swiper-slide flex justify-center"
+                          style={{
+                            width: '280px',
+                            marginRight: '-40px' // Overlapping effect
+                          }}
+                        >
                           <motion.div
-                            key={item.id}
-                            initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
-                            whileInView={{ opacity: 1, scale: scale, rotateY: rotateY }}
+                            initial={{ opacity: 0, scale: 0.8, rotateY: -20 }}
+                            whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
                             transition={{ 
                               duration: 0.6, 
                               delay: index * 0.1,
@@ -1492,16 +1452,16 @@ export default function Home() {
                               zIndex: 999,
                               transition: { duration: 0.3 }
                             }}
-                            className="flex-none w-64 md:w-72 relative group"
+                            className="relative group cursor-pointer"
                             style={{
-                              transform: `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
+                              transform: 'rotateY(-5deg)', // 3D perspective like reference
                               transformStyle: 'preserve-3d',
-                              zIndex: zIndex,
                               perspective: '1000px'
                             }}
+                            onClick={() => window.location.href = `/product/${item.product.id}`}
                           >
                             {/* Card with rounded corners like reference image */}
-                            <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl border border-gray-100">
+                            <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl border border-gray-100 w-64 md:w-72">
                               {/* Product image */}
                               <div className="relative aspect-[3/4] overflow-hidden">
                                 {item.product.images && item.product.images.length > 0 ? (
@@ -1519,7 +1479,7 @@ export default function Home() {
                                 {/* Overlay gradient */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                                 
-                                {/* Product title overlay at bottom */}
+                                {/* Product title overlay at bottom like reference */}
                                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                                   <h3 className="font-medium text-lg md:text-xl mb-1 line-clamp-2" style={{ fontFamily: 'Playfair Display, serif' }}>
                                     {item.product.name}
@@ -1533,29 +1493,59 @@ export default function Home() {
                                   </div>
                                 </div>
 
-                                {/* Hover action button */}
+                                {/* Navigation arrows like reference */}
                                 <motion.div
-                                  initial={{ opacity: 0, y: 20 }}
-                                  whileHover={{ opacity: 1, y: 0 }}
+                                  initial={{ opacity: 0 }}
+                                  whileHover={{ opacity: 1 }}
                                   className="absolute top-4 right-4"
                                 >
-                                  <button
-                                    className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors"
-                                    onClick={() => window.location.href = `/product/${item.product.id}`}
-                                    data-testid={`button-view-product-${item.product.id}`}
-                                  >
+                                  <div className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors">
                                     <ArrowRight className="w-4 h-4" />
-                                  </button>
+                                  </div>
                                 </motion.div>
                               </div>
                             </div>
                           </motion.div>
-                        );
-                      })}
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Navigation Arrows positioned like reference */}
+                    <div className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20">
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
+                        onClick={() => {
+                          const container = document.querySelector('.swiper-curved-grid .swiper-wrapper');
+                          if (container) {
+                            container.scrollBy({ left: -280, behavior: 'smooth' });
+                          }
+                        }}
+                      >
+                        <ArrowRight className="w-4 h-4 md:w-5 md:h-5 rotate-180" />
+                      </motion.button>
+                    </div>
+                    
+                    <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20">
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
+                        onClick={() => {
+                          const container = document.querySelector('.swiper-curved-grid .swiper-wrapper');
+                          if (container) {
+                            container.scrollBy({ left: 280, behavior: 'smooth' });
+                          }
+                        }}
+                      >
+                        <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                      </motion.button>
                     </div>
                   </div>
                 </div>
               </div>
+              
             </section>
           );
         }
