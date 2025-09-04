@@ -1399,7 +1399,8 @@ export default function Home() {
         // Curved Wave Grid Flow - Clean wave layout with flexbox
         if (section.layoutType === 'curved-grid') {
           const displayItems = section.items.slice(0, 4); // Limit to 4 for best flow
-          const rotations = [-8, -2, 2, 8]; // Wave rotation degrees
+          const rotations = [-6, -2, 2, 6]; // Wave rotation degrees
+          const verticalOffsets = [20, -10, 10, -20]; // Wave Y movement (px)
           
           return (
             <section 
@@ -1427,7 +1428,7 @@ export default function Home() {
                       key={item.id}
                       className="w-56 md:w-64 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
                       style={{
-                        transform: `rotate(${rotations[index]}deg)`,
+                        transform: `rotate(${rotations[index]}deg) translateY(${verticalOffsets[index]}px)`,
                       }}
                       initial={{ opacity: 0, y: 50 }}
                       whileInView={{ opacity: 1, y: 0 }}

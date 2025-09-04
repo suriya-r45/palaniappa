@@ -1,0 +1,102 @@
+👉 To fix this, you need to add vertical offsets (translateY) along with the rotations.
+That way, each card will “flow” up and down like a wave.
+
+Here’s how you can correct your code:
+
+// Curved Wave Grid Flow - Clean wave layout with flexbox
+if (section.layoutType === 'curved-grid') {
+  const displayItems = section.items.slice(0, 4); // Limit to 4 for best flow
+  const rotations = [-6, -2, 2, 6]; // Wave rotation degrees
+  const verticalOffsets = [20, -10, 10, -20]; // Wave Y movement (px)
+
+  return (
+    <section 
+      key={section.id} 
+      className="w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 py-16" 
+      data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
+    >
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-light text-gray-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+            {section.title || 'Curved Wave Grid Flow'}
+          </h2>
+          {section.description && (
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              {section.description}
+            </p>
+          )}
+        </div>
+
+        {/* Wave Flow Container */}
+        <div className="flex justify-center gap-6 md:gap-10">
+          {displayItems.map((item, index) => (
+            <motion.div
+              key={item.id}
+              className="w-56 md:w-64 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
+              style={{
+                transform: `rotate(${rotations[index]}deg) translateY(${verticalOffsets[index]}px)`,
+              }}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.8,
+                delay: index * 0.15,
+                type: "spring",
+                stiffness: 80,
+              }}
+              whileHover={{
+                scale: 1.05,
+                rotate: rotations[index] * 0.5,
+                zIndex: 50,
+              }}
+              onClick={() => window.location.href = `/product/${item.product.id}`}
+              data-testid={`curved-grid-item-${index}`}
+            >
+              {/* Product Image */}
+              <div className="h-64 bg-gray-100 overflow-hidden">
+                {item.product.images && item.product.images.length > 0 ? (
+                  <img
+                    src={item.product.images[0]}
+                    alt={item.product.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    <Gem className="w-16 h-16 text-gray-400" />
+                  </div>
+                )}
+              </div>
+
+              {/* Product Details */}
+              <div className="p-4 text-center">
+                <h3
+                  className="text-lg font-medium text-gray-800 mb-2"
+                  style={{ fontFamily: "Playfair Display, serif" }}
+                >
+                  {item.product.name}
+                </h3>
+                <p className="text-xl font-bold text-amber-600">
+                  {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                  {selectedCurrency === 'INR' ? 
+                    parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                    parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                  }
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+✨ Key Fix:
+
+Added verticalOffsets = [20, -10, 10, -20]
+
+Now each card shifts up and down as well as rotates → creates the wave illusion.
+
+⚡ This will make your layout look much closer to the "Curved Wave Grid Flow" mockup you liked.
