@@ -1396,9 +1396,9 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // Curved Wave Grid Flow - Flowing wave-like arrangement with 4 items
+        // Curved Wave Grid Flow - Organic overlapping layout like reference image
         if (section.layoutType === 'curved-grid') {
-          const displayItems = section.items.slice(0, 4); // Limit to 4 items for perfect wave flow
+          const displayItems = section.items.slice(0, 4); // Limit to 4 items for perfect curved flow
           
           return (
             <section 
@@ -1419,46 +1419,55 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Curved Wave Grid Container */}
-                <div className="relative h-[400px] md:h-[450px]">
+                {/* Curved Organic Layout Container */}
+                <div className="relative h-[500px] md:h-[600px]">
                   {displayItems.map((item, index) => {
-                    // Define positions for horizontal wave flow pattern (like reference image)
+                    // Define organic overlapping positions like reference image
                     const positions = [
-                      // First item - left side, slightly elevated
+                      // Large card - left side, prominent
                       { 
-                        left: '2%', 
-                        top: '20%', 
-                        rotate: '-3deg',
-                        width: 'w-56 md:w-64 lg:w-72',
-                        height: 'h-64 md:h-72 lg:h-80',
-                        zIndex: 'z-10'
+                        left: '5%', 
+                        top: '10%', 
+                        rotate: '-8deg',
+                        width: 'w-80 md:w-96',
+                        height: 'h-[280px] md:h-[320px]',
+                        zIndex: 'z-30',
+                        borderRadius: '2rem',
+                        scale: 1.1
                       },
-                      // Second item - left-center, overlapping slightly, elevated more
+                      // Medium card - top center, overlapping
                       { 
-                        left: '22%', 
+                        left: '35%', 
                         top: '5%', 
-                        rotate: '2deg',
-                        width: 'w-60 md:w-68 lg:w-76',
-                        height: 'h-68 md:h-76 lg:h-84',
-                        zIndex: 'z-20'
+                        rotate: '5deg',
+                        width: 'w-72 md:w-80',
+                        height: 'h-[240px] md:h-[280px]',
+                        zIndex: 'z-20',
+                        borderRadius: '1.5rem',
+                        scale: 1.0
                       },
-                      // Third item - right-center, flowing down in wave
+                      // Large background card - center right, partially hidden
                       { 
-                        left: '48%', 
-                        top: '25%', 
-                        rotate: '-2deg',
-                        width: 'w-58 md:w-66 lg:w-74',
-                        height: 'h-66 md:h-74 lg:h-82',
-                        zIndex: 'z-15'
-                      },
-                      // Fourth item - right side, completing the wave
-                      { 
-                        left: '72%', 
+                        right: '5%', 
                         top: '15%', 
                         rotate: '3deg',
-                        width: 'w-56 md:w-64 lg:w-72',
-                        height: 'h-64 md:h-72 lg:h-80',
-                        zIndex: 'z-10'
+                        width: 'w-96 md:w-[420px]',
+                        height: 'h-[300px] md:h-[360px]',
+                        zIndex: 'z-10',
+                        borderRadius: '2.5rem',
+                        scale: 1.2,
+                        isBackground: true
+                      },
+                      // Small card - bottom right, overlapping
+                      { 
+                        right: '15%', 
+                        bottom: '20%', 
+                        rotate: '-6deg',
+                        width: 'w-64 md:w-72',
+                        height: 'h-[200px] md:h-[240px]',
+                        zIndex: 'z-25',
+                        borderRadius: '1.5rem',
+                        scale: 0.9
                       }
                     ];
 
@@ -1473,47 +1482,53 @@ export default function Home() {
                           right: position.right,
                           top: position.top,
                           bottom: position.bottom,
-                          transform: `rotate(${position.rotate})`
+                          transform: `rotate(${position.rotate}) scale(${position.scale})`,
                         }}
-                        initial={{ opacity: 0, scale: 0.8, y: 50 }}
-                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: index * 0.2 }}
+                        initial={{ opacity: 0, scale: 0.8, rotate: position.rotate }}
+                        whileInView={{ opacity: 1, scale: position.scale, rotate: position.rotate }}
+                        transition={{ duration: 1, delay: index * 0.15, type: "spring", stiffness: 80 }}
                         whileHover={{ 
-                          scale: 1.05,
-                          rotate: 0,
+                          scale: position.scale * 1.05,
+                          rotate: position.rotate * 0.5,
                           zIndex: 50,
-                          transition: { duration: 0.3 }
+                          transition: { duration: 0.4 }
                         }}
                         onClick={() => window.location.href = `/product/${item.product.id}`}
                         data-testid={`curved-grid-item-${index}`}
                       >
-                        {/* Card Container */}
-                        <div className="w-full h-full bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer group">
+                        {/* Curved Card Container */}
+                        <div 
+                          className={`w-full h-full ${position.isBackground ? 'bg-gradient-to-br from-amber-50 to-orange-50' : 'bg-white'} shadow-2xl hover:shadow-3xl transition-all duration-700 overflow-hidden cursor-pointer group`}
+                          style={{ 
+                            borderRadius: position.borderRadius,
+                            ...(position.isBackground && { opacity: 0.8 })
+                          }}
+                        >
                           {/* Product Image */}
-                          <div className="relative h-3/4 overflow-hidden">
+                          <div className={`relative ${position.isBackground ? 'h-4/5' : 'h-2/3'} overflow-hidden`}>
                             {item.product.images && item.product.images.length > 0 ? (
                               <img
                                 src={item.product.images[0]}
                                 alt={item.product.name}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                               />
                             ) : (
                               <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                <Gem className="w-12 h-12 text-gray-400" />
+                                <Gem className="w-16 h-16 text-gray-400" />
                               </div>
                             )}
                             
-                            {/* Overlay gradient for better text readability */}
-                            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            {/* Curved overlay */}
+                            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white via-white/60 to-transparent"></div>
                           </div>
                           
                           {/* Product Details */}
-                          <div className="h-1/4 p-4 flex flex-col justify-center">
-                            <h3 className="text-sm md:text-base lg:text-lg font-medium text-gray-800 mb-1 line-clamp-1" 
+                          <div className={`${position.isBackground ? 'h-1/5' : 'h-1/3'} p-4 md:p-6 flex flex-col justify-center bg-white`}>
+                            <h3 className={`${position.isBackground ? 'text-lg md:text-xl' : 'text-base md:text-lg'} font-semibold text-gray-800 mb-2 line-clamp-1`} 
                                 style={{ fontFamily: 'Playfair Display, serif' }}>
                               {item.product.name}
                             </h3>
-                            <p className="text-lg md:text-xl font-bold text-amber-600" 
+                            <p className={`${position.isBackground ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} font-bold text-amber-600`} 
                                style={{ fontFamily: 'Playfair Display, serif' }}>
                               {selectedCurrency === 'INR' ? '₹' : 'BD '}
                               {selectedCurrency === 'INR' ? 
@@ -1524,34 +1539,22 @@ export default function Home() {
                           </div>
                         </div>
 
-                        {/* Floating shadow effect */}
+                        {/* Organic floating shadow */}
                         <div 
-                          className="absolute inset-0 bg-black/20 blur-xl -z-10 transition-all duration-500 group-hover:blur-2xl group-hover:scale-110 rounded-3xl"
+                          className="absolute inset-0 bg-black/15 blur-2xl -z-10 transition-all duration-700 group-hover:blur-3xl group-hover:scale-105"
                           style={{ 
-                            transform: `translateY(20px) rotate(${position.rotate})` 
+                            borderRadius: position.borderRadius,
+                            transform: `translateY(15px) rotate(${position.rotate}) scale(${position.scale * 0.95})` 
                           }}
                         ></div>
                       </motion.div>
                     );
                   })}
 
-                  {/* Decorative wave elements */}
-                  <div className="absolute inset-0 pointer-events-none opacity-20">
-                    <svg className="absolute top-1/4 left-1/4 w-96 h-96" viewBox="0 0 400 400" fill="none">
-                      <path
-                        d="M50 200 Q 150 100, 250 200 T 450 200"
-                        stroke="url(#gradient1)"
-                        strokeWidth="2"
-                        fill="none"
-                        opacity="0.3"
-                      />
-                      <defs>
-                        <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#f59e0b" />
-                          <stop offset="100%" stopColor="#d97706" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
+                  {/* Soft background elements */}
+                  <div className="absolute inset-0 pointer-events-none opacity-5">
+                    <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-gradient-to-br from-amber-200 to-orange-200 rounded-full blur-3xl"></div>
+                    <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-br from-pink-200 to-rose-200 rounded-full blur-3xl"></div>
                   </div>
                 </div>
               </div>
