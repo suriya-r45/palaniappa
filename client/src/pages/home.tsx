@@ -1483,6 +1483,25 @@ export default function Home() {
                     </motion.div>
                   ))}
                 </div>
+
+                {/* View All Collection Button */}
+                <div className="text-center mt-12">
+                  <motion.button
+                    className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-medium px-8 py-3 md:px-10 md:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                    style={{ fontFamily: 'Playfair Display, serif' }}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => window.location.href = '/collections'}
+                    data-testid="view-all-collections-button"
+                  >
+                    <span className="flex items-center gap-2">
+                      View All Collection
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </motion.button>
+                </div>
               </div>
             </section>
           );
