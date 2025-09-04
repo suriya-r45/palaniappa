@@ -126,29 +126,74 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
     {
       id: 1,
       label: 'Under',
-      amount: selectedCurrency === 'INR' ? '₹15,000' : 'BD 75',
-      value: selectedCurrency === 'INR' ? 15000 : 75,
-      description: 'Perfect starter pieces',
+      amount: selectedCurrency === 'INR' ? '₹10,000' : 'BD 50',
+      value: selectedCurrency === 'INR' ? 10000 : 50,
+      description: 'Starter pieces',
       gradient: 'from-rose-400 to-pink-500',
-      size: 'small'
     },
     {
       id: 2,
       label: 'Under',
-      amount: selectedCurrency === 'INR' ? '₹30,000' : 'BD 150',
-      value: selectedCurrency === 'INR' ? 30000 : 150,
-      description: 'Elegant everyday jewelry',
+      amount: selectedCurrency === 'INR' ? '₹25,000' : 'BD 125',
+      value: selectedCurrency === 'INR' ? 25000 : 125,
+      description: 'Everyday jewelry',
       gradient: 'from-amber-400 to-orange-500',
-      size: 'medium'
     },
     {
       id: 3,
       label: 'Under',
-      amount: selectedCurrency === 'INR' ? '₹60,000' : 'BD 300',
-      value: selectedCurrency === 'INR' ? 60000 : 300,
-      description: 'Luxury statement pieces',
+      amount: selectedCurrency === 'INR' ? '₹50,000' : 'BD 250',
+      value: selectedCurrency === 'INR' ? 50000 : 250,
+      description: 'Premium collection',
       gradient: 'from-emerald-400 to-teal-500',
-      size: 'large'
+    },
+    {
+      id: 4,
+      label: 'Under',
+      amount: selectedCurrency === 'INR' ? '₹75,000' : 'BD 375',
+      value: selectedCurrency === 'INR' ? 75000 : 375,
+      description: 'Luxury pieces',
+      gradient: 'from-purple-400 to-violet-500',
+    },
+    {
+      id: 5,
+      label: 'Under',
+      amount: selectedCurrency === 'INR' ? '₹100,000' : 'BD 500',
+      value: selectedCurrency === 'INR' ? 100000 : 500,
+      description: 'High-end collection',
+      gradient: 'from-blue-400 to-indigo-500',
+    },
+    {
+      id: 6,
+      label: 'Under',
+      amount: selectedCurrency === 'INR' ? '₹150,000' : 'BD 750',
+      value: selectedCurrency === 'INR' ? 150000 : 750,
+      description: 'Designer jewelry',
+      gradient: 'from-cyan-400 to-blue-500',
+    },
+    {
+      id: 7,
+      label: 'Under',
+      amount: selectedCurrency === 'INR' ? '₹200,000' : 'BD 1000',
+      value: selectedCurrency === 'INR' ? 200000 : 1000,
+      description: 'Exclusive pieces',
+      gradient: 'from-green-400 to-emerald-500',
+    },
+    {
+      id: 8,
+      label: 'Under',
+      amount: selectedCurrency === 'INR' ? '₹300,000' : 'BD 1500',
+      value: selectedCurrency === 'INR' ? 300000 : 1500,
+      description: 'Elite collection',
+      gradient: 'from-yellow-400 to-amber-500',
+    },
+    {
+      id: 9,
+      label: 'Above',
+      amount: selectedCurrency === 'INR' ? '₹300,000' : 'BD 1500',
+      value: selectedCurrency === 'INR' ? 300001 : 1501,
+      description: 'Ultra luxury',
+      gradient: 'from-pink-500 to-rose-600',
     }
   ];
 
@@ -216,101 +261,67 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
           </motion.p>
         </div>
 
-        {/* Budget Cards in Hexagonal Layout */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto">
-          {budgetRanges.map((budget, index) => {
-            const sizeClasses: Record<string, string> = {
-              small: 'w-48 h-48 md:w-56 md:h-56',
-              medium: 'w-56 h-56 md:w-72 md:h-72',
-              large: 'w-52 h-52 md:w-64 md:h-64'
-            };
-            
-            const textSizes: Record<string, string> = {
-              small: 'text-lg md:text-xl',
-              medium: 'text-xl md:text-2xl',
-              large: 'text-lg md:text-xl'
-            };
-
-            return (
-              <motion.div
-                key={budget.id}
-                initial={{ opacity: 0, scale: 0.8, rotateY: -20 }}
-                whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                transition={{ 
-                  duration: 0.8, 
-                  delay: index * 0.2,
-                  type: "spring",
-                  stiffness: 100
-                }}
-                whileHover={{ 
-                  scale: 1.05,
-                  rotateY: 5,
-                  transition: { duration: 0.3 }
-                }}
-                whileTap={{ scale: 0.95 }}
-                className={`relative cursor-pointer group ${index === 1 ? 'md:-mt-8' : index === 2 ? 'md:mt-4' : ''}`}
-                onClick={() => handleBudgetClick(budget.value)}
-                style={{ perspective: '1000px' }}
-              >
-                {/* Hexagonal Shape */}
+        {/* Budget Cards in 3x3 Grid Layout */}
+        <div className="grid grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+          {budgetRanges.map((budget, index) => (
+            <motion.div
+              key={budget.id}
+              initial={{ opacity: 0, scale: 0.8, y: 20 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: index * 0.1,
+                type: "spring",
+                stiffness: 100
+              }}
+              whileHover={{ 
+                scale: 1.05,
+                y: -5,
+                transition: { duration: 0.3 }
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="relative cursor-pointer group"
+              onClick={() => handleBudgetClick(budget.value)}
+              data-testid={`budget-card-${budget.id}`}
+            >
+              {/* Card */}
+              <div className="w-full aspect-square relative rounded-2xl md:rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500">
+                {/* Gradient Background */}
                 <div 
-                  className={`${sizeClasses[budget.size] || sizeClasses['medium']} relative`}
-                  style={{
-                    clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
-                    background: `linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
-                  }}
-                >
-                  {/* Gradient Background */}
-                  <div 
-                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} transition-all duration-500 group-hover:scale-110 group-hover:brightness-110`}
-                    style={{
-                      clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
-                    }}
-                  />
-                  
-                  {/* Overlay for better text contrast */}
-                  <div 
-                    className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"
-                    style={{
-                      clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
-                    }}
-                  />
-                  
-                  {/* Content */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
-                    <div className="space-y-2">
-                      <div className={`font-light ${textSizes[budget.size] || textSizes['medium']}`} style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                        {budget.label}
-                      </div>
-                      <div className={`font-bold ${budget.size === 'medium' ? 'text-2xl md:text-4xl' : 'text-xl md:text-2xl'}`} style={{ fontFamily: 'Playfair Display, serif' }}>
-                        {budget.amount}
-                      </div>
-                      <div className="text-xs md:text-sm font-medium opacity-90 max-w-32">
-                        {budget.description}
-                      </div>
-                    </div>
-                    
-                    {/* Arrow indicator */}
-                    <motion.div 
-                      className="absolute bottom-6 right-6 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <ArrowRight className="w-4 h-4" />
-                    </motion.div>
-                  </div>
-                </div>
-
-                {/* Floating shadow */}
-                <div 
-                  className={`absolute inset-0 ${sizeClasses[budget.size] || sizeClasses['medium']} bg-black/10 blur-xl -z-10 transition-all duration-500 group-hover:blur-2xl group-hover:scale-110`}
-                  style={{
-                    clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
-                    transform: 'translateY(20px)'
-                  }}
+                  className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} transition-all duration-500 group-hover:scale-110 group-hover:brightness-110`}
                 />
-              </motion.div>
-            );
-          })}
+                
+                {/* Overlay for better text contrast */}
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
+                
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-2 md:p-4">
+                  <div className="space-y-1 md:space-y-2">
+                    <div className="font-light text-xs md:text-sm lg:text-base" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                      {budget.label}
+                    </div>
+                    <div className="font-bold text-sm md:text-lg lg:text-xl" style={{ fontFamily: 'Playfair Display, serif' }}>
+                      {budget.amount}
+                    </div>
+                    <div className="text-xs md:text-sm font-medium opacity-90">
+                      {budget.description}
+                    </div>
+                  </div>
+                  
+                  {/* Arrow indicator */}
+                  <motion.div 
+                    className="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-6 h-6 md:w-8 md:h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Floating shadow */}
+              <div className="absolute inset-0 bg-black/10 blur-xl -z-10 transition-all duration-500 group-hover:blur-2xl group-hover:scale-110 rounded-2xl md:rounded-3xl transform translate-y-4" />
+            </motion.div>
+          ))}
         </div>
 
         {/* Bottom CTA */}
