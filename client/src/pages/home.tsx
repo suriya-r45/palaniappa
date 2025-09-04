@@ -2544,14 +2544,6 @@ export default function Home() {
                             boxShadow: '0 20px 40px rgba(102, 126, 234, 0.4)'
                           }}
                           whileTap={{ scale: 0.95 }}
-                          animate={{
-                            y: [0, -8, 0],
-                            rotateZ: [0, 1, -1, 0]
-                          }}
-                          transition={{
-                            y: { duration: 3 + index * 0.5, repeat: Infinity, ease: "easeInOut" },
-                            rotateZ: { duration: 4 + index * 0.3, repeat: Infinity, ease: "easeInOut" }
-                          }}
                         >
                           <div className="h-full bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl overflow-hidden shadow-lg">
                             <div className="h-3/4 overflow-hidden">
