@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Product, HomeSection, HomeSectionItem } from '@shared/schema';
 import { Currency } from '@/lib/currency';
 import { ProductFilters as IProductFilters } from '@shared/cart-schema';
-import { ArrowRight, Star, Sparkles, Crown, Gem, Heart, Watch, Users, Baby, Palette, Wrench, Diamond } from "lucide-react";
+import { ArrowRight, Star, Sparkles, Crown, Gem, Heart, Watch, Users, Baby, Palette, Wrench, Diamond, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import ringsImage from '@assets/new_rings.png';
 
@@ -109,6 +109,224 @@ function CategoriesScrollSection({ categories, handleViewAllClick }: { categorie
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+// Shop by Budget Component
+function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency }) {
+  const budgetRanges = [
+    {
+      id: 1,
+      label: 'Under',
+      amount: selectedCurrency === 'INR' ? '₹15,000' : 'BD 75',
+      value: selectedCurrency === 'INR' ? 15000 : 75,
+      description: 'Perfect starter pieces',
+      gradient: 'from-rose-400 to-pink-500',
+      size: 'small'
+    },
+    {
+      id: 2,
+      label: 'Under',
+      amount: selectedCurrency === 'INR' ? '₹30,000' : 'BD 150',
+      value: selectedCurrency === 'INR' ? 30000 : 150,
+      description: 'Elegant everyday jewelry',
+      gradient: 'from-amber-400 to-orange-500',
+      size: 'medium'
+    },
+    {
+      id: 3,
+      label: 'Under',
+      amount: selectedCurrency === 'INR' ? '₹60,000' : 'BD 300',
+      value: selectedCurrency === 'INR' ? 60000 : 300,
+      description: 'Luxury statement pieces',
+      gradient: 'from-emerald-400 to-teal-500',
+      size: 'large'
+    }
+  ];
+
+  const handleBudgetClick = (maxPrice: number) => {
+    const params = new URLSearchParams();
+    params.set('maxPrice', maxPrice.toString());
+    params.set('currency', selectedCurrency);
+    window.location.href = `/collections?${params.toString()}`;
+  };
+
+  return (
+    <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%)' }}>
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-pink-200/30 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-rose-200/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-pink-100/20 to-transparent rounded-full blur-3xl"></div>
+        
+        {/* Sparkle decorations */}
+        <div className="absolute top-32 right-32">
+          <Sparkles className="w-6 h-6 text-pink-300/50 animate-pulse" />
+        </div>
+        <div className="absolute bottom-32 left-32">
+          <Diamond className="w-4 h-4 text-rose-300/50 animate-bounce" style={{ animationDelay: '1s' }} />
+        </div>
+        <div className="absolute top-48 left-20">
+          <Star className="w-5 h-5 text-pink-400/40 animate-pulse" style={{ animationDelay: '0.5s' }} />
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-pink-200 rounded-full px-6 py-3 mb-8 shadow-lg"
+          >
+            <span className="text-sm font-semibold tracking-[0.2em] text-pink-700 uppercase">Shop by</span>
+            <TrendingUp className="w-4 h-4 text-pink-600" />
+          </motion.div>
+          
+          <motion.h2 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="text-5xl md:text-7xl font-light text-gray-800 mb-6" 
+            style={{ fontFamily: 'Playfair Display, serif' }}
+          >
+            Budget
+            <span className="text-transparent bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text block md:inline ml-0 md:ml-4">
+              ✨
+            </span>
+          </motion.h2>
+          
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-lg font-light text-gray-600 max-w-2xl mx-auto" 
+            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+          >
+            Discover exquisite jewelry pieces perfectly curated for your budget range
+          </motion.p>
+        </div>
+
+        {/* Budget Cards in Hexagonal Layout */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto">
+          {budgetRanges.map((budget, index) => {
+            const sizeClasses: Record<string, string> = {
+              small: 'w-48 h-48 md:w-56 md:h-56',
+              medium: 'w-56 h-56 md:w-72 md:h-72',
+              large: 'w-52 h-52 md:w-64 md:h-64'
+            };
+            
+            const textSizes: Record<string, string> = {
+              small: 'text-lg md:text-xl',
+              medium: 'text-xl md:text-2xl',
+              large: 'text-lg md:text-xl'
+            };
+
+            return (
+              <motion.div
+                key={budget.id}
+                initial={{ opacity: 0, scale: 0.8, rotateY: -20 }}
+                whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                transition={{ 
+                  duration: 0.8, 
+                  delay: index * 0.2,
+                  type: "spring",
+                  stiffness: 100
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  rotateY: 5,
+                  transition: { duration: 0.3 }
+                }}
+                whileTap={{ scale: 0.95 }}
+                className={`relative cursor-pointer group ${index === 1 ? 'md:-mt-8' : index === 2 ? 'md:mt-4' : ''}`}
+                onClick={() => handleBudgetClick(budget.value)}
+                style={{ perspective: '1000px' }}
+              >
+                {/* Hexagonal Shape */}
+                <div 
+                  className={`${sizeClasses[budget.size] || sizeClasses['medium']} relative`}
+                  style={{
+                    clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                    background: `linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
+                  }}
+                >
+                  {/* Gradient Background */}
+                  <div 
+                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} transition-all duration-500 group-hover:scale-110 group-hover:brightness-110`}
+                    style={{
+                      clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                    }}
+                  />
+                  
+                  {/* Overlay for better text contrast */}
+                  <div 
+                    className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"
+                    style={{
+                      clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                    }}
+                  />
+                  
+                  {/* Content */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
+                    <div className="space-y-2">
+                      <div className={`font-light ${textSizes[budget.size] || textSizes['medium']}`} style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                        {budget.label}
+                      </div>
+                      <div className={`font-bold ${budget.size === 'medium' ? 'text-2xl md:text-4xl' : 'text-xl md:text-2xl'}`} style={{ fontFamily: 'Playfair Display, serif' }}>
+                        {budget.amount}
+                      </div>
+                      <div className="text-xs md:text-sm font-medium opacity-90 max-w-32">
+                        {budget.description}
+                      </div>
+                    </div>
+                    
+                    {/* Arrow indicator */}
+                    <motion.div 
+                      className="absolute bottom-6 right-6 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      whileHover={{ scale: 1.1 }}
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* Floating shadow */}
+                <div 
+                  className={`absolute inset-0 ${sizeClasses[budget.size] || sizeClasses['medium']} bg-black/10 blur-xl -z-10 transition-all duration-500 group-hover:blur-2xl group-hover:scale-110`}
+                  style={{
+                    clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                    transform: 'translateY(20px)'
+                  }}
+                />
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Bottom CTA */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="text-center mt-16"
+        >
+          <p className="text-gray-600 mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            Can't find what you're looking for? 
+          </p>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
+            onClick={() => window.location.href = '/collections'}
+          >
+            <span>Browse All Collections</span>
+            <ArrowRight className="w-4 h-4" />
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );
@@ -1170,6 +1388,201 @@ export default function Home() {
         // New Arrivals layout rendering - Horizontal auto-scrolling layout
         if (section.layoutType === 'new-arrivals') {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
+        }
+
+        // Curved Product Grid layout rendering - Elegant curved showcase
+        if (section.layoutType === 'curved-grid') {
+          return (
+            <section 
+              key={section.id} 
+              className="py-20 relative overflow-hidden" 
+              data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
+              style={{ 
+                background: 'linear-gradient(135deg, #f8f4f0 0%, #e8ddd4 50%, #d4c5a9 100%)'
+              }}
+            >
+              {/* Background decorative elements */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -top-40 -left-40 w-80 h-80 bg-gradient-to-br from-amber-200/30 to-transparent rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-gradient-to-tl from-rose-200/20 to-transparent rounded-full blur-3xl"></div>
+              </div>
+
+              <div className="container mx-auto px-4 relative z-10">
+                <div className="text-center mb-16">
+                  <motion.h2 
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    className="text-4xl md:text-6xl font-light text-gray-800 mb-6" 
+                    style={{ fontFamily: 'Playfair Display, serif' }}
+                  >
+                    {section.title}
+                  </motion.h2>
+                  {section.description && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.8, delay: 0.2 }}
+                      className="text-lg font-light text-gray-600 max-w-2xl mx-auto" 
+                      style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                    >
+                      {section.description}
+                    </motion.p>
+                  )}
+                </div>
+                
+                {/* Curved Product Grid */}
+                <div className="relative max-w-7xl mx-auto">
+                  {/* Navigation Arrows */}
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors"
+                      onClick={() => {
+                        const container = document.querySelector(`[data-section-id="${section.id}"] .curved-scroll-container`);
+                        if (container) {
+                          container.scrollBy({ left: -300, behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      <ArrowRight className="w-5 h-5 rotate-180" />
+                    </motion.button>
+                  </div>
+                  
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 z-20">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors"
+                      onClick={() => {
+                        const container = document.querySelector(`[data-section-id="${section.id}"] .curved-scroll-container`);
+                        if (container) {
+                          container.scrollBy({ left: 300, behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      <ArrowRight className="w-5 h-5" />
+                    </motion.button>
+                  </div>
+
+                  {/* Scrollable container with curved layout */}
+                  <div 
+                    className="curved-scroll-container overflow-x-auto scrollbar-hide pb-8"
+                    data-section-id={section.id}
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  >
+                    <div className="flex gap-6 min-w-max px-16">
+                      {section.items.map((item, index) => {
+                        // Create curved positioning
+                        const totalItems = section.items.length;
+                        const middleIndex = (totalItems - 1) / 2;
+                        const distanceFromCenter = Math.abs(index - middleIndex);
+                        const maxDistance = Math.floor(totalItems / 2);
+                        const curveHeight = distanceFromCenter === 0 ? 0 : (distanceFromCenter / maxDistance) * 60;
+                        
+                        return (
+                          <motion.div
+                            key={item.id}
+                            initial={{ opacity: 0, y: 50, rotateY: -15 }}
+                            whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+                            transition={{ 
+                              duration: 0.8, 
+                              delay: index * 0.1,
+                              type: "spring",
+                              stiffness: 100
+                            }}
+                            whileHover={{ 
+                              y: -10, 
+                              rotateY: 5,
+                              scale: 1.02,
+                              transition: { duration: 0.3 }
+                            }}
+                            className="flex-none w-80 relative"
+                            style={{
+                              transform: `translateY(${curveHeight}px)`,
+                              perspective: '1000px'
+                            }}
+                          >
+                            {/* Card container with luxury styling */}
+                            <div className="relative group">
+                              {/* Floating backdrop */}
+                              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-amber-100/30 rounded-3xl transform rotate-1 transition-all duration-500 group-hover:rotate-2 group-hover:scale-105 blur-sm"></div>
+                              
+                              {/* Main card */}
+                              <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 transition-all duration-500 group-hover:shadow-3xl border border-white/50">
+                                {/* Product image with sophisticated styling */}
+                                <div className="relative mb-6 overflow-hidden rounded-2xl">
+                                  <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100">
+                                    {item.product.images && item.product.images.length > 0 ? (
+                                      <img 
+                                        src={item.product.images[0]} 
+                                        alt={item.product.name}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center">
+                                        <Gem className="w-16 h-16 text-gray-300" />
+                                      </div>
+                                    )}
+                                  </div>
+                                  
+                                  {/* Hover overlay */}
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                </div>
+
+                                {/* Product details */}
+                                <div className="text-center space-y-4">
+                                  <h3 className="text-xl font-medium text-gray-800 line-clamp-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                                    {item.product.name}
+                                  </h3>
+                                  
+                                  <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                                    <span className="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
+                                      {item.product.category}
+                                    </span>
+                                  </div>
+
+                                  <div className="space-y-2">
+                                    <div className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Playfair Display, serif' }}>
+                                      {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                                      {selectedCurrency === 'INR' ? 
+                                        parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                                        parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                                      }
+                                    </div>
+                                    
+                                    {item.product.grossWeight && (
+                                      <div className="text-sm text-gray-500">
+                                        Weight: {parseFloat(item.product.grossWeight).toFixed(2)}g
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Action button */}
+                                  <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
+                                    onClick={() => window.location.href = `/product/${item.product.id}`}
+                                  >
+                                    View Details
+                                  </motion.button>
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Bottom gradient fade */}
+                  <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#f8f4f0] to-transparent pointer-events-none"></div>
+                </div>
+              </div>
+            </section>
+          );
         }
 
         // Magazine layout rendering - Luxury Editorial Design
@@ -2642,6 +3055,9 @@ export default function Home() {
         </section>
       )}
 
+      {/* Shop by Budget Section */}
+      <ShopByBudgetSection selectedCurrency={selectedCurrency} />
+      
       <Footer />
       <WhatsAppFloat />
     </div>

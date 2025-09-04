@@ -30,7 +30,7 @@ interface CreateHomeSectionData {
   title: string;
   subtitle: string;
   description: string;
-  layoutType: 'grid' | 'featured' | 'mixed' | 'split' | 'festival' | 'carousel' | 'mosaic' | 'luxury' | 'magazine' | 'new-arrivals' | 'diamond' | 'floating' | 'radial' | 'artistic' | 'premium' | 'zen';
+  layoutType: 'grid' | 'featured' | 'mixed' | 'split' | 'festival' | 'carousel' | 'mosaic' | 'luxury' | 'magazine' | 'new-arrivals' | 'diamond' | 'floating' | 'radial' | 'artistic' | 'premium' | 'zen' | 'royal' | 'curved-grid';
   isActive: boolean;
   displayOrder: number;
   backgroundColor: string;
@@ -412,7 +412,7 @@ function CreateSectionDialog({
               <Label htmlFor="layoutType" className="font-medium text-gray-700" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Layout Type *</Label>
               <Select
                 value={formData.layoutType}
-                onValueChange={(value: 'grid' | 'featured' | 'mixed' | 'split' | 'festival' | 'carousel' | 'mosaic' | 'luxury' | 'magazine' | 'diamond' | 'floating' | 'radial' | 'artistic' | 'royal' | 'new-arrivals' | 'premium') => 
+                onValueChange={(value: 'grid' | 'featured' | 'mixed' | 'split' | 'festival' | 'carousel' | 'mosaic' | 'luxury' | 'magazine' | 'diamond' | 'floating' | 'radial' | 'artistic' | 'royal' | 'new-arrivals' | 'premium' | 'curved-grid') => 
                   setFormData(prev => ({ ...prev, layoutType: value }))
                 }
               >
@@ -437,6 +437,7 @@ function CreateSectionDialog({
                   <SelectItem value="new-arrivals">✨ New Arrivals - Auto-scrolling Showcase</SelectItem>
                   <SelectItem value="premium">👑 Premium - Ultra-Luxury Elite Showcase</SelectItem>
                   <SelectItem value="zen">🧘 Zen - Minimalist Floating Cards</SelectItem>
+                  <SelectItem value="curved-grid">🌊 Curved Grid - Elegant Curved Product Showcase</SelectItem>
                 </SelectContent>
               </Select>
             </div>
