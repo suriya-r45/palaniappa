@@ -1390,185 +1390,163 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // Curved Product Grid layout rendering - Elegant curved showcase
+        // Curved Product Grid layout rendering - Elegant curved carousel like reference image
         if (section.layoutType === 'curved-grid') {
           return (
             <section 
               key={section.id} 
-              className="py-20 relative overflow-hidden" 
+              className="py-16 relative overflow-hidden bg-gradient-to-br from-slate-50 via-gray-50 to-white" 
               data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
-              style={{ 
-                background: 'linear-gradient(135deg, #f8f4f0 0%, #e8ddd4 50%, #d4c5a9 100%)'
-              }}
             >
-              {/* Background decorative elements */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-40 -left-40 w-80 h-80 bg-gradient-to-br from-amber-200/30 to-transparent rounded-full blur-3xl"></div>
-                <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-gradient-to-tl from-rose-200/20 to-transparent rounded-full blur-3xl"></div>
-              </div>
-
               <div className="container mx-auto px-4 relative z-10">
-                <div className="text-center mb-16">
-                  <motion.h2 
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="text-4xl md:text-6xl font-light text-gray-800 mb-6" 
-                    style={{ fontFamily: 'Playfair Display, serif' }}
-                  >
-                    {section.title}
-                  </motion.h2>
-                  {section.description && (
-                    <motion.p 
-                      initial={{ opacity: 0, y: 20 }}
+                {section.title && (
+                  <div className="text-center mb-12">
+                    <motion.h2 
+                      initial={{ opacity: 0, y: 30 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.8, delay: 0.2 }}
-                      className="text-lg font-light text-gray-600 max-w-2xl mx-auto" 
-                      style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                      transition={{ duration: 0.8 }}
+                      className="text-3xl md:text-5xl font-light text-gray-800 mb-4" 
+                      style={{ fontFamily: 'Playfair Display, serif' }}
                     >
-                      {section.description}
-                    </motion.p>
-                  )}
-                </div>
+                      {section.title}
+                    </motion.h2>
+                    {section.description && (
+                      <motion.p 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="text-lg font-light text-gray-600 max-w-2xl mx-auto" 
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                      >
+                        {section.description}
+                      </motion.p>
+                    )}
+                  </div>
+                )}
                 
-                {/* Curved Product Grid */}
-                <div className="relative max-w-7xl mx-auto">
+                {/* Curved Product Carousel */}
+                <div className="relative max-w-6xl mx-auto">
                   {/* Navigation Arrows */}
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20">
+                  <div className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors"
+                      className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
                       onClick={() => {
                         const container = document.querySelector(`[data-section-id="${section.id}"] .curved-scroll-container`);
                         if (container) {
-                          container.scrollBy({ left: -300, behavior: 'smooth' });
+                          container.scrollBy({ left: -280, behavior: 'smooth' });
                         }
                       }}
                     >
-                      <ArrowRight className="w-5 h-5 rotate-180" />
+                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 rotate-180" />
                     </motion.button>
                   </div>
                   
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 z-20">
+                  <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
-                      className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors"
+                      className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
                       onClick={() => {
                         const container = document.querySelector(`[data-section-id="${section.id}"] .curved-scroll-container`);
                         if (container) {
-                          container.scrollBy({ left: 300, behavior: 'smooth' });
+                          container.scrollBy({ left: 280, behavior: 'smooth' });
                         }
                       }}
                     >
-                      <ArrowRight className="w-5 h-5" />
+                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                     </motion.button>
                   </div>
 
-                  {/* Scrollable container with curved layout */}
+                  {/* Horizontal scrollable container with curved overlapping cards */}
                   <div 
-                    className="curved-scroll-container overflow-x-auto scrollbar-hide pb-8"
+                    className="curved-scroll-container overflow-x-auto scrollbar-hide"
                     data-section-id={section.id}
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                   >
-                    <div className="flex gap-6 min-w-max px-16">
+                    <div className="flex items-center gap-0 px-8 md:px-12 py-8" style={{ minWidth: 'max-content' }}>
                       {section.items.map((item, index) => {
-                        // Create curved positioning
-                        const totalItems = section.items.length;
-                        const middleIndex = (totalItems - 1) / 2;
-                        const distanceFromCenter = Math.abs(index - middleIndex);
-                        const maxDistance = Math.floor(totalItems / 2);
-                        const curveHeight = distanceFromCenter === 0 ? 0 : (distanceFromCenter / maxDistance) * 60;
+                        // Create perspective effect with overlapping cards
+                        const isCenter = index === Math.floor(section.items.length / 2);
+                        const distanceFromCenter = Math.abs(index - Math.floor(section.items.length / 2));
+                        const scale = isCenter ? 1 : 0.85 - (distanceFromCenter * 0.05);
+                        const rotateY = index < Math.floor(section.items.length / 2) ? 15 : index > Math.floor(section.items.length / 2) ? -15 : 0;
+                        const zIndex = section.items.length - distanceFromCenter;
+                        const translateX = index * -40; // Overlapping effect
                         
                         return (
                           <motion.div
                             key={item.id}
-                            initial={{ opacity: 0, y: 50, rotateY: -15 }}
-                            whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+                            initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
+                            whileInView={{ opacity: 1, scale: scale, rotateY: rotateY }}
                             transition={{ 
-                              duration: 0.8, 
+                              duration: 0.6, 
                               delay: index * 0.1,
                               type: "spring",
                               stiffness: 100
                             }}
                             whileHover={{ 
-                              y: -10, 
-                              rotateY: 5,
-                              scale: 1.02,
+                              scale: 1.05,
+                              rotateY: 0,
+                              zIndex: 999,
                               transition: { duration: 0.3 }
                             }}
-                            className="flex-none w-80 relative"
+                            className="flex-none w-64 md:w-72 relative group"
                             style={{
-                              transform: `translateY(${curveHeight}px)`,
+                              transform: `translateX(${translateX}px) rotateY(${rotateY}deg) scale(${scale})`,
+                              transformStyle: 'preserve-3d',
+                              zIndex: zIndex,
                               perspective: '1000px'
                             }}
                           >
-                            {/* Card container with luxury styling */}
-                            <div className="relative group">
-                              {/* Floating backdrop */}
-                              <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-amber-100/30 rounded-3xl transform rotate-1 transition-all duration-500 group-hover:rotate-2 group-hover:scale-105 blur-sm"></div>
-                              
-                              {/* Main card */}
-                              <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 transition-all duration-500 group-hover:shadow-3xl border border-white/50">
-                                {/* Product image with sophisticated styling */}
-                                <div className="relative mb-6 overflow-hidden rounded-2xl">
-                                  <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100">
-                                    {item.product.images && item.product.images.length > 0 ? (
-                                      <img 
-                                        src={item.product.images[0]} 
-                                        alt={item.product.name}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                      />
-                                    ) : (
-                                      <div className="w-full h-full flex items-center justify-center">
-                                        <Gem className="w-16 h-16 text-gray-300" />
-                                      </div>
-                                    )}
+                            {/* Card with rounded corners like reference image */}
+                            <div className="relative bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl border border-gray-100">
+                              {/* Product image */}
+                              <div className="relative aspect-[3/4] overflow-hidden">
+                                {item.product.images && item.product.images.length > 0 ? (
+                                  <img 
+                                    src={item.product.images[0]} 
+                                    alt={item.product.name}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                    <Gem className="w-16 h-16 text-gray-400" />
                                   </div>
-                                  
-                                  {/* Hover overlay */}
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                                </div>
-
-                                {/* Product details */}
-                                <div className="text-center space-y-4">
-                                  <h3 className="text-xl font-medium text-gray-800 line-clamp-2" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                                )}
+                                
+                                {/* Overlay gradient */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                
+                                {/* Product title overlay at bottom */}
+                                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                                  <h3 className="font-medium text-lg md:text-xl mb-1 line-clamp-2" style={{ fontFamily: 'Playfair Display, serif' }}>
                                     {item.product.name}
                                   </h3>
-                                  
-                                  <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                                    <span className="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">
-                                      {item.product.category}
-                                    </span>
+                                  <div className="text-2xl md:text-3xl font-bold" style={{ fontFamily: 'Playfair Display, serif' }}>
+                                    {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                                    {selectedCurrency === 'INR' ? 
+                                      parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                                      parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                                    }
                                   </div>
-
-                                  <div className="space-y-2">
-                                    <div className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'Playfair Display, serif' }}>
-                                      {selectedCurrency === 'INR' ? '₹' : 'BD '}
-                                      {selectedCurrency === 'INR' ? 
-                                        parseFloat(item.product.priceInr).toLocaleString('en-IN') :
-                                        parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
-                                      }
-                                    </div>
-                                    
-                                    {item.product.grossWeight && (
-                                      <div className="text-sm text-gray-500">
-                                        Weight: {parseFloat(item.product.grossWeight).toFixed(2)}g
-                                      </div>
-                                    )}
-                                  </div>
-
-                                  {/* Action button */}
-                                  <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    className="w-full bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
-                                    onClick={() => window.location.href = `/product/${item.product.id}`}
-                                  >
-                                    View Details
-                                  </motion.button>
                                 </div>
+
+                                {/* Hover action button */}
+                                <motion.div
+                                  initial={{ opacity: 0, y: 20 }}
+                                  whileHover={{ opacity: 1, y: 0 }}
+                                  className="absolute top-4 right-4"
+                                >
+                                  <button
+                                    className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors"
+                                    onClick={() => window.location.href = `/product/${item.product.id}`}
+                                    data-testid={`button-view-product-${item.product.id}`}
+                                  >
+                                    <ArrowRight className="w-4 h-4" />
+                                  </button>
+                                </motion.div>
                               </div>
                             </div>
                           </motion.div>
@@ -1576,9 +1554,6 @@ export default function Home() {
                       })}
                     </div>
                   </div>
-
-                  {/* Bottom gradient fade */}
-                  <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#f8f4f0] to-transparent pointer-events-none"></div>
                 </div>
               </div>
             </section>
