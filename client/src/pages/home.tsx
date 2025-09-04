@@ -1396,14 +1396,15 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // Curved Wave Grid Flow - Organic overlapping layout like reference image
+        // Curved Wave Grid Flow - Clean wave layout with flexbox
         if (section.layoutType === 'curved-grid') {
-          const displayItems = section.items.slice(0, 4); // Limit to 4 items for perfect curved flow
+          const displayItems = section.items.slice(0, 4); // Limit to 4 for best flow
+          const rotations = [-8, -2, 2, 8]; // Wave rotation degrees
           
           return (
             <section 
               key={section.id} 
-              className="w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 py-16 overflow-hidden" 
+              className="w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 py-16" 
               data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
             >
               <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -1419,143 +1420,64 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Curved Organic Layout Container */}
-                <div className="relative h-[500px] md:h-[600px]">
-                  {displayItems.map((item, index) => {
-                    // Define organic overlapping positions like reference image
-                    const positions = [
-                      // Large card - left side, prominent
-                      { 
-                        left: '5%', 
-                        top: '10%', 
-                        rotate: '-8deg',
-                        width: 'w-80 md:w-96',
-                        height: 'h-[280px] md:h-[320px]',
-                        zIndex: 'z-30',
-                        borderRadius: '2rem',
-                        scale: 1.1
-                      },
-                      // Medium card - top center, overlapping
-                      { 
-                        left: '35%', 
-                        top: '5%', 
-                        rotate: '5deg',
-                        width: 'w-72 md:w-80',
-                        height: 'h-[240px] md:h-[280px]',
-                        zIndex: 'z-20',
-                        borderRadius: '1.5rem',
-                        scale: 1.0
-                      },
-                      // Large background card - center right, partially hidden
-                      { 
-                        right: '5%', 
-                        top: '15%', 
-                        rotate: '3deg',
-                        width: 'w-96 md:w-[420px]',
-                        height: 'h-[300px] md:h-[360px]',
-                        zIndex: 'z-10',
-                        borderRadius: '2.5rem',
-                        scale: 1.2,
-                        isBackground: true
-                      },
-                      // Small card - bottom right, overlapping
-                      { 
-                        right: '15%', 
-                        bottom: '20%', 
-                        rotate: '-6deg',
-                        width: 'w-64 md:w-72',
-                        height: 'h-[200px] md:h-[240px]',
-                        zIndex: 'z-25',
-                        borderRadius: '1.5rem',
-                        scale: 0.9
-                      }
-                    ];
+                {/* Wave Flow Container */}
+                <div className="flex justify-center gap-6 md:gap-10">
+                  {displayItems.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      className="w-56 md:w-64 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
+                      style={{
+                        transform: `rotate(${rotations[index]}deg)`,
+                      }}
+                      initial={{ opacity: 0, y: 50 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.8,
+                        delay: index * 0.15,
+                        type: "spring",
+                        stiffness: 80,
+                      }}
+                      whileHover={{
+                        scale: 1.05,
+                        rotate: rotations[index] * 0.5,
+                        zIndex: 50,
+                      }}
+                      onClick={() => window.location.href = `/product/${item.product.id}`}
+                      data-testid={`curved-grid-item-${index}`}
+                    >
+                      {/* Product Image */}
+                      <div className="h-64 bg-gray-100 overflow-hidden">
+                        {item.product.images && item.product.images.length > 0 ? (
+                          <img
+                            src={item.product.images[0]}
+                            alt={item.product.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-400">
+                            <Gem className="w-16 h-16 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
 
-                    const position = positions[index] || positions[0];
-                    
-                    return (
-                      <motion.div
-                        key={item.id}
-                        className={`absolute ${position.width} ${position.height} ${position.zIndex}`}
-                        style={{ 
-                          left: position.left,
-                          right: position.right,
-                          top: position.top,
-                          bottom: position.bottom,
-                          transform: `rotate(${position.rotate}) scale(${position.scale})`,
-                        }}
-                        initial={{ opacity: 0, scale: 0.8, rotate: position.rotate }}
-                        whileInView={{ opacity: 1, scale: position.scale, rotate: position.rotate }}
-                        transition={{ duration: 1, delay: index * 0.15, type: "spring", stiffness: 80 }}
-                        whileHover={{ 
-                          scale: position.scale * 1.05,
-                          rotate: position.rotate * 0.5,
-                          zIndex: 50,
-                          transition: { duration: 0.4 }
-                        }}
-                        onClick={() => window.location.href = `/product/${item.product.id}`}
-                        data-testid={`curved-grid-item-${index}`}
-                      >
-                        {/* Curved Card Container */}
-                        <div 
-                          className={`w-full h-full ${position.isBackground ? 'bg-gradient-to-br from-amber-50 to-orange-50' : 'bg-white'} shadow-2xl hover:shadow-3xl transition-all duration-700 overflow-hidden cursor-pointer group`}
-                          style={{ 
-                            borderRadius: position.borderRadius,
-                            ...(position.isBackground && { opacity: 0.8 })
-                          }}
+                      {/* Product Details */}
+                      <div className="p-4 text-center">
+                        <h3
+                          className="text-lg font-medium text-gray-800 mb-2"
+                          style={{ fontFamily: "Playfair Display, serif" }}
                         >
-                          {/* Product Image */}
-                          <div className={`relative ${position.isBackground ? 'h-4/5' : 'h-2/3'} overflow-hidden`}>
-                            {item.product.images && item.product.images.length > 0 ? (
-                              <img
-                                src={item.product.images[0]}
-                                alt={item.product.name}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                              />
-                            ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                <Gem className="w-16 h-16 text-gray-400" />
-                              </div>
-                            )}
-                            
-                            {/* Curved overlay */}
-                            <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-white via-white/60 to-transparent"></div>
-                          </div>
-                          
-                          {/* Product Details */}
-                          <div className={`${position.isBackground ? 'h-1/5' : 'h-1/3'} p-4 md:p-6 flex flex-col justify-center bg-white`}>
-                            <h3 className={`${position.isBackground ? 'text-lg md:text-xl' : 'text-base md:text-lg'} font-semibold text-gray-800 mb-2 line-clamp-1`} 
-                                style={{ fontFamily: 'Playfair Display, serif' }}>
-                              {item.product.name}
-                            </h3>
-                            <p className={`${position.isBackground ? 'text-xl md:text-2xl' : 'text-lg md:text-xl'} font-bold text-amber-600`} 
-                               style={{ fontFamily: 'Playfair Display, serif' }}>
-                              {selectedCurrency === 'INR' ? '₹' : 'BD '}
-                              {selectedCurrency === 'INR' ? 
-                                parseFloat(item.product.priceInr).toLocaleString('en-IN') :
-                                parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
-                              }
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Organic floating shadow */}
-                        <div 
-                          className="absolute inset-0 bg-black/15 blur-2xl -z-10 transition-all duration-700 group-hover:blur-3xl group-hover:scale-105"
-                          style={{ 
-                            borderRadius: position.borderRadius,
-                            transform: `translateY(15px) rotate(${position.rotate}) scale(${position.scale * 0.95})` 
-                          }}
-                        ></div>
-                      </motion.div>
-                    );
-                  })}
-
-                  {/* Soft background elements */}
-                  <div className="absolute inset-0 pointer-events-none opacity-5">
-                    <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-gradient-to-br from-amber-200 to-orange-200 rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-br from-pink-200 to-rose-200 rounded-full blur-3xl"></div>
-                  </div>
+                          {item.product.name}
+                        </h3>
+                        <p className="text-xl font-bold text-amber-600">
+                          {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                          {selectedCurrency === 'INR' ? 
+                            parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                            parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                          }
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
             </section>
