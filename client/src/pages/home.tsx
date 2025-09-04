@@ -1396,7 +1396,7 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // Curved Product Showcase - Swiper.js implementation
+        // Curved Product Showcase - Exact implementation matching reference image
         if (section.layoutType === 'curved-grid') {
           return (
             <section 
@@ -1412,7 +1412,7 @@ export default function Home() {
                 spaceBetween={20}
                 slidesPerView={1.3}
                 centeredSlides={true}
-                loop={true}
+                loop={section.items.length > 3}
                 breakpoints={{
                   640: { slidesPerView: 2.3 },
                   1024: { slidesPerView: 3.3 },
@@ -1426,6 +1426,7 @@ export default function Home() {
                       style={{ transform: "rotateY(-5deg)" }}
                       onClick={() => window.location.href = `/product/${item.product.id}`}
                     >
+                      {/* Product Image */}
                       {item.product.images && item.product.images.length > 0 ? (
                         <img
                           src={item.product.images[0]}
@@ -1437,6 +1438,8 @@ export default function Home() {
                           <Gem className="w-16 h-16 text-gray-400" />
                         </div>
                       )}
+                      
+                      {/* Product Details Below Image */}
                       <div className="p-4 text-center">
                         <h3 className="text-lg font-medium mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
                           {item.product.name}
