@@ -1421,12 +1421,12 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Wave Flow Container - 1x4 Grid */}
-                <div className="flex justify-center gap-4 md:gap-8 overflow-x-auto pb-4">
+                {/* Wave Flow Container - 2x2 Grid on mobile, 1x4 on desktop */}
+                <div className="grid grid-cols-2 md:flex md:justify-center gap-4 md:gap-8 max-w-4xl mx-auto">
                   {displayItems.map((item, index) => (
                     <motion.div
                       key={item.id}
-                      className="w-56 md:w-64 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
+                      className="w-full max-w-56 md:w-64 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
                       style={{
                         rotate: `${rotations[index % rotations.length]}deg`,
                       }}
