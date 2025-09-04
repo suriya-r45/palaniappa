@@ -1399,8 +1399,8 @@ export default function Home() {
         // Curved Wave Grid Flow - Clean wave layout with flexbox
         if (section.layoutType === 'curved-grid') {
           const displayItems = section.items.slice(0, 4); // Display 4 items in 1x4 grid
-          const waveRotations = [-6, -2, 2, 6]; // Repeating rotation pattern
-          const waveOffsets = [20, -10, 10, -20]; // Repeating wave pattern
+          const waveOffsets = [20, -10, 10, -20]; // y-axis wave
+          const rotations = [-8, -3, 3, 8]; // synced rotation
           
           return (
             <section 
@@ -1426,14 +1426,14 @@ export default function Home() {
                   {displayItems.map((item, index) => (
                     <motion.div
                       key={item.id}
-                      className="w-56 md:w-64 flex-shrink-0 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
+                      className="w-56 md:w-64 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
                       style={{
-                        rotate: waveRotations[index % waveRotations.length], // cycle rotations
+                        rotate: `${rotations[index % rotations.length]}deg`,
                       }}
                       initial={{ opacity: 0, y: 100 }}
-                      whileInView={{ 
-                        opacity: 1, 
-                        y: waveOffsets[index % waveOffsets.length] // cycle wave offsets
+                      whileInView={{
+                        opacity: 1,
+                        y: waveOffsets[index % waveOffsets.length],
                       }}
                       transition={{
                         duration: 0.8,
@@ -1443,7 +1443,7 @@ export default function Home() {
                       }}
                       whileHover={{
                         scale: 1.05,
-                        rotate: waveRotations[index % waveRotations.length] * 0.5,
+                        rotate: `${rotations[index % rotations.length] * 0.5}deg`,
                         zIndex: 50,
                       }}
                       onClick={() => window.location.href = `/product/${item.product.id}`}
