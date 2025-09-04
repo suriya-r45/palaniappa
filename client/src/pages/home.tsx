@@ -1390,7 +1390,7 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // Curved Product Grid layout rendering - Swiper.js based carousel like reference image
+        // TRUE Curved Product Grid layout - Arc-shaped product arrangement like reference image
         if (section.layoutType === 'curved-grid') {
           return (
             <section 
@@ -1424,128 +1424,138 @@ export default function Home() {
                   </div>
                 )}
                 
-                {/* Swiper Curved Product Carousel */}
-                <div className="relative max-w-6xl mx-auto">
-                  <div className="swiper-curved-grid">
-                    <div className="swiper-wrapper flex items-center justify-center py-8">
-                      {section.items.map((item, index) => (
-                        <div 
-                          key={item.id} 
-                          className="swiper-slide flex justify-center"
-                          style={{
-                            width: '280px',
-                            marginRight: '-40px' // Overlapping effect
-                          }}
-                        >
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.8, rotateY: -20 }}
-                            whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                            transition={{ 
-                              duration: 0.6, 
-                              delay: index * 0.1,
-                              type: "spring",
-                              stiffness: 100
-                            }}
-                            whileHover={{ 
-                              scale: 1.05,
-                              rotateY: 0,
-                              zIndex: 999,
-                              transition: { duration: 0.3 }
-                            }}
-                            className="relative group cursor-pointer"
-                            style={{
-                              transform: 'rotateY(-5deg)', // 3D perspective like reference
-                              transformStyle: 'preserve-3d',
-                              perspective: '1000px'
-                            }}
-                            onClick={() => window.location.href = `/product/${item.product.id}`}
-                          >
-                            {/* Card with rounded corners like reference image */}
-                            <div className="relative bg-white rounded-3xl shadow-xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl border border-gray-100 w-64 md:w-72">
-                              {/* Product image */}
-                              <div className="relative aspect-[3/4] overflow-hidden">
-                                {item.product.images && item.product.images.length > 0 ? (
-                                  <img 
-                                    src={item.product.images[0]} 
-                                    alt={item.product.name}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                  />
-                                ) : (
-                                  <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                                    <Gem className="w-16 h-16 text-gray-400" />
-                                  </div>
-                                )}
-                                
-                                {/* Overlay gradient */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                                
-                                {/* Product title overlay at bottom like reference */}
-                                <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                                  <h3 className="font-medium text-lg md:text-xl mb-1 line-clamp-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                                    {item.product.name}
-                                  </h3>
-                                  <div className="text-2xl md:text-3xl font-bold" style={{ fontFamily: 'Playfair Display, serif' }}>
-                                    {selectedCurrency === 'INR' ? '₹' : 'BD '}
-                                    {selectedCurrency === 'INR' ? 
-                                      parseFloat(item.product.priceInr).toLocaleString('en-IN') :
-                                      parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
-                                    }
-                                  </div>
-                                </div>
+                {/* TRUE Curved Grid - Arc Layout */}
+                <div className="relative max-w-7xl mx-auto h-96 md:h-[500px]">
+                  {/* Navigation Arrows */}
+                  <div className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
+                      onClick={() => {
+                        // Scroll left logic can be added here
+                      }}
+                    >
+                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5 rotate-180" />
+                    </motion.button>
+                  </div>
+                  
+                  <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
+                      onClick={() => {
+                        // Scroll right logic can be added here
+                      }}
+                    >
+                      <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                    </motion.button>
+                  </div>
 
-                                {/* Navigation arrows like reference */}
-                                <motion.div
-                                  initial={{ opacity: 0 }}
-                                  whileHover={{ opacity: 1 }}
-                                  className="absolute top-4 right-4"
-                                >
-                                  <div className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors">
-                                    <ArrowRight className="w-4 h-4" />
-                                  </div>
-                                </motion.div>
+                  {/* Curved Arc Container */}
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    {section.items.map((item, index) => {
+                      const totalItems = section.items.length;
+                      const center = Math.floor(totalItems / 2);
+                      
+                      // Calculate position on arc
+                      const angleStep = 120 / (totalItems - 1); // Total arc of 120 degrees
+                      const angle = (index - center) * angleStep; // Angle from center
+                      const radians = (angle * Math.PI) / 180;
+                      
+                      // Arc radius and positioning
+                      const radius = 280; // Distance from center
+                      const x = Math.sin(radians) * radius; // Horizontal position
+                      const y = Math.cos(radians) * radius * 0.3; // Vertical position (flattened)
+                      
+                      // Scale and rotation for perspective
+                      const distanceFromCenter = Math.abs(index - center);
+                      const scale = 1 - (distanceFromCenter * 0.15); // Center cards larger
+                      const rotateY = -angle * 0.8; // Rotate cards to follow curve
+                      const zIndex = totalItems - distanceFromCenter; // Center cards on top
+                      
+                      return (
+                        <motion.div
+                          key={item.id}
+                          initial={{ opacity: 0, scale: 0.5, y: 100 }}
+                          whileInView={{ 
+                            opacity: 1, 
+                            scale: scale, 
+                            y: 0 
+                          }}
+                          transition={{ 
+                            duration: 0.8, 
+                            delay: index * 0.1,
+                            type: "spring",
+                            stiffness: 100
+                          }}
+                          whileHover={{ 
+                            scale: scale * 1.1,
+                            rotateY: 0,
+                            zIndex: 999,
+                            transition: { duration: 0.3 }
+                          }}
+                          className="absolute cursor-pointer"
+                          style={{
+                            transform: `translateX(${x}px) translateY(${y}px) rotateY(${rotateY}deg) scale(${scale})`,
+                            transformStyle: 'preserve-3d',
+                            zIndex: zIndex,
+                            perspective: '1000px'
+                          }}
+                          onClick={() => window.location.href = `/product/${item.product.id}`}
+                        >
+                          {/* Card with curved perspective */}
+                          <div className="relative bg-white rounded-2xl md:rounded-3xl shadow-xl overflow-hidden transition-all duration-500 hover:shadow-2xl border border-gray-100 w-48 md:w-64 group">
+                            {/* Product image */}
+                            <div className="relative aspect-[3/4] overflow-hidden">
+                              {item.product.images && item.product.images.length > 0 ? (
+                                <img 
+                                  src={item.product.images[0]} 
+                                  alt={item.product.name}
+                                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                              ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                  <Gem className="w-12 h-12 md:w-16 md:h-16 text-gray-400" />
+                                </div>
+                              )}
+                              
+                              {/* Overlay gradient */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                              
+                              {/* Product details overlay */}
+                              <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4 text-white">
+                                <h3 className="font-medium text-sm md:text-lg mb-1 line-clamp-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                                  {item.product.name}
+                                </h3>
+                                <div className="text-lg md:text-2xl font-bold" style={{ fontFamily: 'Playfair Display, serif' }}>
+                                  {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                                  {selectedCurrency === 'INR' ? 
+                                    parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                                    parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                                  }
+                                </div>
                               </div>
+
+                              {/* Hover indicator */}
+                              <motion.div
+                                initial={{ opacity: 0 }}
+                                whileHover={{ opacity: 1 }}
+                                className="absolute top-2 md:top-4 right-2 md:right-4"
+                              >
+                                <div className="w-8 h-8 md:w-10 md:h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors">
+                                  <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                                </div>
+                              </motion.div>
                             </div>
-                          </motion.div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    {/* Navigation Arrows positioned like reference */}
-                    <div className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 z-20">
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
-                        onClick={() => {
-                          const container = document.querySelector('.swiper-curved-grid .swiper-wrapper');
-                          if (container) {
-                            container.scrollBy({ left: -280, behavior: 'smooth' });
-                          }
-                        }}
-                      >
-                        <ArrowRight className="w-4 h-4 md:w-5 md:h-5 rotate-180" />
-                      </motion.button>
-                    </div>
-                    
-                    <div className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 z-20">
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        className="w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center text-gray-600 hover:text-amber-600 transition-colors border border-gray-200"
-                        onClick={() => {
-                          const container = document.querySelector('.swiper-curved-grid .swiper-wrapper');
-                          if (container) {
-                            container.scrollBy({ left: 280, behavior: 'smooth' });
-                          }
-                        }}
-                      >
-                        <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                      </motion.button>
-                    </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
-              
             </section>
           );
         }
