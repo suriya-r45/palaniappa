@@ -262,26 +262,27 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
                 >
                   {/* Jewelry Background Image */}
                   <div 
-                    className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500"
+                    className="absolute inset-0 opacity-60 group-hover:opacity-80 transition-opacity duration-500"
                     style={{
                       clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                       backgroundImage: `url('/src/assets/luxury-necklace.png')`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
+                      filter: 'sepia(20%) saturate(1.2) brightness(0.8)',
                     }}
                   />
                   
-                  {/* Gradient Background */}
+                  {/* Gradient Overlay for Color Blending */}
                   <div 
-                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} opacity-90 transition-all duration-500 group-hover:scale-110 group-hover:brightness-110`}
+                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} opacity-60 group-hover:opacity-50 transition-all duration-500 mix-blend-multiply`}
                     style={{
                       clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     }}
                   />
                   
-                  {/* Overlay for better text contrast */}
+                  {/* Text Contrast Overlay */}
                   <div 
-                    className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"
+                    className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40 group-hover:from-black/50 group-hover:via-black/10 group-hover:to-black/30 transition-all duration-300"
                     style={{
                       clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     }}
