@@ -1396,66 +1396,165 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // Curved Product Showcase - Exact implementation matching reference image
+        // Curved Wave Grid Flow - Flowing wave-like arrangement with 4 items
         if (section.layoutType === 'curved-grid') {
+          const displayItems = section.items.slice(0, 4); // Limit to 4 items for perfect wave flow
+          
           return (
             <section 
               key={section.id} 
-              className="w-full bg-white py-10" 
+              className="w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 py-16 overflow-hidden" 
               data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
             >
-              <h2 className="text-3xl font-serif text-center mb-6" style={{ fontFamily: 'Playfair Display, serif' }}>
-                {section.title || 'Curved Product Showcase'}
-              </h2>
+              <div className="max-w-7xl mx-auto px-4 md:px-8">
+                {/* Section Header */}
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl md:text-5xl font-light text-gray-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+                    {section.title || 'Curved Wave Grid Flow'}
+                  </h2>
+                  {section.description && (
+                    <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                      {section.description}
+                    </p>
+                  )}
+                </div>
 
-              <Swiper
-                spaceBetween={20}
-                slidesPerView={1.3}
-                centeredSlides={true}
-                loop={section.items.length > 3}
-                breakpoints={{
-                  640: { slidesPerView: 2.3 },
-                  1024: { slidesPerView: 3.3 },
-                }}
-              >
-                {section.items.map((item) => (
-                  <SwiperSlide key={item.id}>
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      className="rounded-3xl overflow-hidden shadow-xl bg-white cursor-pointer"
-                      style={{ transform: "rotateY(-5deg)" }}
-                      onClick={() => window.location.href = `/product/${item.product.id}`}
-                    >
-                      {/* Product Image */}
-                      {item.product.images && item.product.images.length > 0 ? (
-                        <img
-                          src={item.product.images[0]}
-                          alt={item.product.name}
-                          className="w-full h-72 object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-72 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                          <Gem className="w-16 h-16 text-gray-400" />
+                {/* Curved Wave Grid Container */}
+                <div className="relative h-[600px] md:h-[700px] lg:h-[800px]">
+                  {displayItems.map((item, index) => {
+                    // Define positions for wave flow pattern
+                    const positions = [
+                      // First item - top left with slight curve
+                      { 
+                        left: '5%', 
+                        top: '10%', 
+                        rotate: '-5deg',
+                        width: 'w-64 md:w-72',
+                        height: 'h-80 md:h-96',
+                        zIndex: 'z-10'
+                      },
+                      // Second item - middle center, elevated
+                      { 
+                        left: '35%', 
+                        top: '0%', 
+                        rotate: '3deg',
+                        width: 'w-72 md:w-80',
+                        height: 'h-88 md:h-[420px]',
+                        zIndex: 'z-20'
+                      },
+                      // Third item - middle right, flowing down
+                      { 
+                        right: '25%', 
+                        top: '25%', 
+                        rotate: '-2deg',
+                        width: 'w-60 md:w-68',
+                        height: 'h-76 md:h-88',
+                        zIndex: 'z-15'
+                      },
+                      // Fourth item - bottom right with curve
+                      { 
+                        right: '5%', 
+                        bottom: '5%', 
+                        rotate: '4deg',
+                        width: 'w-56 md:w-64',
+                        height: 'h-72 md:h-80',
+                        zIndex: 'z-10'
+                      }
+                    ];
+
+                    const position = positions[index] || positions[0];
+                    
+                    return (
+                      <motion.div
+                        key={item.id}
+                        className={`absolute ${position.width} ${position.height} ${position.zIndex}`}
+                        style={{ 
+                          left: position.left,
+                          right: position.right,
+                          top: position.top,
+                          bottom: position.bottom,
+                          transform: `rotate(${position.rotate})`
+                        }}
+                        initial={{ opacity: 0, scale: 0.8, y: 50 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: index * 0.2 }}
+                        whileHover={{ 
+                          scale: 1.05,
+                          rotate: 0,
+                          zIndex: 50,
+                          transition: { duration: 0.3 }
+                        }}
+                        onClick={() => window.location.href = `/product/${item.product.id}`}
+                        data-testid={`curved-grid-item-${index}`}
+                      >
+                        {/* Card Container */}
+                        <div className="w-full h-full bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer group">
+                          {/* Product Image */}
+                          <div className="relative h-3/4 overflow-hidden">
+                            {item.product.images && item.product.images.length > 0 ? (
+                              <img
+                                src={item.product.images[0]}
+                                alt={item.product.name}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                <Gem className="w-12 h-12 text-gray-400" />
+                              </div>
+                            )}
+                            
+                            {/* Overlay gradient for better text readability */}
+                            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          </div>
+                          
+                          {/* Product Details */}
+                          <div className="h-1/4 p-4 flex flex-col justify-center">
+                            <h3 className="text-sm md:text-base lg:text-lg font-medium text-gray-800 mb-1 line-clamp-1" 
+                                style={{ fontFamily: 'Playfair Display, serif' }}>
+                              {item.product.name}
+                            </h3>
+                            <p className="text-lg md:text-xl font-bold text-amber-600" 
+                               style={{ fontFamily: 'Playfair Display, serif' }}>
+                              {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                              {selectedCurrency === 'INR' ? 
+                                parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                                parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                              }
+                            </p>
+                          </div>
                         </div>
-                      )}
-                      
-                      {/* Product Details Below Image */}
-                      <div className="p-4 text-center">
-                        <h3 className="text-lg font-medium mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
-                          {item.product.name}
-                        </h3>
-                        <p className="text-xl font-bold text-yellow-700" style={{ fontFamily: 'Playfair Display, serif' }}>
-                          {selectedCurrency === 'INR' ? '₹' : 'BD '}
-                          {selectedCurrency === 'INR' ? 
-                            parseFloat(item.product.priceInr).toLocaleString('en-IN') :
-                            parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
-                          }
-                        </p>
-                      </div>
-                    </motion.div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+
+                        {/* Floating shadow effect */}
+                        <div 
+                          className="absolute inset-0 bg-black/20 blur-xl -z-10 transition-all duration-500 group-hover:blur-2xl group-hover:scale-110 rounded-3xl"
+                          style={{ 
+                            transform: `translateY(20px) rotate(${position.rotate})` 
+                          }}
+                        ></div>
+                      </motion.div>
+                    );
+                  })}
+
+                  {/* Decorative wave elements */}
+                  <div className="absolute inset-0 pointer-events-none opacity-20">
+                    <svg className="absolute top-1/4 left-1/4 w-96 h-96" viewBox="0 0 400 400" fill="none">
+                      <path
+                        d="M50 200 Q 150 100, 250 200 T 450 200"
+                        stroke="url(#gradient1)"
+                        strokeWidth="2"
+                        fill="none"
+                        opacity="0.3"
+                      />
+                      <defs>
+                        <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#d97706" />
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </section>
           );
         }
