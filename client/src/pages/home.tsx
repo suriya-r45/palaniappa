@@ -252,27 +252,38 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
                 onClick={() => handleBudgetClick(budget.value)}
                 style={{ perspective: '1000px' }}
               >
-                {/* Hexagonal Shape */}
+                {/* Octagonal Shape */}
                 <div 
                   className={`${sizeClasses[budget.size] || sizeClasses['medium']} relative`}
                   style={{
-                    clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                    clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     background: `linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
                   }}
                 >
+                  {/* Jewelry Background Image */}
+                  <div 
+                    className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500"
+                    style={{
+                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+                      backgroundImage: `url('/src/assets/luxury-necklace.png')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  />
+                  
                   {/* Gradient Background */}
                   <div 
-                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} transition-all duration-500 group-hover:scale-110 group-hover:brightness-110`}
+                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} opacity-90 transition-all duration-500 group-hover:scale-110 group-hover:brightness-110`}
                     style={{
-                      clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     }}
                   />
                   
                   {/* Overlay for better text contrast */}
                   <div 
-                    className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300"
+                    className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300"
                     style={{
-                      clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     }}
                   />
                   
@@ -304,7 +315,7 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
                 <div 
                   className={`absolute inset-0 ${sizeClasses[budget.size] || sizeClasses['medium']} bg-black/10 blur-xl -z-10 transition-all duration-500 group-hover:blur-2xl group-hover:scale-110`}
                   style={{
-                    clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)',
+                    clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     transform: 'translateY(20px)'
                   }}
                 />
