@@ -1420,44 +1420,44 @@ export default function Home() {
                 </div>
 
                 {/* Curved Wave Grid Container */}
-                <div className="relative h-[600px] md:h-[700px] lg:h-[800px]">
+                <div className="relative h-[400px] md:h-[450px]">
                   {displayItems.map((item, index) => {
-                    // Define positions for wave flow pattern
+                    // Define positions for horizontal wave flow pattern (like reference image)
                     const positions = [
-                      // First item - top left with slight curve
+                      // First item - left side, slightly elevated
                       { 
-                        left: '5%', 
-                        top: '10%', 
-                        rotate: '-5deg',
-                        width: 'w-64 md:w-72',
-                        height: 'h-80 md:h-96',
+                        left: '2%', 
+                        top: '20%', 
+                        rotate: '-3deg',
+                        width: 'w-56 md:w-64 lg:w-72',
+                        height: 'h-64 md:h-72 lg:h-80',
                         zIndex: 'z-10'
                       },
-                      // Second item - middle center, elevated
+                      // Second item - left-center, overlapping slightly, elevated more
                       { 
-                        left: '35%', 
-                        top: '0%', 
-                        rotate: '3deg',
-                        width: 'w-72 md:w-80',
-                        height: 'h-88 md:h-[420px]',
+                        left: '22%', 
+                        top: '5%', 
+                        rotate: '2deg',
+                        width: 'w-60 md:w-68 lg:w-76',
+                        height: 'h-68 md:h-76 lg:h-84',
                         zIndex: 'z-20'
                       },
-                      // Third item - middle right, flowing down
+                      // Third item - right-center, flowing down in wave
                       { 
-                        right: '25%', 
+                        left: '48%', 
                         top: '25%', 
                         rotate: '-2deg',
-                        width: 'w-60 md:w-68',
-                        height: 'h-76 md:h-88',
+                        width: 'w-58 md:w-66 lg:w-74',
+                        height: 'h-66 md:h-74 lg:h-82',
                         zIndex: 'z-15'
                       },
-                      // Fourth item - bottom right with curve
+                      // Fourth item - right side, completing the wave
                       { 
-                        right: '5%', 
-                        bottom: '5%', 
-                        rotate: '4deg',
-                        width: 'w-56 md:w-64',
-                        height: 'h-72 md:h-80',
+                        left: '72%', 
+                        top: '15%', 
+                        rotate: '3deg',
+                        width: 'w-56 md:w-64 lg:w-72',
+                        height: 'h-64 md:h-72 lg:h-80',
                         zIndex: 'z-10'
                       }
                     ];
