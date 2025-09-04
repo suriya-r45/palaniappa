@@ -34,10 +34,12 @@ A comprehensive jewelry e-commerce platform built with React frontend and Expres
 
 ## Current Status
 - ✅ Database created and migrations applied
-- ✅ Frontend and backend integrated and running
+- ✅ Frontend and backend integrated and running on port 5000
 - ✅ All API endpoints functional
 - ✅ Vite configuration optimized for Replit proxy
-- ✅ Deployment configuration set up
+- ✅ Workflow configured with webview output type
+- ✅ Deployment configuration set up for autoscale
+- ✅ Static metal rates and shipping data initialized
 - ⚠️ Requires STRIPE_SECRET_KEY for payment features
 - ⚠️ Requires Twilio credentials for SMS features
 
