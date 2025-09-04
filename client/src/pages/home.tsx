@@ -1398,9 +1398,9 @@ export default function Home() {
 
         // Curved Wave Grid Flow - Clean wave layout with flexbox
         if (section.layoutType === 'curved-grid') {
-          const displayItems = section.items.slice(0, 4); // Limit to 4 for best flow
-          const rotations = [-6, -2, 2, 6]; // Wave rotation degrees
-          const verticalOffsets = [20, -10, 10, -20]; // Wave Y movement (px)
+          const displayItems = section.items.slice(0, 4); // Display 4 items in 1x4 grid
+          const waveRotations = [-6, -2, 2, 6]; // Repeating rotation pattern
+          const waveOffsets = [20, -10, 10, -20]; // Repeating wave pattern
           
           return (
             <section 
@@ -1421,17 +1421,20 @@ export default function Home() {
                   )}
                 </div>
 
-                {/* Wave Flow Container */}
-                <div className="flex justify-center gap-6 md:gap-10">
+                {/* Wave Flow Container - 1x4 Grid */}
+                <div className="flex justify-center gap-4 md:gap-8 overflow-x-auto pb-4">
                   {displayItems.map((item, index) => (
                     <motion.div
                       key={item.id}
-                      className="w-56 md:w-64 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
+                      className="w-56 md:w-64 flex-shrink-0 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
                       style={{
-                        transform: `rotate(${rotations[index]}deg) translateY(${verticalOffsets[index]}px)`,
+                        rotate: waveRotations[index % waveRotations.length], // cycle rotations
                       }}
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 100 }}
+                      whileInView={{ 
+                        opacity: 1, 
+                        y: waveOffsets[index % waveOffsets.length] // cycle wave offsets
+                      }}
                       transition={{
                         duration: 0.8,
                         delay: index * 0.15,
@@ -1440,7 +1443,7 @@ export default function Home() {
                       }}
                       whileHover={{
                         scale: 1.05,
-                        rotate: rotations[index] * 0.5,
+                        rotate: waveRotations[index % waveRotations.length] * 0.5,
                         zIndex: 50,
                       }}
                       onClick={() => window.location.href = `/product/${item.product.id}`}
