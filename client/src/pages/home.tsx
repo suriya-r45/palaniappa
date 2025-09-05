@@ -2827,19 +2827,27 @@ export default function Home() {
                   </motion.div>
                 )}
 
-                {/* Navigation Arrows (like in reference image) */}
+                {/* Navigation Arrows with Functionality */}
                 <motion.div 
                   className="flex justify-center items-center gap-3 mt-8"
                   initial={{ opacity: 0 }}
                   animate={royalIsInView ? { opacity: 1 } : { opacity: 0 }}
                   transition={{ duration: 0.6, delay: 1.5 }}
                 >
-                  <button className="w-10 h-10 rounded-full bg-gray-800 dark:bg-gray-700 text-white hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center justify-center">
+                  <button 
+                    className="w-10 h-10 rounded-full bg-amber-600 hover:bg-amber-700 text-white transition-colors flex items-center justify-center shadow-lg"
+                    onClick={() => window.location.href = '/collections'}
+                    aria-label="View previous products"
+                  >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                   </button>
-                  <button className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors flex items-center justify-center">
+                  <button 
+                    className="w-10 h-10 rounded-full bg-amber-600 hover:bg-amber-700 text-white transition-colors flex items-center justify-center shadow-lg"
+                    onClick={() => window.location.href = '/collections'}
+                    aria-label="View more products"
+                  >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
