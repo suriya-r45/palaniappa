@@ -50,146 +50,91 @@ import bridalCollectionsImage from '@assets/bridal_new.png';
 import newArrivalsBackground from '@assets/image_1756713608055.png';
 import newArrivalsBackgroundNew from '@assets/new_arrivals_bg.png';
 
-// Auto-Scrolling Tilted Grid Layout Component
-function TiltedGridSection({ 
-  section, 
-  selectedCurrency 
-}: { 
+// Static Tilted Card Row Layout Component
+function TiltedGridSection({
+  section,
+  selectedCurrency,
+}: {
   section: HomeSectionWithItems;
   selectedCurrency: Currency;
 }) {
-  const rotationAngles = [-12, 8, -5, 10, -8];
-  const containerRef = useRef<HTMLDivElement>(null);
+  const rotationAngles = [-6, 4, -3, 5, -4]; // subtle tilts
 
   return (
-    <section
-      className="py-16 px-4 md:px-8 relative overflow-hidden"
-      style={{
-        background:
-          "radial-gradient(circle at top left, #fff8f0 0%, #f1e7d8 80%)",
-      }}
-      data-testid={`section-${section.title
-        .toLowerCase()
-        .replace(/\s+/g, "-")}`}
-    >
+    <section className="py-16 px-4 md:px-8 relative bg-gradient-to-br from-stone-50 to-stone-100" data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}>
       <div className="container mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2
-            className="text-4xl md:text-5xl font-light text-stone-800 mb-4"
-            style={{ fontFamily: "Playfair Display, serif" }}
-          >
-            {section.title || "Featured Collection"}
+        {/* Section Title */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-light text-stone-800 mb-4 font-[Playfair]">
+            {section.title}
           </h2>
           {section.description && (
-            <p
-              className="text-lg text-stone-600 max-w-2xl mx-auto"
-              style={{ fontFamily: "Cormorant Garamond, serif" }}
-            >
-              {section.description}
-            </p>
+            <p className="text-lg text-stone-600">{section.description}</p>
           )}
         </div>
 
-        {/* Auto-Scrolling Tilted Grid (Desktop) */}
-        <div className="hidden md:block relative overflow-hidden">
-          <motion.div
-            ref={containerRef}
-            className="flex gap-6"
-            animate={{ x: ["0%", "-100%"] }}
-            transition={{
-              repeat: Infinity,
-              ease: "linear",
-              duration: 40, // speed (lower = faster)
-            }}
-          >
-            {[...section.items, ...section.items].map((item, index) => {
-              const rotation = rotationAngles[index % rotationAngles.length];
+        {/* Tilted Row - Desktop */}
+        <div className="hidden md:flex justify-center gap-6 xl:gap-8">
+          {section.items.slice(0, 5).map((item, index) => {
+            const rotation = rotationAngles[index % rotationAngles.length];
 
-              return (
-                <motion.div
-                  key={`${item.id}-${index}`}
-                  className="relative cursor-pointer group shrink-0"
-                  style={{
-                    transform: `rotate(${rotation}deg)`,
-                    transformOrigin: "center center",
-                  }}
-                  whileHover={{
-                    scale: 1.1,
-                    rotate: rotation * 0.5,
-                    transition: { duration: 0.3 },
-                  }}
-                  onClick={() =>
-                    (window.location.href = `/product/${item.product.id}`)
-                  }
-                  data-testid={`tilted-grid-item-${index}`}
-                >
-                  {/* Product Card */}
-                  <div className="w-56 xl:w-64 bg-white rounded-lg shadow-xl overflow-hidden group-hover:shadow-2xl transition-all duration-300">
-                    {/* Image */}
-                    <div className="w-full h-48 xl:h-52 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden relative">
-                      {item.product.images?.length ? (
-                        <img
-                          src={item.product.images[0]}
-                          alt={item.product.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          <Gem className="w-16 h-16" />
-                        </div>
-                      )}
-                      <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-white/30 to-transparent" />
-                    </div>
+            return (
+              <motion.div
+                key={item.id}
+                className="relative shrink-0 w-56 xl:w-64 bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer"
+                style={{
+                  transform: `rotate(${rotation}deg)`,
+                }}
+                whileHover={{
+                  scale: 1.05,
+                  rotate: rotation * 0.5,
+                  transition: { duration: 0.3 },
+                }}
+                onClick={() => (window.location.href = `/product/${item.product.id}`)}
+                data-testid={`tilted-grid-item-${index}`}
+              >
+                {/* Product Image */}
+                <div className="h-52 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
+                  {item.product.images?.length ? (
+                    <img
+                      src={item.product.images[0]}
+                      alt={item.product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Gem className="w-12 h-12 text-gray-400" />
+                  )}
+                </div>
 
-                    {/* Details */}
-                    <div className="p-4 xl:p-5 text-center bg-white">
-                      <h3
-                        className="text-base xl:text-lg font-semibold text-gray-800 mb-2 line-clamp-2"
-                        style={{ fontFamily: "Playfair Display, serif" }}
-                      >
-                        {item.product.name}
-                      </h3>
-                      <p className="text-xl xl:text-2xl font-bold text-gray-900">
-                        {selectedCurrency === "INR" ? "₹" : "BD "}
-                        {selectedCurrency === "INR"
-                          ? parseFloat(item.product.priceInr).toLocaleString(
-                              "en-IN"
-                            )
-                          : parseFloat(item.product.priceBhd).toLocaleString(
-                              "en-BH",
-                              { minimumFractionDigits: 3 }
-                            )}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Shadow */}
-                  <div
-                    className="absolute inset-0 bg-black/10 rounded-lg -z-10"
-                    style={{
-                      transform: "translate(6px, 6px)",
-                      filter: "blur(10px)",
-                    }}
-                  />
-                </motion.div>
-              );
-            })}
-          </motion.div>
+                {/* Product Details */}
+                <div className="p-5 text-center">
+                  <h3 className="text-base xl:text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+                    {item.product.name}
+                  </h3>
+                  <p className="text-xl xl:text-2xl font-bold text-gray-900">
+                    {selectedCurrency === "INR" ? "₹" : "BD "}
+                    {selectedCurrency === "INR"
+                      ? parseFloat(item.product.priceInr).toLocaleString("en-IN")
+                      : parseFloat(item.product.priceBhd).toLocaleString("en-BH", {
+                          minimumFractionDigits: 3,
+                        })}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
-        {/* Mobile View - Normal Grid */}
+        {/* Mobile View - 2x2 Grid */}
         <div className="md:hidden">
           <div className="grid grid-cols-2 gap-4">
-            {section.items.slice(0, 4).map((item) => (
+            {section.items.slice(0, 4).map((item, index) => (
               <div
                 key={item.id}
-                className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-200"
-                onClick={() =>
-                  (window.location.href = `/product/${item.product.id}`)
-                }
+                className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-200"
+                onClick={() => (window.location.href = `/product/${item.product.id}`)}
               >
-                <div className="w-full aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                <div className="w-full h-32 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                   {item.product.images?.length ? (
                     <img
                       src={item.product.images[0]}
@@ -209,30 +154,15 @@ function TiltedGridSection({
                   <p className="text-base font-bold text-gray-900">
                     {selectedCurrency === "INR" ? "₹" : "BD "}
                     {selectedCurrency === "INR"
-                      ? parseFloat(item.product.priceInr).toLocaleString(
-                          "en-IN"
-                        )
-                      : parseFloat(item.product.priceBhd).toLocaleString(
-                          "en-BH",
-                          { minimumFractionDigits: 3 }
-                        )}
+                      ? parseFloat(item.product.priceInr).toLocaleString("en-IN")
+                      : parseFloat(item.product.priceBhd).toLocaleString("en-BH", {
+                          minimumFractionDigits: 3,
+                        })}
                   </p>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center mt-16">
-          <Button
-            className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-            style={{ fontFamily: "Playfair Display, serif" }}
-            onClick={() => (window.location.href = "/collections")}
-            data-testid="view-all-tilted-grid-button"
-          >
-            View All Collection →
-          </Button>
         </div>
       </div>
     </section>

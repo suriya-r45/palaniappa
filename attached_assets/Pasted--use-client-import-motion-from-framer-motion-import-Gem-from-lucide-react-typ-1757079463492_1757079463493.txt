@@ -1,0 +1,100 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { Gem } from "lucide-react";
+
+type Currency = "INR" | "BHD";
+
+interface Product {
+  id: string;
+  name: string;
+  priceInr: string;
+  priceBhd: string;
+  images?: string[];
+}
+
+interface HomeSectionWithItems {
+  title: string;
+  description?: string;
+  items: {
+    id: string;
+    product: Product;
+  }[];
+}
+
+export default function TiltedCardRow({
+  section,
+  selectedCurrency,
+}: {
+  section: HomeSectionWithItems;
+  selectedCurrency: Currency;
+}) {
+  const rotationAngles = [-6, 4, -3, 5, -4]; // subtle tilts
+
+  return (
+    <section className="py-16 px-4 md:px-8 relative bg-gradient-to-br from-stone-50 to-stone-100">
+      <div className="container mx-auto">
+        {/* Section Title */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-light text-stone-800 mb-4 font-[Playfair]">
+            {section.title}
+          </h2>
+          {section.description && (
+            <p className="text-lg text-stone-600">{section.description}</p>
+          )}
+        </div>
+
+        {/* Tilted Row */}
+        <div className="flex justify-center gap-6 xl:gap-8">
+          {section.items.slice(0, 5).map((item, index) => {
+            const rotation = rotationAngles[index % rotationAngles.length];
+
+            return (
+              <motion.div
+                key={item.id}
+                className="relative shrink-0 w-56 xl:w-64 bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer"
+                style={{
+                  transform: `rotate(${rotation}deg)`,
+                }}
+                whileHover={{
+                  scale: 1.05,
+                  rotate: rotation * 0.5,
+                  transition: { duration: 0.3 },
+                }}
+                onClick={() => (window.location.href = `/product/${item.product.id}`)}
+              >
+                {/* Product Image */}
+                <div className="h-52 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
+                  {item.product.images?.length ? (
+                    <img
+                      src={item.product.images[0]}
+                      alt={item.product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Gem className="w-12 h-12 text-gray-400" />
+                  )}
+                </div>
+
+                {/* Product Details */}
+                <div className="p-5 text-center">
+                  <h3 className="text-base xl:text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+                    {item.product.name}
+                  </h3>
+                  <p className="text-xl xl:text-2xl font-bold text-gray-900">
+                    {selectedCurrency === "INR" ? "₹" : "BD "}
+                    {selectedCurrency === "INR"
+                      ? parseFloat(item.product.priceInr).toLocaleString("en-IN")
+                      : parseFloat(item.product.priceBhd).toLocaleString("en-BH", {
+                          minimumFractionDigits: 3,
+                        })}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
