@@ -51,7 +51,7 @@ import bridalCollectionsImage from '@assets/bridal_new.png';
 import newArrivalsBackground from '@assets/image_1756713608055.png';
 import newArrivalsBackgroundNew from '@assets/new_arrivals_bg.png';
 
-// Royal Secondary Home Page Component
+// Ultra-Premium Royal Secondary Home Page Component
 function RoyalSecondaryHomePage({ 
   allProducts, 
   selectedCurrency 
@@ -81,98 +81,194 @@ function RoyalSecondaryHomePage({
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950">
       <Header />
       
-      {/* Royal Hero Section */}
+      {/* Ultra-Premium Royal Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-amber-900 to-yellow-800">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20"></div>
-          {/* Floating Royal Elements */}
+        {/* Luxurious Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-900 to-slate-950">
+          {/* Premium Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-purple-900/20 to-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-500/5 to-transparent"></div>
+          
+          {/* Floating Luxury Elements */}
           <div className="absolute inset-0">
-            {[...Array(20)].map((_, i) => (
+            {[...Array(30)].map((_, i) => (
               <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-yellow-400 rounded-full opacity-60"
+                key={`sparkle-${i}`}
+                className="absolute"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
                 }}
                 animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 0.8, 0.3],
-                  scale: [1, 1.2, 1],
+                  y: [0, -30, 0],
+                  x: [0, Math.random() * 20 - 10, 0],
+                  opacity: [0.2, 0.8, 0.2],
+                  scale: [1, 1.5, 1],
+                  rotate: [0, 360, 0],
                 }}
                 transition={{
-                  duration: 3 + Math.random() * 2,
+                  duration: 4 + Math.random() * 3,
                   repeat: Infinity,
-                  delay: Math.random() * 2,
+                  delay: Math.random() * 3,
+                  ease: "easeInOut",
                 }}
-              />
+              >
+                {i % 3 === 0 ? (
+                  <Diamond className="w-3 h-3 text-yellow-300 opacity-70" />
+                ) : i % 3 === 1 ? (
+                  <Crown className="w-2 h-2 text-amber-400 opacity-60" />
+                ) : (
+                  <div className="w-1 h-1 bg-gradient-to-r from-yellow-400 to-amber-300 rounded-full"></div>
+                )}
+              </motion.div>
             ))}
+          </div>
+
+          {/* Premium Radial Effects */}
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-radial from-purple-600/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-radial from-yellow-500/20 to-transparent rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
           </div>
         </div>
 
-        {/* Royal Content */}
-        <div className="relative z-10 text-center text-white px-4 max-w-6xl mx-auto">
+        {/* Ultra-Premium Royal Content */}
+        <div className="relative z-10 text-center text-white px-4 max-w-7xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="mb-8"
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="mb-12"
           >
-            <Crown className="h-16 w-16 mx-auto mb-6 text-yellow-400" />
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 bg-clip-text text-transparent" 
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              Royal Palaniappa Collection
+            <motion.div
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-block mb-8"
+            >
+              <Crown className="h-20 w-20 mx-auto text-yellow-400 drop-shadow-2xl filter" />
+            </motion.div>
+            
+            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold mb-8 bg-gradient-to-r from-yellow-300 via-amber-300 via-yellow-400 to-amber-200 bg-clip-text text-transparent drop-shadow-2xl" 
+                style={{ fontFamily: 'Cormorant Garamond, serif', lineHeight: '1.1' }}>
+              Royal Palaniappa
             </h1>
-            <p className="text-xl sm:text-2xl text-yellow-100 mb-8 max-w-3xl mx-auto font-light">
-              Experience the majesty of premium jewelry crafted for royalty
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="mb-2"
+            >
+              <p className="text-2xl sm:text-3xl text-amber-200 font-light tracking-wide" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                LUXURY COLLECTION
+              </p>
+            </motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.5 }}
+              className="text-xl sm:text-2xl text-purple-100 mb-12 max-w-4xl mx-auto font-light leading-relaxed"
+            >
+              Exquisite masterpieces crafted for connoisseurs of fine jewelry. 
+              <span className="text-amber-200 font-medium"> Experience timeless elegance redefined.</span>
+            </motion.p>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            transition={{ duration: 1, delay: 0.7 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center"
           >
-            <Button 
-              className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold px-8 py-4 text-lg rounded-full border-2 border-yellow-400 shadow-lg transform hover:scale-105 transition-all duration-300"
-              onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
-              <Crown className="h-5 w-5 mr-2" />
-              Explore Royal Collection
-            </Button>
-            <Button 
-              variant="outline"
-              className="border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-semibold px-8 py-4 text-lg rounded-full bg-transparent backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
-              onClick={() => window.location.href = '/collections'}
+              <Button 
+                className="bg-gradient-to-r from-yellow-500 via-amber-500 to-yellow-600 hover:from-yellow-400 hover:via-amber-400 hover:to-yellow-500 text-black font-bold px-10 py-5 text-xl rounded-2xl border-2 border-yellow-400 shadow-2xl transform transition-all duration-300 hover:shadow-yellow-500/30 group"
+                onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+              >
+                <Crown className="h-6 w-6 mr-3 group-hover:animate-bounce" />
+                Explore Royal Collection
+              </Button>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
-              <Gem className="h-5 w-5 mr-2" />
-              View All Collections
-            </Button>
+              <Button 
+                variant="outline"
+                className="border-2 border-amber-300 text-amber-300 hover:bg-amber-300 hover:text-black font-bold px-10 py-5 text-xl rounded-2xl bg-black/20 backdrop-blur-lg transform transition-all duration-300 hover:shadow-2xl hover:shadow-amber-300/30 group"
+                onClick={() => window.location.href = '/collections'}
+              >
+                <Gem className="h-6 w-6 mr-3 group-hover:animate-pulse" />
+                View All Collections
+              </Button>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* Featured Royal Products */}
+      {/* Ultra-Premium Crown Jewels Collection */}
       {featuredProducts.length > 0 && (
-        <section className="py-20 bg-gradient-to-br from-amber-50 to-yellow-100">
-          <div className="container mx-auto px-4">
+        <section className="py-32 bg-gradient-to-br from-slate-950 via-purple-950 to-indigo-950 relative overflow-hidden">
+          {/* Luxury Background Effects */}
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-500/10 via-transparent to-purple-600/10"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-amber-500/10 to-transparent rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.2 }}
+              className="text-center mb-20"
             >
-              <Crown className="h-12 w-12 mx-auto mb-6 text-amber-600" />
-              <h2 className="text-4xl sm:text-5xl font-bold text-amber-900 mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 8, 
+                  repeat: Infinity, 
+                  ease: "easeInOut"
+                }}
+                className="inline-block mb-8"
+              >
+                <Crown className="h-16 w-16 mx-auto text-yellow-400 drop-shadow-2xl filter" />
+              </motion.div>
+              
+              <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-transparent bg-gradient-to-r from-yellow-300 via-amber-300 to-yellow-400 bg-clip-text mb-8" 
+                  style={{ fontFamily: 'Cormorant Garamond, serif', lineHeight: '1.2' }}>
                 Crown Jewels Collection
               </h2>
-              <p className="text-xl text-amber-700 max-w-3xl mx-auto">
-                Handpicked masterpieces fit for royalty
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="mb-4"
+              >
+                <div className="flex items-center justify-center mb-6">
+                  <div className="h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent w-32"></div>
+                  <div className="mx-6 px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-amber-500/20 rounded-full border border-yellow-400/30">
+                    <p className="text-amber-200 text-sm font-medium tracking-widest uppercase">
+                      Masterpiece Collection
+                    </p>
+                  </div>
+                  <div className="h-px bg-gradient-to-r from-transparent via-yellow-400 to-transparent w-32"></div>
+                </div>
+              </motion.div>
+              
+              <p className="text-xl sm:text-2xl text-purple-200 max-w-4xl mx-auto font-light leading-relaxed">
+                Handpicked masterpieces crafted with <span className="text-amber-300 font-medium">unparalleled artistry</span> 
+                <br className="hidden sm:block" />for the most discerning connoisseurs
               </p>
             </motion.div>
             
@@ -180,16 +276,37 @@ function RoyalSecondaryHomePage({
               {featuredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-amber-200 hover:border-amber-400 transform hover:scale-105 transition-all duration-300"
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: index * 0.1,
+                    type: "spring",
+                    stiffness: 100
+                  }}
+                  whileHover={{ 
+                    y: -10,
+                    scale: 1.03,
+                    rotateY: 5
+                  }}
+                  className="group"
                 >
-                  <ProductCard
-                    product={product}
-                    currency={selectedCurrency}
-                    showActions={true}
-                  />
+                  <div className="bg-gradient-to-br from-white via-amber-50 to-yellow-50 rounded-3xl shadow-2xl overflow-hidden border border-amber-200/50 hover:border-amber-400/70 transform transition-all duration-500 hover:shadow-amber-500/20">
+                    {/* Premium Glow Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 via-transparent to-amber-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                    
+                    {/* Premium Border Glow */}
+                    <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-yellow-400/50 via-amber-400/50 to-yellow-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm"></div>
+                    
+                    <div className="relative z-10">
+                      <ProductCard
+                        product={product}
+                        currency={selectedCurrency}
+                        showActions={true}
+                      />
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -197,40 +314,115 @@ function RoyalSecondaryHomePage({
         </section>
       )}
 
-      {/* Royal Gold Collection */}
+      {/* Ultra-Premium Golden Majesty Collection */}
       {goldProducts.length > 0 && (
-        <section className="py-20 bg-gradient-to-br from-yellow-100 to-amber-100">
-          <div className="container mx-auto px-4">
+        <section className="py-32 bg-gradient-to-br from-amber-950 via-yellow-950 to-orange-950 relative overflow-hidden">
+          {/* Luxury Golden Background Effects */}
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-yellow-600/20 via-amber-500/10 to-orange-600/20"></div>
+            <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-gradient-radial from-yellow-500/15 to-transparent rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-gradient-radial from-amber-500/15 to-transparent rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.2 }}
+              className="text-center mb-20"
             >
-              <div className="flex justify-center items-center mb-6">
-                <Sparkles className="h-8 w-8 text-yellow-600 mr-3" />
-                <h2 className="text-4xl font-bold text-yellow-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              <div className="flex justify-center items-center mb-8">
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Sparkles className="h-12 w-12 text-yellow-400 mr-6 drop-shadow-lg" />
+                </motion.div>
+                
+                <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-transparent bg-gradient-to-r from-yellow-300 via-amber-300 to-yellow-400 bg-clip-text" 
+                    style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                   Golden Majesty
                 </h2>
-                <Sparkles className="h-8 w-8 text-yellow-600 ml-3" />
+                
+                <motion.div
+                  animate={{ rotate: [0, -360] }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Sparkles className="h-12 w-12 text-yellow-400 ml-6 drop-shadow-lg" />
+                </motion.div>
               </div>
-              <p className="text-lg text-yellow-800">Pure gold treasures of unparalleled elegance</p>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="mb-6"
+              >
+                <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-600/30 to-amber-600/30 rounded-full border border-yellow-400/40 backdrop-blur-sm">
+                  <div className="h-2 w-2 bg-yellow-400 rounded-full mr-3 animate-pulse"></div>
+                  <p className="text-amber-200 font-medium tracking-widest text-sm uppercase">
+                    Pure Gold Collection
+                  </p>
+                  <div className="h-2 w-2 bg-yellow-400 rounded-full ml-3 animate-pulse"></div>
+                </div>
+              </motion.div>
+              
+              <p className="text-xl sm:text-2xl text-amber-100 max-w-4xl mx-auto font-light leading-relaxed">
+                Pure gold treasures crafted with <span className="text-yellow-300 font-semibold">24-karat perfection</span> 
+                <br className="hidden sm:block" />and timeless sophistication
+              </p>
             </motion.div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
               {goldProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl shadow-lg overflow-hidden border border-yellow-300 hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                  initial={{ opacity: 0, scale: 0.8, rotateX: 20 }}
+                  whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ 
+                    duration: 0.9, 
+                    delay: index * 0.2,
+                    type: "spring",
+                    stiffness: 80
+                  }}
+                  whileHover={{ 
+                    y: -15,
+                    scale: 1.05,
+                    rotateY: 10,
+                    rotateX: -5
+                  }}
+                  className="group perspective-1000"
                 >
-                  <ProductCard
-                    product={product}
-                    currency={selectedCurrency}
-                    showActions={true}
-                  />
+                  <div className="bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 rounded-3xl shadow-2xl overflow-hidden border border-yellow-400/30 hover:border-yellow-400/70 transform transition-all duration-700 hover:shadow-yellow-500/25">
+                    {/* Golden Glow Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/30 via-amber-400/20 to-orange-400/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl"></div>
+                    
+                    {/* Premium Golden Border */}
+                    <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-yellow-400/60 via-amber-400/60 to-yellow-400/60 opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 blur-sm"></div>
+                    
+                    {/* Golden Sparkle Effect */}
+                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <motion.div
+                        animate={{ 
+                          scale: [1, 1.2, 1],
+                          rotate: [0, 180, 360]
+                        }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        <Sparkles className="h-6 w-6 text-yellow-500" />
+                      </motion.div>
+                    </div>
+                    
+                    <div className="relative z-10">
+                      <ProductCard
+                        product={product}
+                        currency={selectedCurrency}
+                        showActions={true}
+                      />
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -238,37 +430,151 @@ function RoyalSecondaryHomePage({
         </section>
       )}
 
-      {/* Royal Diamond Collection */}
+      {/* Ultra-Premium Diamond Royalty Collection */}
       {diamondProducts.length > 0 && (
-        <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
-          <div className="container mx-auto px-4">
+        <section className="py-32 bg-gradient-to-br from-indigo-950 via-blue-950 to-purple-950 relative overflow-hidden">
+          {/* Luxury Diamond Background Effects */}
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-blue-600/15 via-indigo-500/10 to-purple-600/15"></div>
+            <div className="absolute top-1/4 left-1/3 w-[700px] h-[700px] bg-gradient-radial from-blue-500/20 to-transparent rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/4 right-1/3 w-[600px] h-[600px] bg-gradient-radial from-indigo-500/20 to-transparent rounded-full blur-3xl"></div>
+            
+            {/* Floating Diamond Sparkles */}
+            <div className="absolute inset-0">
+              {[...Array(15)].map((_, i) => (
+                <motion.div
+                  key={`diamond-${i}`}
+                  className="absolute"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                  }}
+                  animate={{
+                    y: [0, -20, 0],
+                    scale: [1, 1.3, 1],
+                    rotate: [0, 45, 0],
+                    opacity: [0.3, 0.9, 0.3],
+                  }}
+                  transition={{
+                    duration: 3 + Math.random() * 2,
+                    repeat: Infinity,
+                    delay: Math.random() * 2,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <Diamond className="w-3 h-3 text-blue-300 drop-shadow-lg" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.2 }}
+              className="text-center mb-20"
             >
-              <Diamond className="h-12 w-12 mx-auto mb-6 text-blue-600" />
-              <h2 className="text-4xl font-bold text-blue-900 mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.1, 1],
+                  rotate: [0, 45, 90, 0],
+                  y: [0, -5, 0]
+                }}
+                transition={{ 
+                  duration: 6, 
+                  repeat: Infinity, 
+                  ease: "easeInOut"
+                }}
+                className="inline-block mb-8"
+              >
+                <Diamond className="h-16 w-16 mx-auto text-blue-400 drop-shadow-2xl filter" />
+              </motion.div>
+              
+              <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-transparent bg-gradient-to-r from-blue-300 via-indigo-300 to-purple-300 bg-clip-text mb-8" 
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                 Diamond Royalty
               </h2>
-              <p className="text-lg text-blue-800">Brilliant diamonds for the most precious moments</p>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="mb-6"
+              >
+                <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600/30 to-indigo-600/30 rounded-full border border-blue-400/40 backdrop-blur-sm">
+                  <div className="h-2 w-2 bg-blue-400 rounded-full mr-3">
+                    <div className="h-2 w-2 bg-blue-400 rounded-full animate-ping"></div>
+                  </div>
+                  <p className="text-blue-200 font-medium tracking-widest text-sm uppercase">
+                    Brilliant Diamonds
+                  </p>
+                  <div className="h-2 w-2 bg-blue-400 rounded-full ml-3">
+                    <div className="h-2 w-2 bg-blue-400 rounded-full animate-ping"></div>
+                  </div>
+                </div>
+              </motion.div>
+              
+              <p className="text-xl sm:text-2xl text-indigo-100 max-w-4xl mx-auto font-light leading-relaxed">
+                Brilliant diamonds crafted with <span className="text-blue-300 font-semibold">exceptional clarity</span> 
+                <br className="hidden sm:block" />for life's most precious moments
+              </p>
             </motion.div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
               {diamondProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, rotateY: 15 }}
-                  whileInView={{ opacity: 1, rotateY: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-blue-200 hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                  initial={{ opacity: 0, rotateY: 30, scale: 0.8 }}
+                  whileInView={{ opacity: 1, rotateY: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ 
+                    duration: 1, 
+                    delay: index * 0.2,
+                    type: "spring",
+                    stiffness: 60
+                  }}
+                  whileHover={{ 
+                    y: -12,
+                    scale: 1.04,
+                    rotateY: -8,
+                    rotateX: 5
+                  }}
+                  className="group perspective-1000"
                 >
-                  <ProductCard
-                    product={product}
-                    currency={selectedCurrency}
-                    showActions={true}
-                  />
+                  <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 rounded-3xl shadow-2xl overflow-hidden border border-blue-300/30 hover:border-blue-400/70 transform transition-all duration-700 hover:shadow-blue-500/25">
+                    {/* Diamond Brilliance Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-indigo-400/15 to-purple-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl"></div>
+                    
+                    {/* Crystal Border Glow */}
+                    <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-blue-400/50 via-indigo-400/50 to-blue-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 blur-sm"></div>
+                    
+                    {/* Diamond Sparkle Animation */}
+                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <motion.div
+                        animate={{ 
+                          rotate: [0, 45, 90, 135, 180, 225, 270, 315, 360],
+                          scale: [1, 1.3, 1]
+                        }}
+                        transition={{ 
+                          duration: 2, 
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        <Diamond className="h-6 w-6 text-blue-500" />
+                      </motion.div>
+                    </div>
+                    
+                    <div className="relative z-10">
+                      <ProductCard
+                        product={product}
+                        currency={selectedCurrency}
+                        showActions={true}
+                      />
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -276,37 +582,124 @@ function RoyalSecondaryHomePage({
         </section>
       )}
 
-      {/* New Arrivals in Royal Style */}
+      {/* Ultra-Premium Royal New Arrivals */}
       {newArrivals.length > 0 && (
-        <section className="py-20 bg-gradient-to-br from-purple-100 to-pink-100">
-          <div className="container mx-auto px-4">
+        <section className="py-32 bg-gradient-to-br from-purple-950 via-violet-950 to-indigo-950 relative overflow-hidden">
+          {/* Luxury Purple Background Effects */}
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-600/15 via-violet-500/10 to-pink-600/15"></div>
+            <div className="absolute top-1/3 right-1/4 w-[650px] h-[650px] bg-gradient-radial from-purple-500/20 to-transparent rounded-full blur-3xl"></div>
+            <div className="absolute bottom-1/3 left-1/4 w-[550px] h-[550px] bg-gradient-radial from-violet-500/20 to-transparent rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-center mb-16"
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1.2 }}
+              className="text-center mb-20"
             >
-              <Star className="h-12 w-12 mx-auto mb-6 text-purple-600" />
-              <h2 className="text-4xl font-bold text-purple-900 mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              <motion.div
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  rotate: [0, 20, -20, 0],
+                  filter: ["brightness(1) saturate(1)", "brightness(1.2) saturate(1.3)", "brightness(1) saturate(1)"]
+                }}
+                transition={{ 
+                  duration: 4, 
+                  repeat: Infinity, 
+                  ease: "easeInOut"
+                }}
+                className="inline-block mb-8"
+              >
+                <Star className="h-16 w-16 mx-auto text-purple-400 drop-shadow-2xl filter" />
+              </motion.div>
+              
+              <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-transparent bg-gradient-to-r from-purple-300 via-violet-300 to-pink-300 bg-clip-text mb-8" 
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                 Royal New Arrivals
               </h2>
-              <p className="text-lg text-purple-800">Fresh treasures added to our royal collection</p>
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="mb-6"
+              >
+                <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600/30 to-violet-600/30 rounded-full border border-purple-400/40 backdrop-blur-sm">
+                  <div className="flex space-x-1">
+                    {[...Array(3)].map((_, i) => (
+                      <div 
+                        key={i}
+                        className="h-2 w-2 bg-purple-400 rounded-full animate-pulse"
+                        style={{ animationDelay: `${i * 0.2}s` }}
+                      ></div>
+                    ))}
+                  </div>
+                  <p className="text-purple-200 font-medium tracking-widest text-sm uppercase mx-4">
+                    Fresh Collections
+                  </p>
+                  <div className="flex space-x-1">
+                    {[...Array(3)].map((_, i) => (
+                      <div 
+                        key={i}
+                        className="h-2 w-2 bg-purple-400 rounded-full animate-pulse"
+                        style={{ animationDelay: `${i * 0.2}s` }}
+                      ></div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+              
+              <p className="text-xl sm:text-2xl text-purple-100 max-w-4xl mx-auto font-light leading-relaxed">
+                Fresh treasures added to our <span className="text-purple-300 font-semibold">exclusive royal collection</span> 
+                <br className="hidden sm:block" />discover the latest in luxury jewelry
+              </p>
             </motion.div>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
               {newArrivals.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden border border-purple-200 hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                  initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: index * 0.15,
+                    type: "spring",
+                    stiffness: 100
+                  }}
+                  whileHover={{ 
+                    y: -8,
+                    scale: 1.02,
+                    rotate: 2
+                  }}
+                  className="group"
                 >
-                  <ProductCard
-                    product={product}
-                    currency={selectedCurrency}
-                    showActions={true}
-                  />
+                  <div className="bg-gradient-to-br from-white via-purple-50 to-pink-50 rounded-3xl shadow-2xl overflow-hidden border border-purple-300/30 hover:border-purple-400/70 transform transition-all duration-500 hover:shadow-purple-500/25">
+                    {/* Royal Purple Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 via-violet-400/15 to-pink-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"></div>
+                    
+                    {/* Royal Border Effect */}
+                    <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-purple-400/50 via-violet-400/50 to-purple-400/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-sm"></div>
+                    
+                    {/* New Badge */}
+                    <div className="absolute top-3 left-3 z-20">
+                      <div className="bg-gradient-to-r from-purple-500 to-violet-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg border border-purple-300">
+                        NEW
+                      </div>
+                    </div>
+                    
+                    <div className="relative z-10">
+                      <ProductCard
+                        product={product}
+                        currency={selectedCurrency}
+                        showActions={true}
+                      />
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
