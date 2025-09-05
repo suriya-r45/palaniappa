@@ -50,7 +50,7 @@ import bridalCollectionsImage from '@assets/bridal_new.png';
 import newArrivalsBackground from '@assets/image_1756713608055.png';
 import newArrivalsBackgroundNew from '@assets/new_arrivals_bg.png';
 
-// 1x5 Tilted Grid Layout Component 
+// 1x5 Tilted Grid Layout Component - Matching Reference Design
 function TiltedGridSection({ 
   section, 
   selectedCurrency 
@@ -58,6 +58,9 @@ function TiltedGridSection({
   section: HomeSectionWithItems;
   selectedCurrency: Currency;
 }) {
+  // Define specific rotation angles for each card position (like in reference image)
+  const rotationAngles = [-12, 8, -5, 10, -8]; // Varied angles for natural scattered look
+  
   return (
     <section 
       className="py-16 px-4 md:px-8 relative overflow-hidden" 
@@ -77,35 +80,32 @@ function TiltedGridSection({
           )}
         </div>
 
-        {/* 1x5 Tilted Grid - Desktop */}
+        {/* 1x5 Tilted Grid - Desktop (Matching Reference) */}
         <div className="hidden md:block">
-          <div className="flex justify-center items-center gap-8 perspective-[1200px]">
+          <div className="flex justify-center items-center gap-4 xl:gap-6 px-4">
             {section.items.slice(0, 5).map((item, index) => {
-              // Calculate tilt angle: first item tilts left, last item tilts right, middle items stay straight
-              let tiltAngle = 0;
-              if (index === 0) tiltAngle = -30; // Left tilt
-              else if (index === 4) tiltAngle = 30; // Right tilt
+              const rotation = rotationAngles[index] || 0;
               
               return (
                 <motion.div
                   key={item.id}
-                  className="relative w-64 h-80 cursor-pointer group"
+                  className="relative cursor-pointer group"
                   style={{
-                    transform: `perspective(1200px) rotateY(${tiltAngle}deg)`,
-                    transformStyle: 'preserve-3d'
+                    transform: `rotate(${rotation}deg)`,
+                    transformOrigin: 'center center'
                   }}
                   whileHover={{ 
                     scale: 1.05,
-                    rotateY: tiltAngle * 0.7, // Reduce tilt on hover
+                    rotate: rotation * 0.5, // Reduce rotation on hover
                     transition: { duration: 0.3 }
                   }}
                   onClick={() => window.location.href = `/product/${item.product.id}`}
                   data-testid={`tilted-grid-item-${index}`}
                 >
-                  {/* Product Card */}
-                  <div className="w-full h-full bg-white rounded-2xl shadow-lg overflow-hidden group-hover:shadow-xl transition-all duration-300">
+                  {/* Product Card - Styled like reference image */}
+                  <div className="w-56 xl:w-64 bg-white rounded-lg shadow-lg overflow-hidden group-hover:shadow-xl transition-all duration-300">
                     {/* Product Image */}
-                    <div className="w-full h-48 bg-gray-100 overflow-hidden">
+                    <div className="w-full h-48 xl:h-52 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden relative">
                       {item.product.images && item.product.images.length > 0 ? (
                         <img
                           src={item.product.images[0]}
@@ -117,14 +117,16 @@ function TiltedGridSection({
                           <Gem className="w-16 h-16" />
                         </div>
                       )}
+                      {/* Corner accent matching reference */}
+                      <div className="absolute top-0 right-0 w-8 h-8 bg-gradient-to-bl from-white/30 to-transparent"></div>
                     </div>
 
-                    {/* Product Details */}
-                    <div className="p-6 text-center">
-                      <h3 className="text-lg font-semibold text-gray-700 mb-2 line-clamp-2" style={{ fontFamily: "Playfair Display, serif" }}>
+                    {/* Product Details - Matching reference layout */}
+                    <div className="p-4 xl:p-5 text-center bg-white">
+                      <h3 className="text-base xl:text-lg font-semibold text-gray-800 mb-2 line-clamp-2" style={{ fontFamily: "Playfair Display, serif" }}>
                         {item.product.name}
                       </h3>
-                      <p className="text-2xl font-bold text-amber-600">
+                      <p className="text-xl xl:text-2xl font-bold text-gray-900">
                         {selectedCurrency === 'INR' ? '₹' : 'BD '}
                         {selectedCurrency === 'INR' ? 
                           parseFloat(item.product.priceInr).toLocaleString('en-IN') :
@@ -134,24 +136,30 @@ function TiltedGridSection({
                     </div>
                   </div>
 
-                  {/* Hover Effect Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
+                  {/* Subtle shadow effect */}
+                  <div 
+                    className="absolute inset-0 bg-black/5 rounded-lg -z-10"
+                    style={{
+                      transform: 'translate(4px, 4px)',
+                      filter: 'blur(8px)'
+                    }}
+                  />
                 </motion.div>
               );
             })}
           </div>
         </div>
 
-        {/* Mobile View - Regular Grid */}
+        {/* Mobile View - Clean 2x2 Grid */}
         <div className="md:hidden">
           <div className="grid grid-cols-2 gap-4">
             {section.items.slice(0, 4).map((item, index) => (
               <div
                 key={item.id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer"
+                className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-transform duration-200"
                 onClick={() => window.location.href = `/product/${item.product.id}`}
               >
-                <div className="w-full h-32 bg-gray-100 overflow-hidden">
+                <div className="w-full h-32 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                   {item.product.images && item.product.images.length > 0 ? (
                     <img
                       src={item.product.images[0]}
@@ -165,10 +173,10 @@ function TiltedGridSection({
                   )}
                 </div>
                 <div className="p-3 text-center">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-1 line-clamp-2">
+                  <h3 className="text-sm font-semibold text-gray-800 mb-1 line-clamp-2">
                     {item.product.name}
                   </h3>
-                  <p className="text-lg font-bold text-amber-600">
+                  <p className="text-base font-bold text-gray-900">
                     {selectedCurrency === 'INR' ? '₹' : 'BD '}
                     {selectedCurrency === 'INR' ? 
                       parseFloat(item.product.priceInr).toLocaleString('en-IN') :
@@ -181,13 +189,10 @@ function TiltedGridSection({
           </div>
         </div>
 
-        {/* Bottom Line */}
-        <div className="w-full border-t border-gray-300 mt-16"></div>
-
         {/* View All Button */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-16">
           <Button
-            className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
             style={{ fontFamily: 'Playfair Display, serif' }}
             onClick={() => window.location.href = '/collections'}
             data-testid="view-all-tilted-grid-button"
