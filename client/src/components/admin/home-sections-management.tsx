@@ -160,11 +160,11 @@ export function HomeSectionsManagement() {
   }
 
   return (
-    <div className="space-y-6" data-testid="home-sections-management">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 p-4 sm:p-6" data-testid="home-sections-management">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight text-gray-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Custom Home Sections</h2>
-          <p className="font-medium text-gray-700" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Create and manage custom showcase sections for your homepage</p>
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-gray-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Custom Home Sections</h2>
+          <p className="text-sm sm:text-base font-medium text-gray-700" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Create and manage custom showcase sections for your homepage</p>
         </div>
         <CreateSectionDialog
           onCreate={(data) => createSectionMutation.mutate(data)}
@@ -173,12 +173,12 @@ export function HomeSectionsManagement() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList>
-          <TabsTrigger value="sections">Manage Sections</TabsTrigger>
-          <TabsTrigger value="preview">Live Preview</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="sections" className="text-sm">Manage Sections</TabsTrigger>
+          <TabsTrigger value="preview" className="text-sm">Live Preview</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="sections" className="space-y-4">
+        <TabsContent value="sections" className="space-y-4 mt-4">
           {!homeSections || homeSections.length === 0 ? (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-8">
@@ -213,38 +213,38 @@ export function HomeSectionsManagement() {
           )}
         </TabsContent>
 
-        <TabsContent value="preview" className="space-y-4">
-          <div className="rounded-lg border bg-background p-6">
+        <TabsContent value="preview" className="space-y-4 mt-4">
+          <div className="rounded-lg border bg-background p-4 sm:p-6">
             <h3 className="text-lg font-semibold mb-4">Homepage Preview</h3>
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
               {homeSections?.filter((section: HomeSectionWithItems) => section.isActive).map((section: HomeSectionWithItems) => (
                 <div
                   key={section.id}
-                  className="rounded-lg p-6"
+                  className="rounded-lg p-4 sm:p-6"
                   style={{
                     backgroundColor: section.backgroundColor || '#fff8e1',
                     color: section.textColor || '#8b4513'
                   }}
                 >
-                  <div className="text-center mb-6">
-                    <h2 className="text-2xl font-bold mb-2">{section.title}</h2>
-                    {section.subtitle && <p className="text-lg opacity-90">{section.subtitle}</p>}
-                    {section.description && <p className="mt-2 opacity-80">{section.description}</p>}
+                  <div className="text-center mb-4 sm:mb-6">
+                    <h2 className="text-xl sm:text-2xl font-bold mb-2">{section.title}</h2>
+                    {section.subtitle && <p className="text-base sm:text-lg opacity-90">{section.subtitle}</p>}
+                    {section.description && <p className="mt-2 text-sm sm:text-base opacity-80">{section.description}</p>}
                   </div>
                   
-                  <div className={`grid gap-4 ${getLayoutClasses(section.layoutType, section.items.length)}`}>
+                  <div className={`grid gap-3 sm:gap-4 ${getLayoutClasses(section.layoutType, section.items.length)}`}>
                     {section.items.map((item: HomeSectionItemWithProduct, index: number) => (
                       <div
                         key={item.id}
-                        className={`rounded-lg bg-background/10 p-4 ${getSizeClasses(item.size || 'normal')}`}
+                        className={`rounded-lg bg-background/10 p-3 sm:p-4 ${getSizeClasses(item.size || 'normal')}`}
                       >
-                        <div className="aspect-square bg-background/20 rounded-lg mb-3 flex items-center justify-center">
-                          <ImageIcon className="h-8 w-8 opacity-50" />
+                        <div className="aspect-square bg-background/20 rounded-lg mb-2 sm:mb-3 flex items-center justify-center">
+                          <ImageIcon className="h-6 w-6 sm:h-8 sm:w-8 opacity-50" />
                         </div>
-                        <h4 className="font-semibold text-sm">
+                        <h4 className="font-semibold text-xs sm:text-sm">
                           {item.displayName || item.product.name}
                         </h4>
-                        <p className="text-sm opacity-80">
+                        <p className="text-xs sm:text-sm opacity-80">
                           {item.displayPrice || `Starting from ${(section.textColor || '#8b4513') === '#FFFFFF' ? 'BHD' : '₹'} ${item.product.priceInr}`}
                         </p>
                       </div>
@@ -252,9 +252,9 @@ export function HomeSectionsManagement() {
                   </div>
                 </div>
               )) || (
-                <div className="text-center py-12 text-muted-foreground">
-                  <ImageIcon className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                  <p>No active sections to preview</p>
+                <div className="text-center py-8 sm:py-12 text-muted-foreground">
+                  <ImageIcon className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-4 opacity-50" />
+                  <p className="text-sm sm:text-base">No active sections to preview</p>
                 </div>
               )}
             </div>
@@ -380,15 +380,15 @@ function CreateSectionDialog({
           Create Section
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="w-[95vw] max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Create Custom Home Section</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-lg sm:text-xl">Create Custom Home Section</DialogTitle>
+          <DialogDescription className="text-sm sm:text-base">
             Design a custom section to showcase products in unique layouts
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="title" className="font-medium text-gray-700" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Section Title *</Label>
               <Input
@@ -470,7 +470,7 @@ function CreateSectionDialog({
                   )}
                   <p className="text-xs text-gray-500">Choose an image file for your festival banner. Supported formats: JPG, PNG, WebP</p>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="backgroundColor">Background Color</Label>
                     <Input
@@ -493,7 +493,7 @@ function CreateSectionDialog({
               </div>
             </>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="backgroundColor">Background Color</Label>
                 <Input
@@ -527,11 +527,11 @@ function CreateSectionDialog({
             <Label htmlFor="isActive">Make section active</Label>
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="w-full sm:w-auto">
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} data-testid="button-create-section">
+            <Button type="submit" disabled={isLoading} data-testid="button-create-section" className="w-full sm:w-auto">
               {isLoading ? "Creating..." : "Create Section"}
             </Button>
           </DialogFooter>
@@ -567,18 +567,18 @@ function SectionCard({
   return (
     <Card data-testid={`section-card-${section.id}`}>
       <CardHeader>
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <CardTitle className="text-lg">{section.title}</CardTitle>
-              <Badge variant={section.isActive ? "default" : "secondary"}>
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+          <div className="space-y-1 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <CardTitle className="text-base sm:text-lg">{section.title}</CardTitle>
+              <Badge variant={section.isActive ? "default" : "secondary"} className="text-xs">
                 {section.isActive ? "Active" : "Inactive"}
               </Badge>
-              <Badge variant="outline">{section.layoutType}</Badge>
+              <Badge variant="outline" className="text-xs">{section.layoutType}</Badge>
             </div>
             {section.subtitle && <p className="text-sm text-muted-foreground">{section.subtitle}</p>}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             <Button
               variant="ghost"
               size="sm"

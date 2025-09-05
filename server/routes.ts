@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertProductSchema, insertBillSchema, loginSchema, insertUserSchema, insertEstimateSchema, insertCategorySchema, updateCategorySchema, insertHomeSectionSchema, insertHomeSectionItemSchema, insertShippingZoneSchema, insertShippingMethodSchema, insertShipmentSchema, insertDeliveryAttemptSchema, updateShipmentStatusSchema, calculateShippingSchema } from "@shared/schema";
+import { insertProductSchema, insertBillSchema, loginSchema, insertUserSchema, insertEstimateSchema, insertCategorySchema, updateCategorySchema, insertHomeSectionSchema, insertHomeSectionItemSchema, insertShippingZoneSchema, insertShippingMethodSchema, insertShipmentSchema, insertDeliveryAttemptSchema, updateShipmentStatusSchema, calculateShippingSchema, insertAppSettingSchema, updateAppSettingSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
@@ -2556,6 +2556,93 @@ For any queries, please contact us.`;
   });
 
   // === END SHIPPING & LOGISTICS API ROUTES ===
+
+  // === APP SETTINGS API ROUTES ===
+
+  // Get all app settings (admin only)
+  app.get("/api/settings", authenticateToken, requireAdmin, async (req, res) => {
+    try {
+      const settings = await storage.getAllAppSettings();
+      res.json(settings);
+    } catch (error) {
+      console.error('Error fetching app settings:', error);
+      res.status(500).json({ error: 'Failed to fetch app settings' });
+    }
+  });
+
+  // Get specific app setting by key
+  app.get("/api/settings/:key", async (req, res) => {
+    try {
+      const { key } = req.params;
+      const setting = await storage.getAppSetting(key);
+      
+      if (!setting) {
+        return res.status(404).json({ error: 'Setting not found' });
+      }
+      
+      res.json(setting);
+    } catch (error) {
+      console.error('Error fetching app setting:', error);
+      res.status(500).json({ error: 'Failed to fetch app setting' });
+    }
+  });
+
+  // Set/update app setting (admin only)
+  app.post("/api/settings", authenticateToken, requireAdmin, async (req, res) => {
+    try {
+      const validatedData = updateAppSettingSchema.parse(req.body);
+      const setting = await storage.setAppSetting(
+        validatedData.key, 
+        validatedData.value, 
+        validatedData.description
+      );
+      res.json(setting);
+    } catch (error) {
+      console.error('Error setting app setting:', error);
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      res.status(500).json({ error: 'Failed to set app setting' });
+    }
+  });
+
+  // Update app setting (admin only)
+  app.put("/api/settings/:key", authenticateToken, requireAdmin, async (req, res) => {
+    try {
+      const { key } = req.params;
+      const { value, description } = req.body;
+      
+      const setting = await storage.updateAppSetting(key, value, description);
+      
+      if (!setting) {
+        return res.status(404).json({ error: 'Setting not found' });
+      }
+      
+      res.json(setting);
+    } catch (error) {
+      console.error('Error updating app setting:', error);
+      res.status(500).json({ error: 'Failed to update app setting' });
+    }
+  });
+
+  // Delete app setting (admin only)
+  app.delete("/api/settings/:key", authenticateToken, requireAdmin, async (req, res) => {
+    try {
+      const { key } = req.params;
+      const deleted = await storage.deleteAppSetting(key);
+      
+      if (!deleted) {
+        return res.status(404).json({ error: 'Setting not found' });
+      }
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error deleting app setting:', error);
+      res.status(500).json({ error: 'Failed to delete app setting' });
+    }
+  });
+
+  // === END APP SETTINGS API ROUTES ===
 
   // QR codes now contain text-only data, no URL redirects needed
   // Customers can scan QR codes directly to see product information

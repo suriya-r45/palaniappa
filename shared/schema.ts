@@ -446,6 +446,15 @@ export const deliveryAttempts = pgTable("delivery_attempts", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// App Settings Table for Global Configuration
+export const appSettings = pgTable("app_settings", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  key: text("key").notNull().unique(), // Setting key like 'secondary_page_enabled'
+  value: text("value").notNull(), // Setting value
+  description: text("description"), // Description of what this setting does
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Shipping Relations
 export const shippingZonesRelations = relations(shippingZones, ({ many }) => ({
   methods: many(shippingMethods),
@@ -951,10 +960,24 @@ export const insertHomeSectionItemSchema = createInsertSchema(homeSectionItems).
   createdAt: true,
 });
 
+// App Settings Schemas
+export const insertAppSettingSchema = createInsertSchema(appSettings).omit({
+  id: true,
+  updatedAt: true,
+});
+
+export const updateAppSettingSchema = z.object({
+  key: z.string(),
+  value: z.string(),
+  description: z.string().optional(),
+});
+
 export type InsertCategory = z.infer<typeof insertCategorySchema>;
 export type UpdateCategory = z.infer<typeof updateCategorySchema>;
 export type InsertHomeSection = z.infer<typeof insertHomeSectionSchema>;
 export type InsertHomeSectionItem = z.infer<typeof insertHomeSectionItemSchema>;
+export type InsertAppSetting = z.infer<typeof insertAppSettingSchema>;
+export type UpdateAppSetting = z.infer<typeof updateAppSettingSchema>;
 export type LoginRequest = z.infer<typeof loginSchema>;
 
 export type User = typeof users.$inferSelect;
@@ -964,6 +987,7 @@ export type Order = typeof orders.$inferSelect;
 export type Category = typeof categories.$inferSelect;
 export type HomeSection = typeof homeSections.$inferSelect;
 export type HomeSectionItem = typeof homeSectionItems.$inferSelect;
+export type AppSetting = typeof appSettings.$inferSelect;
 export type CartItemRow = typeof cartItems.$inferSelect;
 
 // Shipping Zod Schemas

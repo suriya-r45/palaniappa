@@ -1,4 +1,4 @@
-import { users, products, bills, cartItems, orders, estimates, categories, homeSections, homeSectionItems, shippingZones, shippingMethods, shipments, deliveryAttempts, videos, type User, type InsertUser, type Product, type InsertProduct, type Bill, type InsertBill, type CartItemRow, type InsertCartItem, type Order, type InsertOrder, type CartItem, type Estimate, type InsertEstimate, type Category, type InsertCategory, type HomeSection, type InsertHomeSection, type HomeSectionItem, type InsertHomeSectionItem, type ShippingZone, type ShippingMethod, type Shipment, type DeliveryAttempt, type Video } from "@shared/schema";
+import { users, products, bills, cartItems, orders, estimates, categories, homeSections, homeSectionItems, shippingZones, shippingMethods, shipments, deliveryAttempts, videos, appSettings, type User, type InsertUser, type Product, type InsertProduct, type Bill, type InsertBill, type CartItemRow, type InsertCartItem, type Order, type InsertOrder, type CartItem, type Estimate, type InsertEstimate, type Category, type InsertCategory, type HomeSection, type InsertHomeSection, type HomeSectionItem, type InsertHomeSectionItem, type ShippingZone, type ShippingMethod, type Shipment, type DeliveryAttempt, type Video, type AppSetting, type InsertAppSetting } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, like, and, gte, lte, isNull, or } from "drizzle-orm";
 import bcrypt from "bcryptjs";
@@ -127,6 +127,13 @@ export interface IStorage {
   updateVideo(id: string, video: Partial<Video>): Promise<Video | undefined>;
   deleteVideo(id: string): Promise<boolean>;
   incrementVideoViews(id: string): Promise<Video | undefined>;
+
+  // App Settings operations
+  getAppSetting(key: string): Promise<AppSetting | undefined>;
+  getAllAppSettings(): Promise<AppSetting[]>;
+  setAppSetting(key: string, value: string, description?: string): Promise<AppSetting>;
+  updateAppSetting(key: string, value: string, description?: string): Promise<AppSetting | undefined>;
+  deleteAppSetting(key: string): Promise<boolean>;
 }
 
 export interface CategoryWithChildren extends Category {
@@ -1006,6 +1013,56 @@ export class DatabaseStorage implements IStorage {
       .where(eq(videos.id, id))
       .returning();
     return updatedVideo || undefined;
+  }
+
+  // App Settings operations
+  async getAppSetting(key: string): Promise<AppSetting | undefined> {
+    const [setting] = await db.select().from(appSettings).where(eq(appSettings.key, key));
+    return setting || undefined;
+  }
+
+  async getAllAppSettings(): Promise<AppSetting[]> {
+    return await db.select().from(appSettings).orderBy(appSettings.key);
+  }
+
+  async setAppSetting(key: string, value: string, description?: string): Promise<AppSetting> {
+    const existingSetting = await this.getAppSetting(key);
+    
+    if (existingSetting) {
+      // Update existing setting
+      const [updatedSetting] = await db.update(appSettings)
+        .set({ 
+          value, 
+          description: description || existingSetting.description,
+          updatedAt: new Date() 
+        })
+        .where(eq(appSettings.key, key))
+        .returning();
+      return updatedSetting;
+    } else {
+      // Create new setting
+      const [newSetting] = await db.insert(appSettings)
+        .values({ key, value, description })
+        .returning();
+      return newSetting;
+    }
+  }
+
+  async updateAppSetting(key: string, value: string, description?: string): Promise<AppSetting | undefined> {
+    const [updatedSetting] = await db.update(appSettings)
+      .set({ 
+        value, 
+        description: description,
+        updatedAt: new Date() 
+      })
+      .where(eq(appSettings.key, key))
+      .returning();
+    return updatedSetting || undefined;
+  }
+
+  async deleteAppSetting(key: string): Promise<boolean> {
+    const result = await db.delete(appSettings).where(eq(appSettings.key, key));
+    return (result.rowCount || 0) > 0;
   }
 }
 
