@@ -121,41 +121,62 @@ function CategoriesScrollSection({ categories, handleViewAllClick }: { categorie
   );
 }
 
-// Shop by Budget Component
+// Ultra-Modern Budget Selection - Cutting-Edge Design System
 function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency }) {
-  const budgetRanges = [
+  const [selectedTier, setSelectedTier] = useState<number | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
+  const luxuryTiers = [
     {
       id: 1,
-      label: 'Under',
-      amount: selectedCurrency === 'INR' ? '₹15,000' : 'BD 75',
+      tier: 'ESSENTIAL',
+      subtitle: 'Your Journey Begins',
+      price: selectedCurrency === 'INR' ? '15,000' : '75',
+      currency: selectedCurrency === 'INR' ? '₹' : 'BD',
       value: selectedCurrency === 'INR' ? 15000 : 75,
-      description: 'Perfect starter pieces',
-      gradient: 'from-rose-400 via-pink-500 to-purple-600',
-      glowColor: 'bg-pink-500/20',
-      icon: '💎',
-      size: 'small'
+      description: 'Timeless elegance meets modern accessibility',
+      features: ['925 Sterling Silver', 'Lab-Created Gems', 'Lifetime Warranty', 'Free Sizing'],
+      gradient: 'from-indigo-600 via-purple-600 to-pink-600',
+      shadowColor: 'shadow-purple-500/25',
+      borderColor: 'border-purple-200',
+      accentColor: 'bg-purple-500',
+      glowColor: 'shadow-[0_0_40px_rgba(147,51,234,0.3)]',
+      popularity: 94,
+      badge: 'POPULAR'
     },
     {
       id: 2,
-      label: 'Under',
-      amount: selectedCurrency === 'INR' ? '₹30,000' : 'BD 150',
+      tier: 'PREMIUM',
+      subtitle: 'Elevated Sophistication',
+      price: selectedCurrency === 'INR' ? '30,000' : '150',
+      currency: selectedCurrency === 'INR' ? '₹' : 'BD',
       value: selectedCurrency === 'INR' ? 30000 : 150,
-      description: 'Elegant everyday jewelry',
-      gradient: 'from-amber-400 via-orange-500 to-red-500',
-      glowColor: 'bg-orange-500/20',
-      icon: '✨',
-      size: 'medium'
+      description: 'Where artistry meets precious materials',
+      features: ['18K Gold', 'Natural Diamonds', 'Custom Design', 'Priority Service'],
+      gradient: 'from-amber-500 via-orange-500 to-red-500',
+      shadowColor: 'shadow-orange-500/25',
+      borderColor: 'border-orange-200',
+      accentColor: 'bg-orange-500',
+      glowColor: 'shadow-[0_0_40px_rgba(251,146,60,0.3)]',
+      popularity: 87,
+      badge: 'RECOMMENDED'
     },
     {
       id: 3,
-      label: 'Under',
-      amount: selectedCurrency === 'INR' ? '₹60,000' : 'BD 300',
+      tier: 'ELITE',
+      subtitle: 'Masterpiece Collection',
+      price: selectedCurrency === 'INR' ? '60,000' : '300',
+      currency: selectedCurrency === 'INR' ? '₹' : 'BD',
       value: selectedCurrency === 'INR' ? 60000 : 300,
-      description: 'Luxury statement pieces',
-      gradient: 'from-emerald-400 via-teal-500 to-blue-600',
-      glowColor: 'bg-teal-500/20',
-      icon: '👑',
-      size: 'large'
+      description: 'Exclusive pieces for the connoisseur',
+      features: ['24K Gold', 'Rare Gemstones', 'Bespoke Crafting', 'Personal Concierge'],
+      gradient: 'from-emerald-500 via-teal-500 to-cyan-500',
+      shadowColor: 'shadow-emerald-500/25',
+      borderColor: 'border-emerald-200',
+      accentColor: 'bg-emerald-500',
+      glowColor: 'shadow-[0_0_40px_rgba(16,185,129,0.3)]',
+      popularity: 91,
+      badge: 'EXCLUSIVE'
     }
   ];
 
@@ -167,239 +188,240 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
   };
 
   return (
-    <section className="py-20 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%)' }}>
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-pink-200/30 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-rose-200/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-pink-100/20 to-transparent rounded-full blur-3xl"></div>
+    <section className="py-32 relative overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+      {/* Ultra-Modern Background Grid */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
         
-        {/* Sparkle decorations */}
-        <div className="absolute top-32 right-32">
-          <Sparkles className="w-6 h-6 text-pink-300/50 animate-pulse" />
-        </div>
-        <div className="absolute bottom-32 left-32">
-          <Diamond className="w-4 h-4 text-rose-300/50 animate-bounce" style={{ animationDelay: '1s' }} />
-        </div>
-        <div className="absolute top-48 left-20">
-          <Star className="w-5 h-5 text-pink-400/40 animate-pulse" style={{ animationDelay: '0.5s' }} />
-        </div>
+        {/* Floating Gradient Orbs */}
+        <motion.div
+          className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-r from-emerald-600/20 to-teal-600/20 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.6, 0.3, 0.6],
+          }}
+          transition={{ duration: 6, repeat: Infinity, delay: 2 }}
+        />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16">
+        {/* Ultra-Modern Header */}
+        <motion.div 
+          initial={{ opacity: 0, y: 60 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-24"
+        >
+          {/* Floating Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm border border-pink-200 rounded-full px-6 py-3 mb-8 shadow-lg"
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
+            className="inline-flex items-center gap-3 bg-white/[0.08] backdrop-blur-xl border border-white/[0.16] rounded-full px-6 py-3 mb-8"
           >
-            <span className="text-sm font-semibold tracking-[0.2em] text-pink-700 uppercase">Shop by</span>
-            <TrendingUp className="w-4 h-4 text-pink-600" />
+            <div className="relative">
+              <div className="w-2 h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full"></div>
+              <div className="w-2 h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full absolute top-0 animate-ping"></div>
+            </div>
+            <span className="text-white/80 font-medium tracking-[0.16em] text-sm">LUXURY TIERS</span>
           </motion.div>
           
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-light text-gray-800 mb-6" 
-            style={{ fontFamily: 'Playfair Display, serif' }}
+          {/* Main Heading */}
+          <motion.h1 
+            initial={{ y: 40, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="text-6xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tight"
           >
-            Budget
-            <span className="text-transparent bg-gradient-to-r from-pink-600 to-rose-600 bg-clip-text block md:inline ml-0 md:ml-4">
-              ✨
+            Choose Your
+            <span className="block bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Perfect Tier
             </span>
-          </motion.h2>
+          </motion.h1>
           
+          {/* Subtitle */}
           <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg font-light text-gray-600 max-w-2xl mx-auto" 
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed"
           >
-            Discover exquisite jewelry pieces perfectly curated for your budget range
+            Experience luxury redefined. From accessible elegance to exclusive masterpieces.
           </motion.p>
-        </div>
+        </motion.div>
 
-        {/* Budget Cards in Hexagonal Layout */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 max-w-6xl mx-auto">
-          {budgetRanges.map((budget, index) => {
-            const sizeClasses: Record<string, string> = {
-              small: 'w-48 h-48 md:w-56 md:h-56',
-              medium: 'w-56 h-56 md:w-72 md:h-72',
-              large: 'w-52 h-52 md:w-64 md:h-64'
-            };
-            
-            const textSizes: Record<string, string> = {
-              small: 'text-lg md:text-xl',
-              medium: 'text-xl md:text-2xl',
-              large: 'text-lg md:text-xl'
-            };
-
-            return (
-              <motion.div
-                key={budget.id}
-                initial={{ opacity: 0, scale: 0.8, rotateY: -20 }}
-                whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
-                transition={{ 
-                  duration: 0.8, 
-                  delay: index * 0.2,
-                  type: "spring",
-                  stiffness: 100
-                }}
-                whileHover={{ 
-                  scale: 1.05,
-                  rotateY: 5,
-                  transition: { duration: 0.3 }
-                }}
-                whileTap={{ scale: 0.95 }}
-                className={`relative cursor-pointer group ${index === 1 ? 'md:-mt-8' : index === 2 ? 'md:mt-4' : ''}`}
-                onClick={() => handleBudgetClick(budget.value)}
-                style={{ perspective: '1000px' }}
-              >
-                {/* Octagonal Shape */}
-                <div 
-                  className={`${sizeClasses[budget.size] || sizeClasses['medium']} relative`}
-                  style={{
-                    clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                    background: `linear-gradient(135deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
-                  }}
-                >
-                  {/* Jewelry Background Image */}
-                  <div 
-                    className="absolute inset-0 opacity-30 group-hover:opacity-40 transition-opacity duration-500"
-                    style={{
-                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                      backgroundImage: budget.size === 'small' 
-                        ? `url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xMDAgMTBMMTMwIDQwTDEwMCA3MEw3MCA0MEwxMDAgMTBaIiBmaWxsPSIjMzMzIiBvcGFjaXR5PSIwLjUiLz4KPHA+PHBhdGggZD0iTTEwMCAxMDBMMTQwIDEzMEwxMDAgMTYwTDYwIDEzMEwxMDAgMTAwWiIgZmlsbD0iIzMzMyIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPgo=')`
-                        : budget.size === 'medium'
-                        ? `url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iIzMzMyIgb3BhY2l0eT0iMC40Ii8+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiMzMzMiIG9wYWNpdHk9IjAuMyIvPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxNTAiIHI9IjE1IiBmaWxsPSIjMzMzIiBvcGFjaXR5PSIwLjUiLz4KPC9zdmc+Cg==')`
-                        : `url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHg9IjcwIiB5PSIzMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMzMzIiBvcGFjaXR5PSIwLjQiLz4KPHJlY3QgeD0iNjAiIHk9IjgwIiB3aWR0aD0iODAiIGhlaWdodD0iNDAiIGZpbGw9IiMzMzMiIG9wYWNpdHk9IjAuMyIvPgo8cmVjdCB4PSI4MCIgeT0iMTUwIiB3aWR0aD0iNDAiIGhlaWdodD0iMTUiIGZpbGw9IiMzMzMiIG9wYWNpdHk9IjAuNSIvPgo8L3N2Zz4K')`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }}
-                  />
-                  
-                  {/* Black Base Layer */}
-                  <div 
-                    className="absolute inset-0 bg-black opacity-20"
-                    style={{
-                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                    }}
-                  />
-                  
-                  {/* Gradient Overlay for Color Blending */}
-                  <div 
-                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} opacity-85 group-hover:opacity-75 transition-all duration-500`}
-                    style={{
-                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                    }}
-                  />
-                  
-                  {/* Black Border Effect */}
-                  <div 
-                    className="absolute inset-0 border-4 border-black/30 group-hover:border-black/50 transition-all duration-300"
-                    style={{
-                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                    }}
-                  />
-                  
-                  {/* Glow Effect */}
-                  <div 
-                    className={`absolute inset-0 ${budget.glowColor} rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 -z-10 scale-150`}
-                  />
-                  
-                  {/* Content */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
-                    {/* Icon Badge */}
-                    <div className="absolute top-3 left-3 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
-                      <span className="text-lg">{budget.icon}</span>
-                    </div>
-                    
-                    {/* Decorative Pattern */}
-                    <div className="absolute bottom-3 right-3 opacity-30">
-                      <div className="grid grid-cols-3 gap-1">
-                        {[...Array(9)].map((_, i) => (
-                          <div key={i} className="w-1 h-1 bg-white rounded-full opacity-60" />
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-3 relative z-10">
-                      {/* Label */}
-                      <div className={`font-light ${textSizes[budget.size] || textSizes['medium']} tracking-wide`} style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                        {budget.label}
-                      </div>
-                      
-                      {/* Amount */}
-                      <div className={`font-bold ${budget.size === 'medium' ? 'text-3xl md:text-5xl' : 'text-2xl md:text-3xl'} leading-none drop-shadow-lg`} style={{ fontFamily: 'Playfair Display, serif' }}>
-                        {budget.amount}
-                      </div>
-                      
-                      {/* Description */}
-                      <div className="text-sm md:text-base font-medium opacity-95 max-w-36 leading-relaxed">
-                        {budget.description}
-                      </div>
-                      
-                      {/* Shop Now Button */}
-                      <motion.div 
-                        className="mt-4 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wide border border-white/30"
-                        whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.3)' }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        SHOP NOW
-                      </motion.div>
-                    </div>
-                    
-                    {/* Arrow indicator */}
-                    <motion.div 
-                      className="absolute bottom-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg"
-                      whileHover={{ scale: 1.2 }}
-                    >
-                      <ArrowRight className="w-4 h-4" />
-                    </motion.div>
-                  </div>
+        {/* Revolutionary Card Grid */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          {luxuryTiers.map((tier, index) => (
+            <motion.div
+              key={tier.id}
+              initial={{ opacity: 0, y: 60, rotateX: 45 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              transition={{ 
+                delay: index * 0.2, 
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              whileHover={{ 
+                y: -12, 
+                rotateY: 5,
+                transition: { duration: 0.4, ease: "easeOut" }
+              }}
+              onHoverStart={() => setHoveredCard(tier.id)}
+              onHoverEnd={() => setHoveredCard(null)}
+              onClick={() => handleBudgetClick(tier.value)}
+              className="group cursor-pointer perspective-1000"
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              {/* Main Card */}
+              <div className={`
+                relative bg-white/[0.03] backdrop-blur-xl rounded-3xl p-8 
+                border border-white/[0.08] ${tier.shadowColor} shadow-2xl 
+                overflow-hidden transition-all duration-500
+                ${hoveredCard === tier.id ? tier.glowColor + ' scale-[1.02]' : ''}
+              `}>
+                
+                {/* Floating Badge */}
+                <div className={`absolute top-6 right-6 ${tier.accentColor} text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg backdrop-blur-sm`}>
+                  {tier.badge}
                 </div>
-
-                {/* Floating shadow */}
-                <div 
-                  className={`absolute inset-0 ${sizeClasses[budget.size] || sizeClasses['medium']} bg-black/10 blur-xl -z-10 transition-all duration-500 group-hover:blur-2xl group-hover:scale-110`}
-                  style={{
-                    clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                    transform: 'translateY(20px)'
-                  }}
-                />
-              </motion.div>
-            );
-          })}
+                
+                {/* Gradient Border Effect */}
+                <motion.div
+                  className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${tier.gradient} p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                >
+                  <div className="bg-gray-900/95 backdrop-blur-xl rounded-3xl w-full h-full"></div>
+                </motion.div>
+                
+                {/* Content */}
+                <div className="relative z-10 space-y-6">
+                  
+                  {/* Header Section */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${tier.gradient} animate-pulse`}></div>
+                      <span className="text-white/60 font-mono text-xs tracking-[0.2em] uppercase">
+                        {tier.tier}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl font-black text-white tracking-tight">
+                      {tier.subtitle}
+                    </h3>
+                    
+                    {/* Popularity Indicator */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1 bg-white/10 rounded-full h-1.5 overflow-hidden">
+                        <motion.div
+                          className={`h-full bg-gradient-to-r ${tier.gradient} rounded-full`}
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${tier.popularity}%` }}
+                          transition={{ delay: index * 0.2 + 0.5, duration: 1 }}
+                        />
+                      </div>
+                      <span className="text-white/70 text-xs font-medium">
+                        {tier.popularity}% choose this
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Price Display */}
+                  <div className="space-y-2">
+                    <div className="text-white/50 text-sm font-medium">Starting from</div>
+                    <div className="flex items-baseline gap-2">
+                      <span className={`text-6xl font-black bg-gradient-to-r ${tier.gradient} bg-clip-text text-transparent leading-none`}>
+                        {tier.price}
+                      </span>
+                      <span className="text-2xl font-bold text-white/60">
+                        {tier.currency}
+                      </span>
+                    </div>
+                    <p className="text-white/60 text-sm leading-relaxed">
+                      {tier.description}
+                    </p>
+                  </div>
+                  
+                  {/* Features */}
+                  <div className="space-y-3">
+                    <div className="text-white/50 text-xs font-semibold tracking-wider uppercase">
+                      What's Included
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {tier.features.map((feature, idx) => (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.2 + idx * 0.1 + 0.6 }}
+                          className="flex items-center gap-2"
+                        >
+                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${tier.gradient}`}></div>
+                          <span className="text-white/70 text-xs font-medium">
+                            {feature}
+                          </span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* CTA Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`
+                      w-full py-4 px-6 bg-gradient-to-r ${tier.gradient} 
+                      text-white font-bold rounded-2xl shadow-lg 
+                      backdrop-blur-sm transition-all duration-300
+                      hover:shadow-xl hover:${tier.shadowColor}
+                    `}
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      EXPLORE COLLECTION
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </motion.button>
+                </div>
+                
+                {/* Decorative Elements */}
+                <div className="absolute -top-4 -right-4 w-32 h-32 bg-gradient-to-br from-white/5 to-transparent rounded-full blur-2xl"></div>
+                <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-gradient-to-tr from-white/5 to-transparent rounded-full blur-xl"></div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-
+        
         {/* Bottom CTA */}
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center mt-16"
+          transition={{ delay: 0.8, duration: 0.8 }}
+          className="text-center mt-20"
         >
-          <p className="text-gray-600 mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Can't find what you're looking for? 
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-300 shadow-lg hover:shadow-xl"
-            onClick={() => window.location.href = '/collections'}
-          >
-            <span>Browse All Collections</span>
-            <ArrowRight className="w-4 h-4" />
-          </motion.button>
+          <div className="inline-flex items-center gap-4 bg-white/[0.05] backdrop-blur-xl border border-white/[0.1] rounded-full px-8 py-4">
+            <span className="text-white/60 text-sm">Need help choosing?</span>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="text-white font-medium text-sm hover:text-white/80 transition-colors"
+            >
+              Talk to an Expert
+            </motion.button>
+          </div>
         </motion.div>
       </div>
     </section>
   );
 }
+
 
 // Separate component for festival auto-scrolling 1x4 grid layout
 function FestivalScrollSection({ items, selectedCurrency, handleViewAllClick }: { items: any[]; selectedCurrency: Currency; handleViewAllClick: (category: string) => void }) {
