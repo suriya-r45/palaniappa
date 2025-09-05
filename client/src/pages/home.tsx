@@ -1150,6 +1150,10 @@ function NewArrivalsSection({ section, selectedCurrency }: { section: HomeSectio
 export default function Home() {
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>('BHD');
 
+  // Royal layout hooks (moved to top level to avoid conditional hook calls)
+  const royalContainerRef = useRef(null);
+  const royalIsInView = useInView(royalContainerRef, { once: true });
+
   // Listen for product addition events to auto-refresh homepage
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
@@ -2670,12 +2674,9 @@ export default function Home() {
 
         // ROYAL LAYOUT: Luxury Diamond Constellation with Framer Motion
         if (section.layoutType === 'royal') {
-          const containerRef = useRef(null);
-          const isInView = useInView(containerRef, { once: true });
-          
           return (
             <motion.section 
-              ref={containerRef}
+              ref={royalContainerRef}
               key={section.id} 
               className="py-24 relative overflow-hidden"
               data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
@@ -2717,19 +2718,19 @@ export default function Home() {
                 <motion.div 
                   className="text-center mb-20"
                   initial={{ y: 50, opacity: 0 }}
-                  animate={isInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+                  animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
                   transition={{ duration: 0.8, delay: 0.2 }}
                 >
                   <motion.div 
                     className="flex items-center justify-center mb-8"
                     initial={{ scale: 0 }}
-                    animate={isInView ? { scale: 1 } : { scale: 0 }}
+                    animate={royalIsInView ? { scale: 1 } : { scale: 0 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
                     <motion.div 
                       className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
                       initial={{ width: 0 }}
-                      animate={isInView ? { width: '4rem' } : { width: 0 }}
+                      animate={royalIsInView ? { width: '4rem' } : { width: 0 }}
                       transition={{ duration: 0.8, delay: 0.6 }}
                     />
                     <motion.div
@@ -2741,7 +2742,7 @@ export default function Home() {
                     <motion.div 
                       className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
                       initial={{ width: 0 }}
-                      animate={isInView ? { width: '4rem' } : { width: 0 }}
+                      animate={royalIsInView ? { width: '4rem' } : { width: 0 }}
                       transition={{ duration: 0.8, delay: 0.6 }}
                     />
                   </motion.div>
@@ -2750,7 +2751,7 @@ export default function Home() {
                     className="text-5xl md:text-7xl font-thin text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 mb-8"
                     style={{ fontFamily: 'Playfair Display, serif' }}
                     initial={{ y: 30, opacity: 0 }}
-                    animate={isInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
+                    animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
                     transition={{ duration: 0.8, delay: 0.8 }}
                   >
                     {section.title}
@@ -2760,7 +2761,7 @@ export default function Home() {
                     <motion.p 
                       className="text-xl text-amber-200/80 max-w-3xl mx-auto font-light"
                       initial={{ y: 20, opacity: 0 }}
-                      animate={isInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                      animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
                       transition={{ duration: 0.8, delay: 1 }}
                     >
                       {section.description}
@@ -2773,7 +2774,7 @@ export default function Home() {
                   <motion.div 
                     className="grid grid-cols-4 gap-6 auto-rows-[200px]"
                     initial={{ opacity: 0, y: 50 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                    animate={royalIsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                     transition={{ duration: 1, delay: 1.2 }}
                   >
                     {section.items.slice(0, 8).map((item, index) => {
@@ -2798,7 +2799,7 @@ export default function Home() {
                           className={`group cursor-pointer ${layout}`}
                           onClick={() => handleViewAllClick(item.product.category)}
                           initial={{ scale: 0, opacity: 0 }}
-                          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+                          animate={royalIsInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
                           transition={{ 
                             duration: 0.6, 
                             delay: 1.4 + index * 0.1,
@@ -2853,7 +2854,7 @@ export default function Home() {
                 <motion.div 
                   className="text-center mt-20"
                   initial={{ y: 50, opacity: 0 }}
-                  animate={isInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
+                  animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
                   transition={{ duration: 0.8, delay: 2 }}
                 >
                   <motion.button 
