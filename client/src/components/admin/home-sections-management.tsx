@@ -437,7 +437,7 @@ function CreateSectionDialog({
                   <SelectItem value="new-arrivals">✨ New Arrivals - Auto-scrolling Showcase</SelectItem>
                   <SelectItem value="premium">👑 Premium - Ultra-Luxury Elite Showcase</SelectItem>
                   <SelectItem value="zen">🧘 Zen - Minimalist Floating Cards</SelectItem>
-                  <SelectItem value="curved-grid">🌊 Curved Grid - Elegant Curved Product Showcase</SelectItem>
+                  <SelectItem value="curved-grid">🌊 3D Grid - Elegant 3D Product Showcase</SelectItem>
                 </SelectContent>
               </Select>
             </div>

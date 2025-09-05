@@ -87,80 +87,148 @@ function CurvedCarouselSection({
       data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
       style={{
         background: `
-          linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 25%, #1e1e1e 50%, #0f0f0f 75%, #000000 100%),
-          radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
-          radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
-          linear-gradient(45deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px),
-          linear-gradient(-45deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px)
+          linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 15%, #2a2f3e 30%, #3a4556 45%, #4a556e 60%, #5a6585 75%, #6a759d 90%, #7a85b5 100%),
+          radial-gradient(ellipse 800px 400px at 20% 10%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
+          radial-gradient(ellipse 600px 350px at 80% 90%, rgba(139, 92, 246, 0.12) 0%, transparent 55%),
+          radial-gradient(ellipse 500px 300px at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 70%)
         `,
-        backgroundSize: '100% 100%, 600px 600px, 400px 400px, 40px 40px, 40px 40px'
+        backgroundAttachment: 'fixed'
       }}
     >
-      {/* Luxury Animated Background Elements */}
+      {/* Premium Luxury Background */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Golden Floating Elements */}
-        <motion.div
-          className="absolute top-20 left-20 w-16 h-16 border border-yellow-500/20 rounded-full"
-          animate={{
-            y: [0, -15, 0],
-            rotate: [0, 360],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-40 right-32 w-8 h-8 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 rounded"
-          animate={{
-            y: [0, 20, 0],
-            rotate: [0, -180, 0],
-            x: [0, -10, 0],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-        <motion.div
-          className="absolute bottom-32 left-1/3 w-12 h-12 border-2 border-yellow-400/15 rotate-45"
-          animate={{
-            rotate: [45, 405],
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-20 w-24 h-24 border border-yellow-500/10 rounded-full"
-          animate={{
-            scale: [1, 1.4, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-        />
-        
-        {/* Elegant Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-yellow-600/5" />
-        <div className="absolute inset-0 bg-gradient-to-tl from-amber-500/3 via-transparent to-gold/3" />
-        
-        {/* Subtle Luxury Pattern */}
+        {/* High-End Layer Patterns */}
         <div 
-          className="absolute inset-0 opacity-5"
+          className="absolute inset-0 opacity-35"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(255, 215, 0, 0.3) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255, 215, 0, 0.3) 1px, transparent 1px)
+              radial-gradient(ellipse 700px 350px at 10% 20%, rgba(165, 180, 252, 0.18) 0%, transparent 70%),
+              radial-gradient(ellipse 600px 450px at 90% 10%, rgba(196, 181, 253, 0.15) 0%, transparent 60%),
+              radial-gradient(ellipse 550px 280px at 80% 90%, rgba(147, 197, 253, 0.12) 0%, transparent 55%),
+              radial-gradient(ellipse 500px 550px at 15% 85%, rgba(199, 210, 254, 0.1) 0%, transparent 65%),
+              linear-gradient(60deg, transparent 0%, rgba(165, 180, 252, 0.08) 30%, transparent 50%, rgba(196, 181, 253, 0.1) 70%, transparent 100%)
             `,
-            backgroundSize: '60px 60px'
+            backgroundSize: '1100px 800px, 1000px 900px, 900px 650px, 800px 1000px, 1500px 1100px'
           }}
         />
+        
+        {/* Luxury Geometric Textures */}
+        <div 
+          className="absolute inset-0 opacity-25"
+          style={{
+            backgroundImage: `
+              conic-gradient(from 60deg at 40% 30%, transparent 0deg, rgba(165, 180, 252, 0.2) 60deg, transparent 120deg, rgba(196, 181, 253, 0.18) 180deg, transparent 240deg, rgba(147, 197, 253, 0.15) 300deg, transparent 360deg),
+              linear-gradient(150deg, transparent 20%, rgba(199, 210, 254, 0.12) 40%, transparent 60%, rgba(165, 180, 252, 0.1) 80%, transparent 100%),
+              linear-gradient(-45deg, rgba(196, 181, 253, 0.1) 0%, transparent 30%, rgba(147, 197, 253, 0.14) 50%, transparent 80%, rgba(199, 210, 254, 0.08) 100%),
+              radial-gradient(circle at 70% 40%, rgba(165, 180, 252, 0.15) 0%, transparent 45%),
+              linear-gradient(30deg, transparent 35%, rgba(196, 181, 253, 0.06) 55%, transparent 75%)
+            `,
+            backgroundSize: '1000px 1000px, 800px 700px, 1100px 500px, 700px 700px, 900px 500px'
+          }}
+        />
+        
+        {/* Premium Floating Elements */}
+        <motion.div
+          className="absolute top-16 left-24 w-48 h-32 bg-gradient-to-br from-indigo-300/12 to-purple-300/10 rounded-full blur-sm"
+          style={{ borderRadius: '70% 30% 76% 24% / 58% 42% 68% 32%' }}
+          animate={{
+            y: [0, -20, 0],
+            rotate: [0, 3, 0],
+            scale: [1, 1.08, 1],
+            opacity: [0.7, 0.9, 0.7],
+          }}
+          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        <motion.div
+          className="absolute top-32 right-32 w-40 h-52 bg-gradient-to-br from-purple-300/10 to-blue-300/8 rounded-full blur-sm"
+          style={{ borderRadius: '38% 62% 70% 30% / 75% 25% 80% 20%' }}
+          animate={{
+            y: [0, 16, 0],
+            x: [0, -12, 0],
+            rotate: [0, -2, 0],
+            scale: [1, 1.12, 1],
+          }}
+          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut", delay: 4 }}
+        />
+        
+        <motion.div
+          className="absolute bottom-32 left-1/5 w-56 h-36 bg-gradient-to-br from-blue-300/8 to-indigo-300/10 rounded-full blur-md"
+          style={{ borderRadius: '80% 20% 72% 28% / 35% 65% 45% 55%' }}
+          animate={{
+            scale: [1, 1.15, 1],
+            rotate: [0, 1.5, 0],
+            opacity: [0.6, 0.8, 0.6],
+          }}
+          transition={{ duration: 32, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+        
+        <motion.div
+          className="absolute bottom-24 right-24 w-44 h-56 bg-gradient-to-br from-purple-300/9 to-indigo-300/11 rounded-full blur-sm"
+          style={{ borderRadius: '48% 52% 88% 12% / 72% 75% 25% 28%' }}
+          animate={{
+            y: [0, -12, 0],
+            rotate: [0, 2.5, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut", delay: 6 }}
+        />
+        
+        {/* Elegant Light Points */}
+        <div
+          className="absolute inset-0 opacity-15"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle 3px at 20% 15%, rgba(165, 180, 252, 0.6) 0%, transparent 50%),
+              radial-gradient(circle 2.5px at 80% 20%, rgba(196, 181, 253, 0.5) 0%, transparent 50%),
+              radial-gradient(circle 3.5px at 15% 85%, rgba(147, 197, 253, 0.7) 0%, transparent 50%),
+              radial-gradient(circle 2.8px at 85% 80%, rgba(199, 210, 254, 0.5) 0%, transparent 50%),
+              radial-gradient(circle 3.2px at 40% 60%, rgba(165, 180, 252, 0.6) 0%, transparent 50%),
+              radial-gradient(circle 2.2px at 65% 25%, rgba(196, 181, 253, 0.4) 0%, transparent 50%),
+              radial-gradient(circle 2.6px at 25% 75%, rgba(147, 197, 253, 0.5) 0%, transparent 50%)
+            `,
+            backgroundSize: '500px 500px, 450px 450px, 480px 480px, 400px 400px, 420px 420px, 380px 380px, 360px 360px'
+          }}
+        />
+        
+        {/* Premium Gold & Jewelry Accents */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `
+              radial-gradient(ellipse 250px 120px at 35% 65%, rgba(251, 191, 36, 0.12) 0%, transparent 75%),
+              radial-gradient(ellipse 180px 140px at 75% 25%, rgba(245, 158, 11, 0.08) 0%, transparent 65%),
+              radial-gradient(ellipse 200px 100px at 60% 80%, rgba(217, 119, 6, 0.06) 0%, transparent 70%),
+              linear-gradient(45deg, transparent 55%, rgba(251, 191, 36, 0.04) 65%, transparent 75%)
+            `,
+            backgroundSize: '700px 500px, 600px 550px, 650px 450px, 900px 400px'
+          }}
+        />
+        
+        {/* High-End Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900/10 via-transparent to-slate-800/12" />
+        <div className="absolute inset-0 bg-gradient-to-tl from-slate-700/8 via-transparent to-slate-600/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-800/5 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/6 via-transparent to-slate-900/8" />
+        
+        {/* Luxury Depth & Atmosphere */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/4 via-transparent to-purple-900/6 opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-tl from-transparent via-blue-50/3 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-900/3 via-transparent to-yellow-900/4 opacity-60" />
+        
+        {/* Final Premium Touch */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-950/2 to-purple-950/3" />
       </div>
 
       {/* Content Container with Glass Effect */}
       <div className="w-full px-4 md:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-light text-white mb-4 drop-shadow-lg" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h2 className="text-4xl md:text-5xl font-light text-stone-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
             {section.title || '3D Curved Collection'}
           </h2>
           {section.description && (
-            <p className="text-lg text-white/90 max-w-2xl mx-auto drop-shadow-md" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            <p className="text-lg text-stone-600 max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
               {section.description}
             </p>
           )}
@@ -169,7 +237,7 @@ function CurvedCarouselSection({
         {/* 3D Curved Carousel Container */}
         <div className="flex flex-col items-center justify-center w-full">
           <div 
-            className="relative w-full max-w-5xl h-[500px] mx-auto"
+            className="relative w-full max-w-5xl h-[350px] md:h-[500px] mx-auto"
             style={{ perspective: '1200px' }}
             /* Touch/Swipe Support for Mobile */
             onTouchStart={(e) => setStartX(e.touches[0].clientX)}
@@ -192,24 +260,24 @@ function CurvedCarouselSection({
                 return (
                   <motion.div
                     key={item.id}
-                    className={`absolute w-64 h-80 p-6 bg-white rounded-3xl cursor-pointer group overflow-hidden transition-all duration-300 hover:shadow-2xl ${
+                    className={`absolute w-40 h-52 md:w-64 md:h-80 p-3 md:p-6 bg-white rounded-xl md:rounded-3xl cursor-pointer group overflow-hidden transition-all duration-300 hover:shadow-2xl ${
                       isActive 
                         ? 'shadow-3xl brightness-100 z-10' 
                         : 'shadow-lg brightness-75 blur-[1px] z-0'
                     }`}
                     style={{
-                      transform: `rotateY(${itemAngle}deg) translateZ(400px) scale(${isActive ? 1.2 : 1})`,
+                      transform: `rotateY(${itemAngle}deg) translateZ(${window.innerWidth < 768 ? '220px' : '400px'}) scale(${isActive ? (window.innerWidth < 768 ? 1.08 : 1.2) : 1})`,
                       opacity: isActive ? 1 : 0.6,
                       left: '50%',
                       top: '50%',
-                      marginLeft: '-128px', // Half width
-                      marginTop: '-160px', // Half height
+                      marginLeft: window.innerWidth < 768 ? '-80px' : '-128px', // Half width responsive
+                      marginTop: window.innerWidth < 768 ? '-104px' : '-160px', // Half height responsive
                     }}
                     onClick={() => window.location.href = `/product/${item.product.id}`}
                     data-testid={`curved-grid-item-${index}`}
                   >
                     {/* Product Image */}
-                    <div className="w-full h-52 bg-gray-100 rounded-2xl overflow-hidden mb-4 group-hover:shadow-lg transition-shadow">
+                    <div className="w-full h-28 md:h-52 bg-gray-100 rounded-lg md:rounded-2xl overflow-hidden mb-2 md:mb-4 group-hover:shadow-lg transition-shadow">
                       {item.product.images && item.product.images.length > 0 ? (
                         <img
                           src={item.product.images[0]}
@@ -218,17 +286,17 @@ function CurvedCarouselSection({
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          <Gem className="w-16 h-16" />
+                          <Gem className="w-8 h-8 md:w-16 md:h-16" />
                         </div>
                       )}
                     </div>
 
                     {/* Product Details */}
-                    <div className="text-center">
-                      <h3 className="text-lg font-semibold text-gray-700 mb-2 line-clamp-2" style={{ fontFamily: "Playfair Display, serif" }}>
+                    <div className="text-center h-16 md:h-auto flex flex-col justify-between">
+                      <h3 className="text-sm md:text-lg font-semibold text-gray-700 mb-1 md:mb-2 line-clamp-2 leading-tight" style={{ fontFamily: "Playfair Display, serif" }}>
                         {item.product.name}
                       </h3>
-                      <p className="text-2xl font-bold text-amber-600">
+                      <p className="text-sm md:text-2xl font-bold text-amber-600 mt-auto">
                         {selectedCurrency === 'INR' ? '₹' : 'BD '}
                         {selectedCurrency === 'INR' ? 
                           parseFloat(item.product.priceInr).toLocaleString('en-IN') :
