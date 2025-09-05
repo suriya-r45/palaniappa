@@ -50,6 +50,156 @@ import bridalCollectionsImage from '@assets/bridal_new.png';
 import newArrivalsBackground from '@assets/image_1756713608055.png';
 import newArrivalsBackgroundNew from '@assets/new_arrivals_bg.png';
 
+// 1x5 Tilted Grid Layout Component 
+function TiltedGridSection({ 
+  section, 
+  selectedCurrency 
+}: { 
+  section: HomeSectionWithItems;
+  selectedCurrency: Currency;
+}) {
+  return (
+    <section 
+      className="py-16 px-4 md:px-8 relative overflow-hidden" 
+      data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
+      style={{ background: 'linear-gradient(135deg, #f8f4f0 0%, #e8ddd4 50%, #d4c5a9 100%)' }}
+    >
+      <div className="container mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-light text-stone-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+            {section.title || 'Featured Collection'}
+          </h2>
+          {section.description && (
+            <p className="text-lg text-stone-600 max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              {section.description}
+            </p>
+          )}
+        </div>
+
+        {/* 1x5 Tilted Grid - Desktop */}
+        <div className="hidden md:block">
+          <div className="flex justify-center items-center gap-8 perspective-[1200px]">
+            {section.items.slice(0, 5).map((item, index) => {
+              // Calculate tilt angle: first item tilts left, last item tilts right, middle items stay straight
+              let tiltAngle = 0;
+              if (index === 0) tiltAngle = -30; // Left tilt
+              else if (index === 4) tiltAngle = 30; // Right tilt
+              
+              return (
+                <motion.div
+                  key={item.id}
+                  className="relative w-64 h-80 cursor-pointer group"
+                  style={{
+                    transform: `perspective(1200px) rotateY(${tiltAngle}deg)`,
+                    transformStyle: 'preserve-3d'
+                  }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    rotateY: tiltAngle * 0.7, // Reduce tilt on hover
+                    transition: { duration: 0.3 }
+                  }}
+                  onClick={() => window.location.href = `/product/${item.product.id}`}
+                  data-testid={`tilted-grid-item-${index}`}
+                >
+                  {/* Product Card */}
+                  <div className="w-full h-full bg-white rounded-2xl shadow-lg overflow-hidden group-hover:shadow-xl transition-all duration-300">
+                    {/* Product Image */}
+                    <div className="w-full h-48 bg-gray-100 overflow-hidden">
+                      {item.product.images && item.product.images.length > 0 ? (
+                        <img
+                          src={item.product.images[0]}
+                          alt={item.product.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          <Gem className="w-16 h-16" />
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Product Details */}
+                    <div className="p-6 text-center">
+                      <h3 className="text-lg font-semibold text-gray-700 mb-2 line-clamp-2" style={{ fontFamily: "Playfair Display, serif" }}>
+                        {item.product.name}
+                      </h3>
+                      <p className="text-2xl font-bold text-amber-600">
+                        {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                        {selectedCurrency === 'INR' ? 
+                          parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                          parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                        }
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Hover Effect Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none" />
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Mobile View - Regular Grid */}
+        <div className="md:hidden">
+          <div className="grid grid-cols-2 gap-4">
+            {section.items.slice(0, 4).map((item, index) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer"
+                onClick={() => window.location.href = `/product/${item.product.id}`}
+              >
+                <div className="w-full h-32 bg-gray-100 overflow-hidden">
+                  {item.product.images && item.product.images.length > 0 ? (
+                    <img
+                      src={item.product.images[0]}
+                      alt={item.product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      <Gem className="w-8 h-8" />
+                    </div>
+                  )}
+                </div>
+                <div className="p-3 text-center">
+                  <h3 className="text-sm font-semibold text-gray-700 mb-1 line-clamp-2">
+                    {item.product.name}
+                  </h3>
+                  <p className="text-lg font-bold text-amber-600">
+                    {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                    {selectedCurrency === 'INR' ? 
+                      parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                      parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                    }
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom Line */}
+        <div className="w-full border-t border-gray-300 mt-16"></div>
+
+        {/* View All Button */}
+        <div className="text-center mt-8">
+          <Button
+            className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+            style={{ fontFamily: 'Playfair Display, serif' }}
+            onClick={() => window.location.href = '/collections'}
+            data-testid="view-all-tilted-grid-button"
+          >
+            View All Collection →
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // 3D Curved Carousel Component with Auto-Scroll
 function CurvedCarouselSection({ 
   section, 
@@ -1759,6 +1909,11 @@ export default function Home() {
         // New Arrivals layout rendering - Horizontal auto-scrolling layout
         if (section.layoutType === 'new-arrivals') {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
+        }
+
+        // 1x5 Tilted Grid Layout - Desktop 30-degree tilt effects
+        if (section.layoutType === 'tilted-grid') {
+          return <TiltedGridSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
         // 3D Curved Carousel - True perspective 3D circular arrangement
