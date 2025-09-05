@@ -351,20 +351,36 @@ function ProductListDialog({
                       </div>
                     </td>
                     <td className="p-4 text-center">
-                      <div className="flex items-center justify-center">
-                        <Switch 
-                          checked={product.isActive}
-                          onCheckedChange={(checked) => 
-                            toggleProductActiveMutation.mutate({ 
-                              productId: product.id, 
-                              isActive: checked 
-                            })
-                          }
-                          disabled={toggleProductActiveMutation.isPending}
-                          data-testid={`switch-active-${product.id}`}
-                        />
-                        <span className="ml-2 text-xs text-gray-600">
-                          {product.isActive ? 'Active' : 'Inactive'}
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        <div className={`flex items-center justify-center px-3 py-2 rounded-lg border-2 transition-all duration-200 ${
+                          product.isActive 
+                            ? 'bg-green-50 border-green-200 hover:bg-green-100' 
+                            : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+                        }`}>
+                          <div className="flex items-center space-x-2">
+                            {product.isActive ? (
+                              <Eye className="h-4 w-4 text-green-600" />
+                            ) : (
+                              <EyeOff className="h-4 w-4 text-gray-500" />
+                            )}
+                            <Switch 
+                              checked={product.isActive}
+                              onCheckedChange={(checked) => 
+                                toggleProductActiveMutation.mutate({ 
+                                  productId: product.id, 
+                                  isActive: checked 
+                                })
+                              }
+                              disabled={toggleProductActiveMutation.isPending}
+                              data-testid={`switch-active-${product.id}`}
+                              className="data-[state=checked]:bg-green-600"
+                            />
+                          </div>
+                        </div>
+                        <span className={`text-xs font-medium ${
+                          product.isActive ? 'text-green-700' : 'text-gray-500'
+                        }`}>
+                          {product.isActive ? 'Visible' : 'Hidden'}
                         </span>
                       </div>
                     </td>
