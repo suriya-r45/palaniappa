@@ -50,6 +50,166 @@ import bridalCollectionsImage from '@assets/bridal_new.png';
 import newArrivalsBackground from '@assets/image_1756713608055.png';
 import newArrivalsBackgroundNew from '@assets/new_arrivals_bg.png';
 
+// 3D Curved Carousel Component
+function CurvedCarouselSection({ 
+  section, 
+  selectedCurrency 
+}: { 
+  section: HomeSectionWithItems;
+  selectedCurrency: Currency;
+}) {
+  const [angle, setAngle] = useState(0);
+  const displayItems = section.items.slice(0, Math.max(6, section.items.length)); // Show at least 6 items for better circular arrangement
+  const itemCount = Math.max(6, displayItems.length); // Ensure we never divide by zero
+  
+  const rotate = (direction: 'left' | 'right') => {
+    const angleStep = 360 / itemCount; // Use itemCount to prevent NaN
+    setAngle(prev => prev + (direction === 'left' ? angleStep : -angleStep));
+  };
+
+  return (
+    <section 
+      className="w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 py-20 overflow-hidden" 
+      data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
+    >
+      <div className="w-full px-4 md:px-8">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-light text-gray-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+            {section.title || '3D Curved Collection'}
+          </h2>
+          {section.description && (
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              {section.description}
+            </p>
+          )}
+        </div>
+
+        {/* 3D Curved Carousel Container - Full Width */}
+        <div className="flex flex-col items-center justify-center w-full">
+          {/* 3D Perspective Container */}
+          <div 
+            className="relative w-full max-w-6xl h-[400px] md:h-[500px]"
+            style={{ perspective: '1200px' }}
+          >
+            <div
+              className="absolute w-full h-full transition-transform duration-700 ease-out"
+              style={{
+                transform: `translateZ(-500px) rotateY(${angle}deg)`,
+                transformStyle: 'preserve-3d',
+              }}
+            >
+              {displayItems.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  className="absolute w-64 md:w-72 h-80 md:h-96 p-4 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center cursor-pointer group overflow-hidden"
+                  style={{
+                    transform: `rotateY(${index * (360 / itemCount)}deg) translateZ(500px)`,
+                    left: '50%',
+                    top: '50%',
+                    marginLeft: '-128px', // Half of w-64 (256px / 2)
+                    marginTop: '-160px', // Half of h-80 (320px / 2)
+                  }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.1,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  whileHover={{
+                    scale: 1.05,
+                    y: -10,
+                  }}
+                  onClick={() => window.location.href = `/product/${item.product.id}`}
+                  data-testid={`curved-grid-item-${index}`}
+                >
+                  {/* Product Image */}
+                  <div className="w-full h-48 md:h-56 bg-gray-100 rounded-xl overflow-hidden mb-4">
+                    {item.product.images && item.product.images.length > 0 ? (
+                      <img
+                        src={item.product.images[0]}
+                        alt={item.product.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <Gem className="w-16 h-16" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Product Details */}
+                  <div className="text-center px-2">
+                    <h3
+                      className="text-lg md:text-xl font-semibold text-gray-700 mb-2 line-clamp-2"
+                      style={{ fontFamily: "Playfair Display, serif" }}
+                    >
+                      {item.product.name}
+                    </h3>
+                    <p className="text-xl md:text-2xl font-bold text-amber-600">
+                      {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                      {selectedCurrency === 'INR' ? 
+                        parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                        parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                      }
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation Controls */}
+          <div className="flex gap-6 mt-12">
+            <motion.button
+              onClick={() => rotate('left')}
+              className="px-6 py-3 bg-white border-2 border-amber-600 text-amber-600 rounded-full shadow-lg hover:bg-amber-600 hover:text-white transition-all duration-300 font-medium"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              data-testid="carousel-prev-button"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </motion.button>
+            <motion.button
+              onClick={() => rotate('right')}
+              className="px-6 py-3 bg-white border-2 border-amber-600 text-amber-600 rounded-full shadow-lg hover:bg-amber-600 hover:text-white transition-all duration-300 font-medium"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              data-testid="carousel-next-button"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </motion.button>
+          </div>
+
+          {/* View All Collection Button */}
+          <div className="text-center mt-8">
+            <motion.button
+              className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-medium px-8 py-3 md:px-10 md:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+              style={{ fontFamily: 'Playfair Display, serif' }}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => window.location.href = '/collections'}
+              data-testid="view-all-collections-button"
+            >
+              <span className="flex items-center gap-2">
+                View All Collection
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </motion.button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // Separate component for auto-scrolling categories to avoid React hooks rule violations
 function CategoriesScrollSection({ categories, handleViewAllClick }: { categories: any[]; handleViewAllClick: (key: string) => void }) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -1481,115 +1641,9 @@ export default function Home() {
           return <NewArrivalsSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
-        // Curved Wave Grid Flow - Clean wave layout with flexbox
+        // 3D Curved Carousel - True perspective 3D circular arrangement
         if (section.layoutType === 'curved-grid') {
-          const displayItems = section.items.slice(0, 4); // Display 4 items in 1x4 grid
-          const waveOffsets = [20, -10, 10, -20]; // y-axis wave
-          const rotations = [-8, -3, 3, 8]; // synced rotation
-          
-          return (
-            <section 
-              key={section.id} 
-              className="w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 py-16" 
-              data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
-            >
-              <div className="max-w-7xl mx-auto px-4 md:px-8">
-                {/* Section Header */}
-                <div className="text-center mb-12">
-                  <h2 className="text-4xl md:text-5xl font-light text-gray-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-                    {section.title || 'Curved Wave Grid Flow'}
-                  </h2>
-                  {section.description && (
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                      {section.description}
-                    </p>
-                  )}
-                </div>
-
-                {/* Wave Flow Container - 2x2 Grid on mobile, 1x4 on desktop */}
-                <div className="grid grid-cols-2 md:flex md:justify-center gap-4 md:gap-8 max-w-4xl mx-auto">
-                  {displayItems.map((item, index) => (
-                    <motion.div
-                      key={item.id}
-                      className="w-full max-w-56 md:w-64 bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
-                      style={{
-                        rotate: `${rotations[index % rotations.length]}deg`,
-                      }}
-                      initial={{ opacity: 0, y: 100 }}
-                      whileInView={{
-                        opacity: 1,
-                        y: waveOffsets[index % waveOffsets.length],
-                      }}
-                      transition={{
-                        duration: 0.8,
-                        delay: index * 0.15,
-                        type: "spring",
-                        stiffness: 80,
-                      }}
-                      whileHover={{
-                        scale: 1.05,
-                        rotate: `${rotations[index % rotations.length] * 0.5}deg`,
-                        zIndex: 50,
-                      }}
-                      onClick={() => window.location.href = `/product/${item.product.id}`}
-                      data-testid={`curved-grid-item-${index}`}
-                    >
-                      {/* Product Image */}
-                      <div className="h-64 bg-gray-100 overflow-hidden">
-                        {item.product.images && item.product.images.length > 0 ? (
-                          <img
-                            src={item.product.images[0]}
-                            alt={item.product.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-400">
-                            <Gem className="w-16 h-16 text-gray-400" />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Product Details */}
-                      <div className="p-4 text-center">
-                        <h3
-                          className="text-lg font-medium text-gray-800 mb-2"
-                          style={{ fontFamily: "Playfair Display, serif" }}
-                        >
-                          {item.product.name}
-                        </h3>
-                        <p className="text-xl font-bold text-amber-600">
-                          {selectedCurrency === 'INR' ? '₹' : 'BD '}
-                          {selectedCurrency === 'INR' ? 
-                            parseFloat(item.product.priceInr).toLocaleString('en-IN') :
-                            parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
-                          }
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* View All Collection Button */}
-                <div className="text-center mt-12">
-                  <motion.button
-                    className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-medium px-8 py-3 md:px-10 md:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                    style={{ fontFamily: 'Playfair Display, serif' }}
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => window.location.href = '/collections'}
-                    data-testid="view-all-collections-button"
-                  >
-                    <span className="flex items-center gap-2">
-                      View All Collection
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </span>
-                  </motion.button>
-                </div>
-              </div>
-            </section>
-          );
+          return <CurvedCarouselSection key={section.id} section={section} selectedCurrency={selectedCurrency} />;
         }
 
         // Magazine layout rendering - Luxury Editorial Design
