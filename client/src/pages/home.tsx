@@ -61,14 +61,14 @@ function TiltedGridSection({
   const [scrollPosition, setScrollPosition] = useState(0);
   const rotationAngles = [-6, 4, -3, 5, -4, 2]; // subtle tilts for 6 items
   
-  // Auto-scroll functionality (commented out)
-  // useEffect(() => {
-  //   const autoScroll = setInterval(() => {
-  //     setScrollPosition(prev => prev - 1); // Scroll from right to left
-  //   }, 50); // Smooth scrolling speed
+  // Auto-scroll functionality
+  useEffect(() => {
+    const autoScroll = setInterval(() => {
+      setScrollPosition(prev => prev - 1); // Scroll from right to left
+    }, 50); // Smooth scrolling speed
 
-  //   return () => clearInterval(autoScroll);
-  // }, []);
+    return () => clearInterval(autoScroll);
+  }, []);
 
   // Duplicate items for seamless scrolling
   const displayItems = section.items.length > 0 
