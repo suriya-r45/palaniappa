@@ -124,12 +124,17 @@ function TiltedGridSection({
                   <motion.div
                     key={`${item.id}-${index}`}
                     className="relative shrink-0 w-52 xl:w-60 bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer"
-                    style={{
-                      transform: `rotate(${rotation}deg)`,
+                    initial={{
+                      rotate: rotation,
+                      scale: 1,
+                    }}
+                    animate={{
+                      rotate: rotation,
+                      scale: 1,
                     }}
                     whileHover={{
                       scale: 1.05,
-                      rotate: rotation, // Keep the same rotation on hover
+                      rotate: rotation, // Explicitly maintain the rotation
                       transition: { duration: 0.3 },
                     }}
                     onClick={() => (window.location.href = `/product/${item.product.id}`)}
