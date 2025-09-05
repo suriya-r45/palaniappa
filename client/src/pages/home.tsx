@@ -84,25 +84,8 @@ function TiltedGridSection({
             {section.title}
           </h2>
           {section.description && (
-            <p className="text-lg text-stone-600 mb-6">{section.description}</p>
+            <p className="text-lg text-stone-600">{section.description}</p>
           )}
-          
-          {/* View All Collections Button */}
-          <motion.button
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-stone-600 to-stone-700 text-white px-6 py-3 rounded-full font-medium hover:from-stone-700 hover:to-stone-800 transition-all duration-300 shadow-lg"
-            onClick={() => (window.location.href = '/collections')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            data-testid="view-all-collections-button"
-          >
-            <span>View All Collections</span>
-            <motion.div
-              animate={{ x: [0, 4, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            >
-              →
-            </motion.div>
-          </motion.button>
         </div>
 
         {/* Auto-Scrolling Tilted Row - Desktop (1x6 Grid) */}
@@ -172,6 +155,25 @@ function TiltedGridSection({
               })}
             </motion.div>
           </div>
+        </div>
+
+        {/* View All Collections Button - Desktop */}
+        <div className="hidden md:flex justify-center mt-8">
+          <motion.button
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-stone-600 to-stone-700 text-white px-6 py-3 rounded-full font-medium hover:from-stone-700 hover:to-stone-800 transition-all duration-300 shadow-lg"
+            onClick={() => (window.location.href = '/collections')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            data-testid="view-all-collections-button"
+          >
+            <span>View All Collections</span>
+            <motion.div
+              animate={{ x: [0, 4, 0] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+            >
+              →
+            </motion.div>
+          </motion.button>
         </div>
 
         {/* Mobile View - 2x3 Grid */}
