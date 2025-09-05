@@ -130,7 +130,7 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
       amount: selectedCurrency === 'INR' ? '₹15,000' : 'BD 75',
       value: selectedCurrency === 'INR' ? 15000 : 75,
       description: 'Perfect starter pieces',
-      gradient: 'from-rose-400 to-pink-500',
+      gradient: 'from-purple-500 via-pink-500 to-rose-500',
       size: 'small'
     },
     {
@@ -139,7 +139,7 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
       amount: selectedCurrency === 'INR' ? '₹30,000' : 'BD 150',
       value: selectedCurrency === 'INR' ? 30000 : 150,
       description: 'Elegant everyday jewelry',
-      gradient: 'from-amber-400 to-orange-500',
+      gradient: 'from-amber-400 via-yellow-500 to-orange-500',
       size: 'medium'
     },
     {
@@ -148,7 +148,7 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
       amount: selectedCurrency === 'INR' ? '₹60,000' : 'BD 300',
       value: selectedCurrency === 'INR' ? 60000 : 300,
       description: 'Luxury statement pieces',
-      gradient: 'from-emerald-400 to-teal-500',
+      gradient: 'from-emerald-400 via-teal-500 to-cyan-500',
       size: 'large'
     }
   ];
@@ -263,27 +263,38 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
                 >
                   {/* Jewelry Background Image */}
                   <div 
-                    className="absolute inset-0 opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+                    className="absolute inset-0 opacity-30 group-hover:opacity-40 transition-opacity duration-500"
                     style={{
                       clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
-                      backgroundImage: `url('/src/assets/luxury-necklace.png')`,
+                      backgroundImage: budget.size === 'small' 
+                        ? `url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xMDAgMTBMMTMwIDQwTDEwMCA3MEw3MCA0MEwxMDAgMTBaIiBmaWxsPSIjMzMzIiBvcGFjaXR5PSIwLjUiLz4KPHA+PHBhdGggZD0iTTEwMCAxMDBMMTQwIDEzMEwxMDAgMTYwTDYwIDEzMEwxMDAgMTAwWiIgZmlsbD0iIzMzMyIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPgo=')`
+                        : budget.size === 'medium'
+                        ? `url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjUwIiByPSIyMCIgZmlsbD0iIzMzMyIgb3BhY2l0eT0iMC40Ii8+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiMzMzMiIG9wYWNpdHk9IjAuMyIvPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxNTAiIHI9IjE1IiBmaWxsPSIjMzMzIiBvcGFjaXR5PSIwLjUiLz4KPC9zdmc+Cg==')`
+                        : `url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHg9IjcwIiB5PSIzMCIgd2lkdGg9IjYwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMzMzIiBvcGFjaXR5PSIwLjQiLz4KPHJlY3QgeD0iNjAiIHk9IjgwIiB3aWR0aD0iODAiIGhlaWdodD0iNDAiIGZpbGw9IiMzMzMiIG9wYWNpdHk9IjAuMyIvPgo8cmVjdCB4PSI4MCIgeT0iMTUwIiB3aWR0aD0iNDAiIGhlaWdodD0iMTUiIGZpbGw9IiMzMzMiIG9wYWNpdHk9IjAuNSIvPgo8L3N2Zz4K')`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      filter: 'sepia(20%) saturate(1.2) brightness(0.8)',
+                    }}
+                  />
+                  
+                  {/* Black Base Layer */}
+                  <div 
+                    className="absolute inset-0 bg-black opacity-20"
+                    style={{
+                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     }}
                   />
                   
                   {/* Gradient Overlay for Color Blending */}
                   <div 
-                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} opacity-60 group-hover:opacity-50 transition-all duration-500 mix-blend-multiply`}
+                    className={`absolute inset-0 bg-gradient-to-br ${budget.gradient} opacity-85 group-hover:opacity-75 transition-all duration-500`}
                     style={{
                       clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     }}
                   />
                   
-                  {/* Text Contrast Overlay */}
+                  {/* Black Border Effect */}
                   <div 
-                    className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/40 group-hover:from-black/50 group-hover:via-black/10 group-hover:to-black/30 transition-all duration-300"
+                    className="absolute inset-0 border-4 border-black/30 group-hover:border-black/50 transition-all duration-300"
                     style={{
                       clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
                     }}
@@ -291,7 +302,21 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
                   
                   {/* Content */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
-                    <div className="space-y-2">
+                    {/* Black Jewelry Icon */}
+                    <div className="absolute top-4 left-4 opacity-20">
+                      {budget.size === 'small' && <Diamond className="w-6 h-6 text-black" />}
+                      {budget.size === 'medium' && <Crown className="w-8 h-8 text-black" />}
+                      {budget.size === 'large' && <Gem className="w-6 h-6 text-black" />}
+                    </div>
+                    
+                    {/* Black Accent Lines */}
+                    <div className="absolute bottom-4 right-4 opacity-25">
+                      <div className="w-8 h-0.5 bg-black mb-1"></div>
+                      <div className="w-6 h-0.5 bg-black mb-1"></div>
+                      <div className="w-4 h-0.5 bg-black"></div>
+                    </div>
+                    
+                    <div className="space-y-2 relative z-10">
                       <div className={`font-light ${textSizes[budget.size] || textSizes['medium']}`} style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                         {budget.label}
                       </div>
