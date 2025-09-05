@@ -50,7 +50,7 @@ import bridalCollectionsImage from '@assets/bridal_new.png';
 import newArrivalsBackground from '@assets/image_1756713608055.png';
 import newArrivalsBackgroundNew from '@assets/new_arrivals_bg.png';
 
-// 3D Curved Carousel Component
+// 3D Curved Carousel Component - Working Version
 function CurvedCarouselSection({ 
   section, 
   selectedCurrency 
@@ -59,11 +59,10 @@ function CurvedCarouselSection({
   selectedCurrency: Currency;
 }) {
   const [angle, setAngle] = useState(0);
-  const displayItems = section.items.slice(0, Math.max(6, section.items.length)); // Show at least 6 items for better circular arrangement
-  const itemCount = Math.max(6, displayItems.length); // Ensure we never divide by zero
+  const displayItems = section.items; // Use your actual 5 products
   
   const rotate = (direction: 'left' | 'right') => {
-    const angleStep = 360 / itemCount; // Use itemCount to prevent NaN
+    const angleStep = 72; // 360 / 5 products = 72 degrees
     setAngle(prev => prev + (direction === 'left' ? angleStep : -angleStep));
   };
 
@@ -85,124 +84,98 @@ function CurvedCarouselSection({
           )}
         </div>
 
-        {/* 3D Curved Carousel Container - Full Width */}
+        {/* 3D Curved Carousel Container */}
         <div className="flex flex-col items-center justify-center w-full">
-          {/* 3D Perspective Container */}
           <div 
-            className="relative w-full max-w-6xl h-[400px] md:h-[500px]"
+            className="relative w-full max-w-5xl h-[500px] mx-auto"
             style={{ perspective: '1200px' }}
           >
             <div
               className="absolute w-full h-full transition-transform duration-700 ease-out"
               style={{
-                transform: `translateZ(-500px) rotateY(${angle}deg)`,
                 transformStyle: 'preserve-3d',
+                transform: `rotateY(${angle}deg)`,
               }}
             >
-              {displayItems.map((item, index) => (
-                <motion.div
-                  key={item.id}
-                  className="absolute w-64 md:w-72 h-80 md:h-96 p-4 bg-white rounded-2xl shadow-2xl flex flex-col justify-center items-center cursor-pointer group overflow-hidden"
-                  style={{
-                    transform: `rotateY(${index * (360 / itemCount)}deg) translateZ(500px)`,
-                    left: '50%',
-                    top: '50%',
-                    marginLeft: '-128px', // Half of w-64 (256px / 2)
-                    marginTop: '-160px', // Half of h-80 (320px / 2)
-                  }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{
-                    duration: 0.8,
-                    delay: index * 0.1,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  whileHover={{
-                    scale: 1.05,
-                    y: -10,
-                  }}
-                  onClick={() => window.location.href = `/product/${item.product.id}`}
-                  data-testid={`curved-grid-item-${index}`}
-                >
-                  {/* Product Image */}
-                  <div className="w-full h-48 md:h-56 bg-gray-100 rounded-xl overflow-hidden mb-4">
-                    {item.product.images && item.product.images.length > 0 ? (
-                      <img
-                        src={item.product.images[0]}
-                        alt={item.product.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        <Gem className="w-16 h-16" />
-                      </div>
-                    )}
-                  </div>
+              {displayItems.map((item, index) => {
+                const itemAngle = index * 72; // 72 degrees apart (360/5)
+                
+                return (
+                  <div
+                    key={item.id}
+                    className="absolute w-64 h-80 p-6 bg-white rounded-3xl shadow-2xl cursor-pointer group overflow-hidden hover:shadow-3xl transition-all duration-300"
+                    style={{
+                      transform: `rotateY(${itemAngle}deg) translateZ(400px)`,
+                      left: '50%',
+                      top: '50%',
+                      marginLeft: '-128px', // Half width
+                      marginTop: '-160px', // Half height
+                    }}
+                    onClick={() => window.location.href = `/product/${item.product.id}`}
+                    data-testid={`curved-grid-item-${index}`}
+                  >
+                    {/* Product Image */}
+                    <div className="w-full h-52 bg-gray-100 rounded-2xl overflow-hidden mb-4 group-hover:shadow-lg transition-shadow">
+                      {item.product.images && item.product.images.length > 0 ? (
+                        <img
+                          src={item.product.images[0]}
+                          alt={item.product.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          <Gem className="w-16 h-16" />
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Product Details */}
-                  <div className="text-center px-2">
-                    <h3
-                      className="text-lg md:text-xl font-semibold text-gray-700 mb-2 line-clamp-2"
-                      style={{ fontFamily: "Playfair Display, serif" }}
-                    >
-                      {item.product.name}
-                    </h3>
-                    <p className="text-xl md:text-2xl font-bold text-amber-600">
-                      {selectedCurrency === 'INR' ? '₹' : 'BD '}
-                      {selectedCurrency === 'INR' ? 
-                        parseFloat(item.product.priceInr).toLocaleString('en-IN') :
-                        parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
-                      }
-                    </p>
+                    {/* Product Details */}
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-gray-700 mb-2 line-clamp-2" style={{ fontFamily: "Playfair Display, serif" }}>
+                        {item.product.name}
+                      </h3>
+                      <p className="text-2xl font-bold text-amber-600">
+                        {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                        {selectedCurrency === 'INR' ? 
+                          parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                          parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                        }
+                      </p>
+                    </div>
                   </div>
-                </motion.div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex gap-6 mt-12">
-            <motion.button
+          <div className="flex gap-8 mt-16">
+            <button
               onClick={() => rotate('left')}
-              className="px-6 py-3 bg-white border-2 border-amber-600 text-amber-600 rounded-full shadow-lg hover:bg-amber-600 hover:text-white transition-all duration-300 font-medium"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 bg-white border-2 border-amber-600 text-amber-600 rounded-full shadow-lg hover:bg-amber-600 hover:text-white transition-all duration-300 font-medium text-lg"
               data-testid="carousel-prev-button"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </motion.button>
-            <motion.button
+              ← Previous
+            </button>
+            <button
               onClick={() => rotate('right')}
-              className="px-6 py-3 bg-white border-2 border-amber-600 text-amber-600 rounded-full shadow-lg hover:bg-amber-600 hover:text-white transition-all duration-300 font-medium"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 bg-white border-2 border-amber-600 text-amber-600 rounded-full shadow-lg hover:bg-amber-600 hover:text-white transition-all duration-300 font-medium text-lg"
               data-testid="carousel-next-button"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </motion.button>
+              Next →
+            </button>
           </div>
 
           {/* View All Collection Button */}
-          <div className="text-center mt-8">
-            <motion.button
-              className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-medium px-8 py-3 md:px-10 md:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          <div className="text-center mt-12">
+            <button
+              className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-medium px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-lg"
               style={{ fontFamily: 'Playfair Display, serif' }}
-              whileHover={{ y: -2 }}
-              whileTap={{ scale: 0.95 }}
               onClick={() => window.location.href = '/collections'}
               data-testid="view-all-collections-button"
             >
-              <span className="flex items-center gap-2">
-                View All Collection
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
-            </motion.button>
+              View All Collection →
+            </button>
           </div>
         </div>
       </div>
