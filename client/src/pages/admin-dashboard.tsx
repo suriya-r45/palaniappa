@@ -3,6 +3,8 @@ import { useLocation } from 'wouter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import { useAuth } from '@/lib/auth';
 import Header from '@/components/header';
 import ProductForm from '@/components/admin/product-form';
@@ -16,12 +18,113 @@ import { MetalRatesAdmin } from '@/components/admin/metal-rates-admin';
 import OrderTracking from '@/components/admin/order-tracking';
 import VideoManagement from '@/components/admin/video-management';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiRequest } from '@/lib/queryClient';
 import { Product, Bill } from '@shared/schema';
 import { Currency } from '@/lib/currency';
-import { Package, FileText, TrendingUp, Users, Calculator, DollarSign, Edit, QrCode, Printer, Search, CheckSquare, Square, Plus, Receipt, History, ClipboardList, Tag, BarChart3, Grid3X3, Film } from 'lucide-react';
+import { Package, FileText, TrendingUp, Users, Calculator, DollarSign, Edit, QrCode, Printer, Search, CheckSquare, Square, Plus, Receipt, History, ClipboardList, Tag, BarChart3, Grid3X3, Film, Settings, Crown } from 'lucide-react';
 import BarcodeDisplay from '@/components/barcode-display';
 import { useToast } from '@/hooks/use-toast';
 import QRCode from 'qrcode';
+
+function SecondaryHomePageToggle() {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Query to get the secondary home page setting
+  const { data: secondaryPageSetting, isLoading } = useQuery({
+    queryKey: ['/api/settings/secondary_home_page_enabled'],
+    queryFn: async () => {
+      try {
+        const response = await apiRequest('GET', '/api/settings/secondary_home_page_enabled');
+        return response.json();
+      } catch (error) {
+        // Setting doesn't exist yet, return default
+        return { key: 'secondary_home_page_enabled', value: 'false' };
+      }
+    },
+  });
+
+  // Mutation to update the setting
+  const toggleMutation = useMutation({
+    mutationFn: async (enabled: boolean) => {
+      const response = await apiRequest('POST', '/api/settings', {
+        key: 'secondary_home_page_enabled',
+        value: enabled ? 'true' : 'false',
+        description: 'Enable/disable the royal-style secondary home page for special occasions'
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/settings/secondary_home_page_enabled'] });
+      toast({ 
+        title: "Success", 
+        description: "Secondary home page setting updated successfully" 
+      });
+    },
+    onError: () => {
+      toast({ 
+        title: "Error", 
+        description: "Failed to update secondary home page setting" 
+      });
+    }
+  });
+
+  const isEnabled = secondaryPageSetting?.value === 'true';
+
+  const handleToggle = (checked: boolean) => {
+    toggleMutation.mutate(checked);
+  };
+
+  return (
+    <Card className="bg-gradient-to-r from-purple-50 to-blue-50 border-purple-200" data-testid="secondary-home-page-toggle">
+      <CardHeader>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="bg-purple-100 p-2 rounded-lg">
+              <Crown className="h-6 w-6 text-purple-600" />
+            </div>
+            <div>
+              <CardTitle className="text-lg font-semibold text-gray-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Royal Secondary Home Page
+              </CardTitle>
+              <p className="text-sm text-gray-600 mt-1">
+                Enable the premium royal-style home page for special occasions and festivals
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Switch
+              id="secondary-page-toggle"
+              checked={isEnabled}
+              onCheckedChange={handleToggle}
+              disabled={isLoading || toggleMutation.isPending}
+              data-testid="switch-secondary-page"
+            />
+            <Label htmlFor="secondary-page-toggle" className="text-sm font-medium">
+              {isEnabled ? 'Enabled' : 'Disabled'}
+            </Label>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-start gap-3 p-4 bg-purple-50 rounded-lg border border-purple-200">
+          <Settings className="h-5 w-5 text-purple-600 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-sm text-purple-800 font-medium mb-1">
+              Royal Premium Design Features:
+            </p>
+            <ul className="text-xs text-purple-700 space-y-1">
+              <li>• Ultra-luxury premium layout with royal styling</li>
+              <li>• Perfect for festivals, special occasions, and promotions</li>
+              <li>• Single elegant layout (not multiple sections like main page)</li>
+              <li>• Premium gold and royal color scheme</li>
+            </ul>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function AdminDashboard() {
   const [location, setLocation] = useLocation();
@@ -761,6 +864,7 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="home-sections" className="space-y-6">
+            <SecondaryHomePageToggle />
             <HomeSectionsManagement />
           </TabsContent>
 

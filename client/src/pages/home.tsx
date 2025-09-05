@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { apiRequest } from '@/lib/queryClient';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import ProductCard from '@/components/product-card';
@@ -49,6 +50,312 @@ import broochesImage from '@assets/brooches_new.png';
 import bridalCollectionsImage from '@assets/bridal_new.png';
 import newArrivalsBackground from '@assets/image_1756713608055.png';
 import newArrivalsBackgroundNew from '@assets/new_arrivals_bg.png';
+
+// Royal Secondary Home Page Component
+function RoyalSecondaryHomePage({ 
+  allProducts, 
+  selectedCurrency 
+}: { 
+  allProducts: Product[];
+  selectedCurrency: Currency;
+}) {
+  // Get featured products for royal display
+  const featuredProducts = useMemo(() => 
+    allProducts.filter(product => product.isFeatured).slice(0, 12), 
+    [allProducts]
+  );
+
+  const newArrivals = useMemo(() => 
+    allProducts.filter(product => product.isNewArrival).slice(0, 8), 
+    [allProducts]
+  );
+
+  const goldProducts = useMemo(() => 
+    allProducts.filter(product => product.metalType === 'GOLD').slice(0, 6), 
+    [allProducts]
+  );
+
+  const diamondProducts = useMemo(() => 
+    allProducts.filter(product => product.metalType === 'DIAMOND').slice(0, 6), 
+    [allProducts]
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50">
+      <Header />
+      
+      {/* Royal Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-amber-900 to-yellow-800">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20"></div>
+          {/* Floating Royal Elements */}
+          <div className="absolute inset-0">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 bg-yellow-400 rounded-full opacity-60"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  y: [0, -20, 0],
+                  opacity: [0.3, 0.8, 0.3],
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 3 + Math.random() * 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Royal Content */}
+        <div className="relative z-10 text-center text-white px-4 max-w-6xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="mb-8"
+          >
+            <Crown className="h-16 w-16 mx-auto mb-6 text-yellow-400" />
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 bg-clip-text text-transparent" 
+                style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Royal Palaniappa Collection
+            </h1>
+            <p className="text-xl sm:text-2xl text-yellow-100 mb-8 max-w-3xl mx-auto font-light">
+              Experience the majesty of premium jewelry crafted for royalty
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+          >
+            <Button 
+              className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold px-8 py-4 text-lg rounded-full border-2 border-yellow-400 shadow-lg transform hover:scale-105 transition-all duration-300"
+              onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+            >
+              <Crown className="h-5 w-5 mr-2" />
+              Explore Royal Collection
+            </Button>
+            <Button 
+              variant="outline"
+              className="border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-semibold px-8 py-4 text-lg rounded-full bg-transparent backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+              onClick={() => window.location.href = '/collections'}
+            >
+              <Gem className="h-5 w-5 mr-2" />
+              View All Collections
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Royal Products */}
+      {featuredProducts.length > 0 && (
+        <section className="py-20 bg-gradient-to-br from-amber-50 to-yellow-100">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <Crown className="h-12 w-12 mx-auto mb-6 text-amber-600" />
+              <h2 className="text-4xl sm:text-5xl font-bold text-amber-900 mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Crown Jewels Collection
+              </h2>
+              <p className="text-xl text-amber-700 max-w-3xl mx-auto">
+                Handpicked masterpieces fit for royalty
+              </p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {featuredProducts.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-amber-200 hover:border-amber-400 transform hover:scale-105 transition-all duration-300"
+                >
+                  <ProductCard
+                    product={product}
+                    currency={selectedCurrency}
+                    showActions={true}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Royal Gold Collection */}
+      {goldProducts.length > 0 && (
+        <section className="py-20 bg-gradient-to-br from-yellow-100 to-amber-100">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <div className="flex justify-center items-center mb-6">
+                <Sparkles className="h-8 w-8 text-yellow-600 mr-3" />
+                <h2 className="text-4xl font-bold text-yellow-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                  Golden Majesty
+                </h2>
+                <Sparkles className="h-8 w-8 text-yellow-600 ml-3" />
+              </div>
+              <p className="text-lg text-yellow-800">Pure gold treasures of unparalleled elegance</p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {goldProducts.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-2xl shadow-lg overflow-hidden border border-yellow-300 hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                >
+                  <ProductCard
+                    product={product}
+                    currency={selectedCurrency}
+                    showActions={true}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Royal Diamond Collection */}
+      {diamondProducts.length > 0 && (
+        <section className="py-20 bg-gradient-to-br from-blue-50 to-purple-50">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <Diamond className="h-12 w-12 mx-auto mb-6 text-blue-600" />
+              <h2 className="text-4xl font-bold text-blue-900 mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Diamond Royalty
+              </h2>
+              <p className="text-lg text-blue-800">Brilliant diamonds for the most precious moments</p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {diamondProducts.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, rotateY: 15 }}
+                  whileInView={{ opacity: 1, rotateY: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl shadow-lg overflow-hidden border border-blue-200 hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                >
+                  <ProductCard
+                    product={product}
+                    currency={selectedCurrency}
+                    showActions={true}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* New Arrivals in Royal Style */}
+      {newArrivals.length > 0 && (
+        <section className="py-20 bg-gradient-to-br from-purple-100 to-pink-100">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <Star className="h-12 w-12 mx-auto mb-6 text-purple-600" />
+              <h2 className="text-4xl font-bold text-purple-900 mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                Royal New Arrivals
+              </h2>
+              <p className="text-lg text-purple-800">Fresh treasures added to our royal collection</p>
+            </motion.div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {newArrivals.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden border border-purple-200 hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+                >
+                  <ProductCard
+                    product={product}
+                    currency={selectedCurrency}
+                    showActions={true}
+                  />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Royal Call to Action */}
+      <section className="py-20 bg-gradient-to-br from-amber-900 via-yellow-900 to-orange-900 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto"
+          >
+            <Crown className="h-16 w-16 mx-auto mb-8 text-yellow-400" />
+            <h2 className="text-4xl sm:text-5xl font-bold mb-6" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Join the Royal Legacy
+            </h2>
+            <p className="text-xl mb-8 text-yellow-100 max-w-2xl mx-auto">
+              Experience the finest craftsmanship and timeless elegance that has adorned royalty for generations
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-semibold px-8 py-4 text-lg rounded-full transform hover:scale-105 transition-all duration-300"
+                onClick={() => window.location.href = '/collections'}
+              >
+                <Crown className="h-5 w-5 mr-2" />
+                Shop Royal Collection
+              </Button>
+              <Button 
+                variant="outline"
+                className="border-2 border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black font-semibold px-8 py-4 text-lg rounded-full bg-transparent backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
+                onClick={() => window.location.href = '/contact'}
+              >
+                <Users className="h-5 w-5 mr-2" />
+                Contact Royal Advisors
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <Footer />
+      <WhatsAppFloat />
+    </div>
+  );
+}
 
 // Auto-Scrolling Tilted Card Row Layout Component (1x6 Grid)
 function TiltedGridSection({
@@ -1217,6 +1524,24 @@ export default function Home() {
     refetchInterval: 2000, // Auto-refetch every 2 seconds to catch admin updates
   });
 
+  // Fetch secondary home page setting
+  const { data: secondaryPageSetting } = useQuery({
+    queryKey: ['/api/settings/secondary_home_page_enabled'],
+    queryFn: async () => {
+      try {
+        const response = await apiRequest('GET', '/api/settings/secondary_home_page_enabled');
+        return response.json();
+      } catch (error) {
+        // Setting doesn't exist yet, return default
+        return { key: 'secondary_home_page_enabled', value: 'false' };
+      }
+    },
+    staleTime: 10000, // Cache for 10 seconds
+    refetchOnWindowFocus: true,
+  });
+
+  const isSecondaryPageEnabled = secondaryPageSetting?.value === 'true';
+
   // Simple filtering for home page (not used directly but keeps type consistency)
   const filteredProducts = useMemo(() => {
     return allProducts.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
@@ -1378,6 +1703,17 @@ export default function Home() {
     }
   };
 
+  // If secondary page is enabled, show royal layout
+  if (isSecondaryPageEnabled) {
+    return (
+      <RoyalSecondaryHomePage 
+        allProducts={allProducts}
+        selectedCurrency={selectedCurrency}
+      />
+    );
+  }
+
+  // Regular homepage layout
   return (
     <div className="min-h-screen" data-testid="page-home" style={{ background: 'linear-gradient(135deg, #f8f4f0 0%, #e8ddd4 50%, #d4c5a9 100%)' }}>
       <Header
