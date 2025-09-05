@@ -62,6 +62,74 @@ export default function Header({ selectedCurrency, onCurrencyChange }: HeaderPro
             </div>
 
 
+            {/* Center Section - Metal Rates & Currency (Desktop Only) */}
+            <div className="hidden md:flex items-center space-x-3 flex-shrink-0">
+              {/* Metal Rates Dropdown */}
+              <MetalRatesDropdown selectedCurrency={selectedCurrency} />
+              
+              {/* Currency Selection */}
+              <Select value={selectedCurrency} onValueChange={onCurrencyChange} data-testid="select-currency-main">
+                <SelectTrigger className="bg-white/90 hover:bg-white border border-gray-300 rounded-full px-3 py-2 h-8 w-auto min-w-[100px] shadow-sm hover:shadow-md transition-all duration-200">
+                  <div className="flex items-center gap-2 cursor-pointer">
+                    {selectedCurrency === 'INR' ? (
+                      <div className="w-4 h-4 rounded-full overflow-hidden border border-gray-200">
+                        <svg viewBox="0 0 24 24" className="w-full h-full">
+                          <rect width="24" height="8" fill="#FF9933"/>
+                          <rect y="8" width="24" height="8" fill="#FFFFFF"/>
+                          <rect y="16" width="24" height="8" fill="#138808"/>
+                          <circle cx="12" cy="12" r="3" fill="#000080"/>
+                        </svg>
+                      </div>
+                    ) : (
+                      <div className="w-4 h-4 rounded-full overflow-hidden border border-gray-200">
+                        <svg viewBox="0 0 24 24" className="w-full h-full">
+                          <rect width="24" height="12" fill="#FFFFFF"/>
+                          <rect y="12" width="24" height="12" fill="#CE1126"/>
+                          <path d="M0 0 L8 6 L0 12 V8 L4 6 L0 4 Z" fill="#CE1126"/>
+                        </svg>
+                      </div>
+                    )}
+                    <span className="text-sm font-medium text-gray-800">
+                      {selectedCurrency === 'INR' ? 'India' : 'Bahrain'}
+                    </span>
+                  </div>
+                </SelectTrigger>
+                <SelectContent className="min-w-[140px] rounded-xl border border-gray-200 shadow-lg bg-white">
+                  <SelectItem value="INR" data-testid="option-inr-main" className="rounded-lg">
+                    <div className="flex items-center gap-3 py-1">
+                      <div className="w-5 h-5 rounded-full overflow-hidden border border-gray-200">
+                        <svg viewBox="0 0 24 24" className="w-full h-full">
+                          <rect width="24" height="8" fill="#FF9933"/>
+                          <rect y="8" width="24" height="8" fill="#FFFFFF"/>
+                          <rect y="16" width="24" height="8" fill="#138808"/>
+                          <circle cx="12" cy="12" r="3" fill="#000080"/>
+                        </svg>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-medium text-gray-900">India</span>
+                        <span className="text-xs text-gray-500">₹ INR</span>
+                      </div>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="BHD" data-testid="option-bhd-main" className="rounded-lg">
+                    <div className="flex items-center gap-3 py-1">
+                      <div className="w-5 h-5 rounded-full overflow-hidden border border-gray-200">
+                        <svg viewBox="0 0 24 24" className="w-full h-full">
+                          <rect width="24" height="12" fill="#FFFFFF"/>
+                          <rect y="12" width="24" height="12" fill="#CE1126"/>
+                          <path d="M0 0 L8 6 L0 12 V8 L4 6 L0 4 Z" fill="#CE1126"/>
+                        </svg>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-medium text-gray-900">Bahrain</span>
+                        <span className="text-xs text-gray-500">BD BHD</span>
+                      </div>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Right Section - Icons */}
             <div className="flex items-center space-x-0.5 md:space-x-4 flex-shrink-0">
 
@@ -107,14 +175,14 @@ export default function Header({ selectedCurrency, onCurrencyChange }: HeaderPro
             </div>
           </div>
 
-          {/* Second Header Row - Metal Rates & Currency */}
-          <div className="flex items-center justify-between h-10 border-t border-gray-100">
+          {/* Second Header Row - Metal Rates & Currency (Mobile Only) */}
+          <div className="md:hidden flex items-center justify-between h-10 border-t border-gray-100">
             {/* Left - Metal Rates Dropdown */}
             <div className="flex items-center">
               <MetalRatesDropdown selectedCurrency={selectedCurrency} />
             </div>
 
-            {/* Right - Currency Selection (Duplicate for convenience) */}
+            {/* Right - Currency Selection */}
             <div className="flex items-center">
               <Select value={selectedCurrency} onValueChange={onCurrencyChange} data-testid="select-currency-secondary">
                 <SelectTrigger className="bg-white/90 hover:bg-white border border-gray-300 rounded-full px-3 py-2 h-8 w-auto min-w-[100px] shadow-sm hover:shadow-md transition-all duration-200">
