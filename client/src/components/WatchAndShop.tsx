@@ -389,7 +389,7 @@ function VideoCard({ video, index, formatViewCount, formatPrice, handleVideoClic
     setIsPlaying(false);
   };
 
-  const handleVideoClick = (e: React.MouseEvent) => {
+  const handleVideoTap = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
       if (videoRef.current.paused) {
@@ -418,7 +418,7 @@ function VideoCard({ video, index, formatViewCount, formatPrice, handleVideoClic
                 playsInline
                 muted
                 loop={false}
-                onClick={handleVideoClick}
+                onClick={handleVideoTap}
                 onEnded={handleVideoEnd}
                 onError={() => setIsPlaying(false)}
               >
