@@ -2678,11 +2678,14 @@ export default function Home() {
             <motion.section 
               ref={royalContainerRef}
               key={section.id} 
-              className="relative bg-gray-50 dark:bg-gray-900 py-16 sm:py-20 lg:py-24"
+              className="relative py-16 sm:py-20 lg:py-24"
               data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
+              style={{
+                background: `linear-gradient(135deg, ${section.backgroundColor || '#fff8e1'} 0%, #f5f5dc 50%, #faf0e6 100%)`
+              }}
             >              
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
@@ -2751,10 +2754,6 @@ export default function Home() {
                                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
                                 
-                                {/* On Sale Badge */}
-                                <div className="absolute top-3 left-3 bg-gray-500/80 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-                                  On Sale
-                                </div>
                               </div>
                               
                               {/* Product Details */}
@@ -2763,13 +2762,12 @@ export default function Home() {
                                   {item.product.name}
                                 </h3>
                                 
-                                <div className="flex items-center gap-2">
-                                  <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                    {selectedCurrency === 'INR' ? `$ ${(item.product.priceInr / 83).toFixed(0)}` : `$ ${(Number(item.product.priceBhd) * 2.65).toFixed(0)}`}
-                                  </span>
-                                  <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                                    {selectedCurrency === 'INR' ? `$ ${(item.product.priceInr / 70).toFixed(0)}` : `$ ${(Number(item.product.priceBhd) * 3).toFixed(0)}`}
-                                  </span>
+                                <div className="text-lg font-semibold text-amber-600">
+                                  {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                                  {selectedCurrency === 'INR' ? 
+                                    parseFloat(item.product.priceInr).toLocaleString('en-IN') :
+                                    parseFloat(item.product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                                  }
                                 </div>
                               </div>
                             </div>
@@ -2793,8 +2791,8 @@ export default function Home() {
                           <div className="relative h-full flex flex-col">
                             
                             {/* Featured Badge */}
-                            <div className="absolute top-4 right-4 bg-white text-gray-900 text-xs px-3 py-1.5 rounded z-10 font-medium">
-                              JULY OFFERS
+                            <div className="absolute top-4 right-4 bg-orange-500 text-white text-xs px-3 py-1.5 rounded z-10 font-medium">
+                              FEATURED
                             </div>
                             
                             {/* Featured Product Image */}
@@ -2814,9 +2812,13 @@ export default function Home() {
                               <h3 className="font-medium text-lg mb-2 leading-tight">
                                 {section.items[0].product.name}
                               </h3>
-                              <p className="text-xl font-semibold">
-                                {selectedCurrency === 'INR' ? `$ ${(section.items[0].product.priceInr / 83).toFixed(0)}` : `$ ${(Number(section.items[0].product.priceBhd) * 2.65).toFixed(0)}`}
-                              </p>
+                              <div className="text-xl font-semibold text-amber-600">
+                                {selectedCurrency === 'INR' ? '₹' : 'BD '}
+                                {selectedCurrency === 'INR' ? 
+                                  parseFloat(section.items[0].product.priceInr).toLocaleString('en-IN') :
+                                  parseFloat(section.items[0].product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                                }
+                              </div>
                             </div>
                           </div>
                         </div>
