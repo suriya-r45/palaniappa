@@ -361,18 +361,40 @@ export default function VideoManagement() {
             <Card key={video.id} data-testid={`video-card-${video.id}`}>
               <CardContent className="p-4">
                 {/* Video Preview */}
-                <div className="aspect-video bg-gray-100 rounded-lg mb-3 overflow-hidden">
+                <div className="aspect-video bg-gray-100 rounded-lg mb-3 overflow-hidden relative">
                   {video.thumbnailUrl ? (
                     <img 
                       src={video.thumbnailUrl} 
                       alt={video.title}
                       className="w-full h-full object-cover"
+                      onError={(e) => {
+                        console.error('Thumbnail failed to load:', video.thumbnailUrl);
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `
+                            <div class="w-full h-full flex items-center justify-center bg-gray-200">
+                              <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                              </svg>
+                            </div>
+                          `;
+                        }
+                      }}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
+                    <div className="w-full h-full flex items-center justify-center bg-gray-200">
                       <Play className="w-8 h-8 text-gray-400" />
                     </div>
                   )}
+                  
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center">
+                      <Play className="w-5 h-5 text-black ml-0.5" />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Video Info */}

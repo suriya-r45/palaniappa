@@ -349,48 +349,139 @@ interface VideoCardProps {
 }
 
 function VideoCard({ video, index, formatViewCount, formatPrice, handleVideoClick, compact = false }: VideoCardProps) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const handleClick = async () => {
+    console.log('Card clicked for video:', video.title);
+    
+    if (isMobile && video.videoUrl) {
+      // Instagram-like behavior: play video inline on mobile
+      setIsPlaying(true);
+      
+      // Track view
+      try {
+        await fetch(`/api/videos/${video.id}/view`, { method: 'POST' });
+      } catch (error) {
+        console.error('Failed to track video view:', error);
+      }
+      
+      if (videoRef.current) {
+        videoRef.current.play();
+      }
+    } else {
+      // Desktop behavior: open modal
+      handleVideoClick(video);
+    }
+  };
+
+  const handleVideoEnd = () => {
+    setIsPlaying(false);
+  };
+
+  const handleVideoClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  };
+
   return (
     <div
       className={`${compact ? 'aspect-[9/16]' : 'aspect-[9/16]'} group cursor-pointer`}
       data-testid={`video-card-${index}`}
-      onClick={() => {
-        console.log('Card clicked for video:', video.title);
-        handleVideoClick(video);
-      }}
+      onClick={handleClick}
     >
       <Card className="h-full overflow-hidden bg-black rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
         <CardContent className="p-0 relative h-full">
-          {/* Video Thumbnail */}
+          {/* Video/Thumbnail */}
           <div className="relative h-full overflow-hidden">
-            <img
-              src={video.thumbnailUrl}
-              alt={video.title}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
+            {isPlaying && isMobile && video.videoUrl ? (
+              <video
+                ref={videoRef}
+                className="w-full h-full object-cover"
+                autoPlay
+                playsInline
+                muted
+                loop={false}
+                onClick={handleVideoClick}
+                onEnded={handleVideoEnd}
+                onError={() => setIsPlaying(false)}
+              >
+                <source src={video.videoUrl} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                src={video.thumbnailUrl}
+                alt={video.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                onError={(e) => {
+                  console.error('Thumbnail failed to load:', video.thumbnailUrl);
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent && parent.querySelector('.fallback-placeholder') === null) {
+                    const fallback = document.createElement('div');
+                    fallback.className = 'fallback-placeholder w-full h-full flex items-center justify-center bg-gray-200';
+                    fallback.innerHTML = `
+                      <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                    `;
+                    parent.appendChild(fallback);
+                  }
+                }}
+              />
+            )}
             
             {/* View Count Badge */}
-            <Badge className={`absolute top-1 left-1 bg-black/70 text-white border-none px-1 py-0.5 ${compact ? 'text-xs' : 'text-xs'}`}>
+            <Badge className={`absolute top-1 left-1 bg-black/70 text-white border-none px-1 py-0.5 ${compact ? 'text-xs' : 'text-xs'} z-10`}>
               <Eye className={`${compact ? 'w-2 h-2' : 'w-2 h-2'} mr-0.5`} />
               {formatViewCount(video.viewCount)}
             </Badge>
 
-            {/* Play Button Overlay */}
-            <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div className={`${compact ? 'w-6 h-6' : 'w-8 h-8 md:w-10 md:h-10'} bg-white/90 rounded-full flex items-center justify-center`}>
-                <Play className={`${compact ? 'w-3 h-3' : 'w-4 h-4 md:w-5 md:h-5'} text-black ml-0.5`} />
+            {/* Play Button Overlay - Hide when playing on mobile */}
+            {!(isPlaying && isMobile) && (
+              <div className={`absolute inset-0 bg-black/30 ${isMobile ? 'opacity-60' : 'opacity-0 group-hover:opacity-100'} transition-opacity duration-300 flex items-center justify-center`}>
+                <div className={`${compact ? 'w-6 h-6' : 'w-8 h-8 md:w-10 md:h-10'} bg-white/90 rounded-full flex items-center justify-center`}>
+                  <Play className={`${compact ? 'w-3 h-3' : 'w-4 h-4 md:w-5 md:h-5'} text-black ml-0.5`} />
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Video Duration Badge */}
             {video.duration && (
-              <Badge className={`absolute bottom-1 right-1 bg-black/70 text-white border-none px-1 py-0.5 ${compact ? 'text-xs' : 'text-xs'}`}>
+              <Badge className={`absolute bottom-1 right-1 bg-black/70 text-white border-none px-1 py-0.5 ${compact ? 'text-xs' : 'text-xs'} z-10`}>
                 {video.duration}s
               </Badge>
             )}
 
+            {/* Mobile Video Controls Overlay */}
+            {isPlaying && isMobile && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="bg-black/50 rounded-full p-2 opacity-0 transition-opacity">
+                  <Play className="w-4 h-4 text-white" />
+                </div>
+              </div>
+            )}
+
             {/* Product Info */}
-            {video.product && !compact && (
+            {video.product && !compact && !(isPlaying && isMobile) && (
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-2">
                 <h3 className="text-white text-xs font-medium mb-0.5 truncate">
                   {video.product.name}
