@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
@@ -21,10 +22,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { Product, Bill } from '@shared/schema';
 import { Currency } from '@/lib/currency';
-import { Package, FileText, TrendingUp, Users, Calculator, DollarSign, Edit, QrCode, Printer, Search, CheckSquare, Square, Plus, Receipt, History, ClipboardList, Tag, BarChart3, Grid3X3, Film, Settings, Crown } from 'lucide-react';
+import { Package, FileText, TrendingUp, Users, Calculator, DollarSign, Edit, QrCode, Printer, Search, CheckSquare, Square, Plus, Receipt, History, ClipboardList, Tag, BarChart3, Grid3X3, Film, Settings, Crown, Eye, EyeOff, Star, X } from 'lucide-react';
 import BarcodeDisplay from '@/components/barcode-display';
 import { useToast } from '@/hooks/use-toast';
 import QRCode from 'qrcode';
+import React from 'react';
 
 function SecondaryHomePageToggle() {
   const { toast } = useToast();
@@ -126,6 +128,273 @@ function SecondaryHomePageToggle() {
   );
 }
 
+// Product List Dialog Component
+interface ProductListDialogProps {
+  products: Product[];
+  selectedCurrency: Currency;
+  token: string | null;
+  queryClient: any;
+  toast: any;
+}
+
+function ProductListDialog({ 
+  products, 
+  selectedCurrency, 
+  token, 
+  queryClient, 
+  toast 
+}: ProductListDialogProps) {
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [showActiveOnly, setShowActiveOnly] = React.useState(false);
+
+  // Mutation to toggle product active status
+  const toggleProductActiveMutation = useMutation({
+    mutationFn: async ({ productId, isActive }: { productId: string, isActive: boolean }) => {
+      const response = await apiRequest('PATCH', `/api/products/${productId}`, {
+        isActive: isActive
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/products'] });
+      toast({ 
+        title: "Success", 
+        description: "Product status updated successfully" 
+      });
+    },
+    onError: () => {
+      toast({ 
+        title: "Error", 
+        description: "Failed to update product status", 
+        variant: "destructive"
+      });
+    }
+  });
+
+  // Mutation to add product to secondary home page
+  const addToSecondaryPageMutation = useMutation({
+    mutationFn: async (productId: string) => {
+      // First, get or create a "Secondary Home Page" section
+      let secondarySection;
+      try {
+        const sectionsResponse = await apiRequest('GET', '/api/home-sections');
+        const sections = await sectionsResponse.json();
+        secondarySection = sections.find((s: any) => s.title === 'Secondary Home Page' && s.layoutType === 'royal');
+        
+        if (!secondarySection) {
+          // Create the secondary section if it doesn't exist
+          const createResponse = await apiRequest('POST', '/api/home-sections', {
+            title: 'Secondary Home Page',
+            description: 'Products featured on the royal secondary home page',
+            layoutType: 'royal',
+            isActive: true,
+            displayOrder: 0
+          });
+          secondarySection = await createResponse.json();
+        }
+      } catch (error) {
+        console.error('Error managing secondary section:', error);
+        throw new Error('Failed to manage secondary home page section');
+      }
+
+      // Add the product to the secondary section
+      const response = await apiRequest('POST', `/api/home-sections/${secondarySection.id}/items`, {
+        productId: productId,
+        displayOrder: 0,
+        isActive: true
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/home-sections'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/home-sections/public'] });
+      toast({ 
+        title: "Success", 
+        description: "Product added to Secondary Home Page successfully" 
+      });
+    },
+    onError: (error: any) => {
+      toast({ 
+        title: "Error", 
+        description: error.message || "Failed to add product to Secondary Home Page", 
+        variant: "destructive"
+      });
+    }
+  });
+
+  // Filter products based on search and active status
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = !searchTerm || 
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.productCode?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.category.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesActiveFilter = !showActiveOnly || product.isActive;
+    
+    return matchesSearch && matchesActiveFilter;
+  });
+
+  return (
+    <DialogContent className="max-w-7xl max-h-[90vh] overflow-hidden flex flex-col">
+      <DialogHeader>
+        <DialogTitle className="text-2xl font-semibold" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          All Products ({products.length})
+        </DialogTitle>
+      </DialogHeader>
+      
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Search and Filter Controls */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6 p-1">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <input
+              type="text"
+              placeholder="Search by product name, code, or category..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              data-testid="input-search-products"
+            />
+          </div>
+          <div className="flex items-center space-x-2">
+            <Switch 
+              checked={showActiveOnly} 
+              onCheckedChange={setShowActiveOnly}
+              data-testid="switch-active-only"
+            />
+            <Label className="text-sm font-medium">Active products only</Label>
+          </div>
+        </div>
+
+        {/* Product Table */}
+        <div className="flex-1 overflow-auto border rounded-lg">
+          {filteredProducts.length === 0 ? (
+            <div className="flex items-center justify-center h-48 text-gray-500">
+              <div className="text-center">
+                <Package className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                <p className="text-lg font-medium">No products found</p>
+                <p className="text-sm">Try adjusting your search or filters</p>
+              </div>
+            </div>
+          ) : (
+            <table className="w-full">
+              <thead className="bg-gray-50 sticky top-0">
+                <tr className="border-b">
+                  <th className="text-left p-4 font-medium text-gray-700">Product Code</th>
+                  <th className="text-left p-4 font-medium text-gray-700">Product Name</th>
+                  <th className="text-left p-4 font-medium text-gray-700">Weight (g)</th>
+                  <th className="text-left p-4 font-medium text-gray-700">Stock</th>
+                  <th className="text-left p-4 font-medium text-gray-700">Price</th>
+                  <th className="text-center p-4 font-medium text-gray-700">Status</th>
+                  <th className="text-center p-4 font-medium text-gray-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {filteredProducts.map((product) => (
+                  <tr key={product.id} className="hover:bg-gray-50" data-testid={`row-product-${product.id}`}>
+                    <td className="p-4">
+                      <div className="flex items-center">
+                        <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono">
+                          {product.productCode || 'N/A'}
+                        </code>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex items-center space-x-3">
+                        {product.images && product.images.length > 0 && (
+                          <img 
+                            src={product.images[0]} 
+                            alt={product.name}
+                            className="w-10 h-10 rounded-lg object-cover border"
+                          />
+                        )}
+                        <div>
+                          <p className="font-medium text-gray-900">{product.name}</p>
+                          <p className="text-sm text-gray-500">{product.category}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="text-sm">
+                        <div className="font-medium text-gray-900">
+                          Gross: {parseFloat(product.grossWeight).toFixed(2)}g
+                        </div>
+                        <div className="text-gray-600">
+                          Net: {parseFloat(product.netWeight).toFixed(2)}g
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="flex items-center">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          product.stock === 0 
+                            ? 'bg-red-100 text-red-800' 
+                            : product.stock <= 5 
+                            ? 'bg-yellow-100 text-yellow-800' 
+                            : 'bg-green-100 text-green-800'
+                        }`}>
+                          {product.stock === 0 ? 'Out of Stock' : 
+                           product.stock <= 5 ? 'Low Stock' : 'In Stock'}
+                        </span>
+                        <span className="ml-2 text-sm text-gray-600">({product.stock})</span>
+                      </div>
+                    </td>
+                    <td className="p-4">
+                      <div className="text-sm">
+                        <div className="font-medium text-gray-900">
+                          {selectedCurrency === 'INR' ? '₹' : 'BD'} 
+                          {selectedCurrency === 'INR' 
+                            ? parseFloat(product.priceInr).toLocaleString('en-IN')
+                            : parseFloat(product.priceBhd).toLocaleString('en-BH', { minimumFractionDigits: 3 })
+                          }
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-4 text-center">
+                      <div className="flex items-center justify-center">
+                        <Switch 
+                          checked={product.isActive}
+                          onCheckedChange={(checked) => 
+                            toggleProductActiveMutation.mutate({ 
+                              productId: product.id, 
+                              isActive: checked 
+                            })
+                          }
+                          disabled={toggleProductActiveMutation.isPending}
+                          data-testid={`switch-active-${product.id}`}
+                        />
+                        <span className="ml-2 text-xs text-gray-600">
+                          {product.isActive ? 'Active' : 'Inactive'}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="p-4 text-center">
+                      <Button
+                        size="sm"
+                        onClick={() => addToSecondaryPageMutation.mutate(product.id)}
+                        disabled={addToSecondaryPageMutation.isPending || !product.isActive}
+                        className="bg-purple-600 hover:bg-purple-700 text-white text-xs px-2 py-1"
+                        data-testid={`button-add-secondary-${product.id}`}
+                      >
+                        <Star className="h-3 w-3 mr-1" />
+                        {addToSecondaryPageMutation.isPending ? 'Adding...' : 'Add to Secondary'}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        
+        <div className="mt-4 text-sm text-gray-600 p-1">
+          Showing {filteredProducts.length} of {products.length} products
+        </div>
+      </div>
+    </DialogContent>
+  );
+}
+
 export default function AdminDashboard() {
   const [location, setLocation] = useLocation();
   const { isAdmin, token } = useAuth();
@@ -144,6 +413,7 @@ export default function AdminDashboard() {
   const [productSearchTerm, setProductSearchTerm] = useState('');
   const [billSearchTerm, setBillSearchTerm] = useState('');
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
+  const [showProductList, setShowProductList] = useState(false);
 
   // Helper functions for product selection
   const handleProductSelect = (productId: string) => {
@@ -404,21 +674,30 @@ export default function AdminDashboard() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-          <Card data-testid="card-total-products" className="bg-white shadow-lg border border-gray-300 hover:shadow-xl transition-all duration-300 rounded-xl">
-            <CardContent className="p-4 md:p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="bg-blue-50 p-3 rounded-lg">
-                    <Package className="h-6 w-6 md:h-8 md:w-8 text-blue-600" />
+          <Dialog open={showProductList} onOpenChange={setShowProductList}>
+            <DialogTrigger asChild>
+              <Card data-testid="card-total-products" className="bg-white shadow-lg border border-gray-300 hover:shadow-xl transition-all duration-300 rounded-xl cursor-pointer hover:border-blue-400">
+                <CardContent className="p-4 md:p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="bg-blue-50 p-3 rounded-lg">
+                        <Package className="h-6 w-6 md:h-8 md:w-8 text-blue-600" />
+                      </div>
+                      <div className="ml-3 md:ml-4">
+                        <p className="text-xs md:text-sm font-medium text-gray-700" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Total Products</p>
+                        <p className="text-xl md:text-2xl font-semibold text-gray-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{totalProducts}</p>
+                        <p className="text-xs text-blue-600 font-medium mt-1">Click to view all</p>
+                      </div>
+                    </div>
+                    <div className="text-blue-600">
+                      <Eye className="h-5 w-5" />
+                    </div>
                   </div>
-                  <div className="ml-3 md:ml-4">
-                    <p className="text-xs md:text-sm font-medium text-gray-700" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Total Products</p>
-                    <p className="text-xl md:text-2xl font-semibold text-gray-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{totalProducts}</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            </DialogTrigger>
+            <ProductListDialog products={products} selectedCurrency={selectedCurrency} token={token} queryClient={queryClient} toast={toast} />
+          </Dialog>
 
           <Card data-testid="card-total-bills" className="bg-white shadow-lg border border-gray-300 hover:shadow-xl transition-all duration-300 rounded-xl">
             <CardContent className="p-4 md:p-6">

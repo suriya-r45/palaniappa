@@ -616,6 +616,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update product status (Admin only)
+  app.patch("/api/products/:id", authenticateToken, requireAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updateData = req.body;
+
+      // Validate updateData
+      if (typeof updateData.isActive === 'boolean') {
+        const updatedProduct = await storage.updateProduct(id, { isActive: updateData.isActive });
+        
+        if (!updatedProduct) {
+          return res.status(404).json({ error: 'Product not found' });
+        }
+
+        res.json(updatedProduct);
+      } else {
+        res.status(400).json({ error: 'Invalid update data' });
+      }
+    } catch (error) {
+      console.error('Error updating product:', error);
+      res.status(500).json({ error: 'Failed to update product' });
+    }
+  });
+
   // Video routes
   app.get("/api/videos", async (req, res) => {
     try {
