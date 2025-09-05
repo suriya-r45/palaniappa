@@ -2750,7 +2750,7 @@ export default function Home() {
                               <div className="aspect-square relative overflow-hidden rounded-t-lg bg-gray-100 dark:bg-gray-700">
                                 <img
                                   src={item.product.images?.[0] || ringsImage}
-                                  alt={item.product.name}
+                                  alt={item.product.name || 'Product'}
                                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                 />
                                 
@@ -2799,7 +2799,7 @@ export default function Home() {
                             <div className="flex-1 relative bg-gray-800">
                               <img
                                 src={section.items[0].product.images?.[0] || ringsImage}
-                                alt={section.items[0].product.name}
+                                alt={section.items[0].product.name || 'Featured Product'}
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                               />
                               
@@ -2835,7 +2835,7 @@ export default function Home() {
                   transition={{ duration: 0.6, delay: 1.5 }}
                 >
                   <button 
-                    className="w-10 h-10 rounded-full bg-amber-600 hover:bg-amber-700 text-white transition-colors flex items-center justify-center shadow-lg"
+                    className="w-10 h-10 rounded-full bg-black hover:bg-gray-800 text-white transition-colors flex items-center justify-center shadow-lg"
                     onClick={() => window.location.href = '/collections'}
                     aria-label="View previous products"
                   >
@@ -2844,7 +2844,7 @@ export default function Home() {
                     </svg>
                   </button>
                   <button 
-                    className="w-10 h-10 rounded-full bg-amber-600 hover:bg-amber-700 text-white transition-colors flex items-center justify-center shadow-lg"
+                    className="w-10 h-10 rounded-full bg-white hover:bg-gray-100 text-black border-2 border-gray-300 transition-colors flex items-center justify-center shadow-lg"
                     onClick={() => window.location.href = '/collections'}
                     aria-label="View more products"
                   >
