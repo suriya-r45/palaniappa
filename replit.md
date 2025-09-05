@@ -1,69 +1,87 @@
-# Jewelry Business Full-Stack Application
+# Palaniappa Jewellers E-Commerce Platform
 
 ## Overview
-A comprehensive jewelry e-commerce platform built with React frontend and Express.js backend, featuring product management, shopping cart, user authentication, and payment processing.
+A full-stack jewelry e-commerce application built with React frontend and Express backend. The platform features product management, cart functionality, order processing, payment integration, and administrative tools for managing a jewelry business.
 
-## Project Structure
-- **Frontend**: React with TypeScript, Vite, TailwindCSS, shadcn/ui components
-- **Backend**: Express.js with TypeScript, Drizzle ORM, PostgreSQL
-- **Authentication**: JWT-based with bcrypt password hashing
-- **Payments**: Stripe integration (requires STRIPE_SECRET_KEY)
-- **SMS**: Twilio integration for notifications (requires credentials)
+## Current State
+✅ **Successfully Configured for Replit Environment**
+- Database: PostgreSQL configured and migrations applied
+- Frontend: React with Vite, serving on port 5000
+- Backend: Express.js API with proper CORS and host configuration
+- Development workflow: Running successfully
+- Deployment: Configured for autoscale deployment
 
-## Technology Stack
-- **Frontend**: React 18, Vite, TailwindCSS, Framer Motion, Radix UI
-- **Backend**: Node.js, Express.js, TypeScript
+## Architecture
+
+### Frontend (React + Vite)
+- **Framework**: React 18 with TypeScript
+- **Routing**: Wouter for client-side routing
+- **UI Components**: Radix UI with shadcn/ui components
+- **Styling**: Tailwind CSS with custom theming
+- **State Management**: TanStack Query for server state
+- **Forms**: React Hook Form with Zod validation
+
+### Backend (Express + Node.js)
+- **Framework**: Express.js with TypeScript
 - **Database**: PostgreSQL with Drizzle ORM
-- **Auth**: JWT, bcrypt, Passport.js
-- **Payment**: Stripe
-- **File Upload**: Multer with image processing
-- **Notifications**: Twilio SMS
+- **Authentication**: JWT-based authentication
+- **File Upload**: Multer for image handling
+- **Payment Processing**: Stripe integration (optional)
+- **SMS Notifications**: Twilio integration (optional)
 
-## Database Schema
-- Users with role-based access (admin/guest)
-- Products with detailed jewelry specifications (weight, material, pricing)
-- Shopping cart functionality
-- Metal rates management
-- Order tracking and estimates
-- Categories and collections
+### Key Features
+- Product catalog with categories and filters
+- Shopping cart and checkout functionality
+- Admin dashboard for product/order management
+- Metal rates management system
+- Barcode/QR code generation for products
+- Image processing with vintage effects
+- Shipping zone and method management
+- Estimate generation and billing
+- Mobile-responsive design
 
 ## Environment Configuration
-- Database is configured and running on Replit PostgreSQL
-- Development server runs on port 5000 with proper proxy configuration
-- Vite development server configured for Replit environment
 
-## Current Status
-- ✅ Database created and migrations applied
-- ✅ Frontend and backend integrated and running on port 5000
-- ✅ All API endpoints functional
-- ✅ Vite configuration optimized for Replit proxy with allowedHosts: true
-- ✅ Workflow configured with webview output type and JWT_SECRET
-- ✅ Deployment configuration set up for autoscale with environment variables
-- ✅ Static metal rates and shipping data initialized
-- ✅ Application successfully running and tested
-- ⚠️ Requires STRIPE_SECRET_KEY for payment features
-- ⚠️ Requires Twilio credentials for SMS features
+### Required Environment Variables
+- `DATABASE_URL` - PostgreSQL connection string (✅ configured)
+- `JWT_SECRET` - JWT signing secret (✅ configured)
 
-## Key Features
-- Product catalog with advanced filtering
-- Shopping cart with session management
-- User authentication and profiles
-- Admin dashboard for product/order management
-- Metal rates tracking
-- Barcode generation for products
-- WhatsApp integration for customer support
-- Responsive mobile-first design
+### Optional Environment Variables
+- `STRIPE_SECRET_KEY` - For payment processing
+- `TWILIO_ACCOUNT_SID` & `TWILIO_AUTH_TOKEN` - For SMS notifications
+- `ADMIN_EMAIL`, `ADMIN_MOBILE`, `ADMIN_PASSWORD` - Admin credentials
 
-## Development Notes
-- Uses static metal rates (no live API) for development
-- File uploads stored in /uploads directory
-- Attached assets served from /attached_assets
-- Images processed with Sharp for optimization
-- Vintage effects available for product photos
+## Project Structure
+```
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/          # Page components
+│   │   ├── hooks/          # Custom React hooks
+│   │   └── lib/            # Utility functions
+├── server/                 # Express backend
+│   ├── services/           # Business logic services
+│   ├── utils/              # Utility functions
+│   └── routes.ts           # API routes
+├── shared/                 # Shared types and schemas
+├── migrations/             # Database migrations
+└── uploads/                # File upload storage
+```
 
-## Recent Changes (September 2025)
-- Successfully imported from GitHub
-- Database schema applied and initialized
-- All dependencies installed and configured
-- Workflow configured for Replit environment
-- Frontend proxy configuration verified working
+## Recent Changes (Session: September 5, 2025)
+- ✅ Configured PostgreSQL database and applied migrations
+- ✅ Set up JWT_SECRET environment variable
+- ✅ Configured workflow for development server
+- ✅ Verified frontend/backend integration
+- ✅ Configured deployment settings for production
+
+## Development Workflow
+- **Start Development**: `npm run dev` - Runs both frontend and backend
+- **Build for Production**: `npm run build` - Builds frontend and backend
+- **Database Migrations**: `npm run db:push` - Applies schema changes
+
+## User Preferences
+- Modern, clean UI design with jewelry-appropriate styling
+- Mobile-first responsive design
+- Professional admin interface for business management
+- Performance optimized for product catalog browsing
