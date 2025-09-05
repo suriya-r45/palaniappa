@@ -50,7 +50,7 @@ import bridalCollectionsImage from '@assets/bridal_new.png';
 import newArrivalsBackground from '@assets/image_1756713608055.png';
 import newArrivalsBackgroundNew from '@assets/new_arrivals_bg.png';
 
-// 3D Curved Carousel Component - Working Version
+// 3D Curved Carousel Component with Auto-Scroll
 function CurvedCarouselSection({ 
   section, 
   selectedCurrency 
@@ -59,12 +59,25 @@ function CurvedCarouselSection({
   selectedCurrency: Currency;
 }) {
   const [angle, setAngle] = useState(0);
+  const [startX, setStartX] = useState(0);
   const displayItems = section.items; // Use your actual 5 products
+  
+  // Calculate which card is currently active (facing front)
+  const activeIndex = Math.round(((angle % 360) / -72) + displayItems.length) % displayItems.length;
   
   const rotate = (direction: 'left' | 'right') => {
     const angleStep = 72; // 360 / 5 products = 72 degrees
     setAngle(prev => prev + (direction === 'left' ? angleStep : -angleStep));
   };
+
+  // Auto-scroll functionality
+  useEffect(() => {
+    const autoRotate = setInterval(() => {
+      rotate('right'); // Auto-rotate to the right every 4 seconds
+    }, 4000);
+
+    return () => clearInterval(autoRotate); // Cleanup on unmount
+  }, []);
 
   return (
     <section 
@@ -89,27 +102,43 @@ function CurvedCarouselSection({
           <div 
             className="relative w-full max-w-5xl h-[500px] mx-auto"
             style={{ perspective: '1200px' }}
+            /* Touch/Swipe Support for Mobile */
+            onTouchStart={(e) => setStartX(e.touches[0].clientX)}
+            onTouchEnd={(e) => {
+              const delta = e.changedTouches[0].clientX - startX;
+              if (delta > 50) rotate('left');
+              else if (delta < -50) rotate('right');
+            }}
           >
-            <div
-              className="absolute w-full h-full transition-transform duration-700 ease-out"
-              style={{
-                transformStyle: 'preserve-3d',
-                transform: `rotateY(${angle}deg)`,
-              }}
+            <motion.div
+              className="absolute w-full h-full"
+              animate={{ rotateY: angle }}
+              transition={{ type: "spring", stiffness: 60, damping: 12 }}
+              style={{ transformStyle: 'preserve-3d' }}
             >
               {displayItems.map((item, index) => {
                 const itemAngle = index * 72; // 72 degrees apart (360/5)
+                const isActive = index === activeIndex;
                 
                 return (
-                  <div
+                  <motion.div
                     key={item.id}
-                    className="absolute w-64 h-80 p-6 bg-white rounded-3xl shadow-2xl cursor-pointer group overflow-hidden hover:shadow-3xl transition-all duration-300"
+                    className={`absolute w-64 h-80 p-6 bg-white rounded-3xl cursor-pointer group overflow-hidden transition-all duration-500 ${
+                      isActive 
+                        ? 'shadow-3xl brightness-100 z-10' 
+                        : 'shadow-lg brightness-75 blur-[1px] z-0'
+                    }`}
                     style={{
-                      transform: `rotateY(${itemAngle}deg) translateZ(400px)`,
+                      transform: `rotateY(${itemAngle}deg) translateZ(400px) scale(${isActive ? 1.2 : 1})`,
+                      opacity: isActive ? 1 : 0.6,
                       left: '50%',
                       top: '50%',
                       marginLeft: '-128px', // Half width
                       marginTop: '-160px', // Half height
+                    }}
+                    whileHover={{ 
+                      scale: isActive ? 1.25 : 1.05,
+                      y: -10,
                     }}
                     onClick={() => window.location.href = `/product/${item.product.id}`}
                     data-testid={`curved-grid-item-${index}`}
@@ -142,10 +171,10 @@ function CurvedCarouselSection({
                         }
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           </div>
 
           {/* Navigation Controls */}
