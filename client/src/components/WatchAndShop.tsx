@@ -71,13 +71,15 @@ export default function WatchAndShop() {
   };
 
   // Desktop: Show first 7 videos in grid, rest are scrollable
-  // Mobile: Show first 2 videos in grid, rest are scrollable
-  const gridVideos = videos.slice(0, isMobile ? 2 : 7);
-  const scrollableVideos = videos.slice(isMobile ? 2 : 7);
+  // Mobile: All videos are manually scrollable in 1x2 grid
+  const gridVideos = videos.slice(0, isMobile ? 0 : 7);
+  const scrollableVideos = isMobile ? videos : videos.slice(7);
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
-      const newPosition = Math.max(0, scrollPosition - 300);
+      // For mobile 1x2 grid, scroll by 2 videos width (288px), for desktop scroll by 300px
+      const scrollAmount = isMobile ? 288 : 300;
+      const newPosition = Math.max(0, scrollPosition - scrollAmount);
       setScrollPosition(newPosition);
       scrollContainerRef.current.scrollTo({
         left: newPosition,
@@ -89,7 +91,9 @@ export default function WatchAndShop() {
   const scrollRight = () => {
     if (scrollContainerRef.current) {
       const maxScroll = scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth;
-      const newPosition = Math.min(maxScroll, scrollPosition + 300);
+      // For mobile 1x2 grid, scroll by 2 videos width (288px), for desktop scroll by 300px
+      const scrollAmount = isMobile ? 288 : 300;
+      const newPosition = Math.min(maxScroll, scrollPosition + scrollAmount);
       setScrollPosition(newPosition);
       scrollContainerRef.current.scrollTo({
         left: newPosition,
@@ -195,36 +199,47 @@ export default function WatchAndShop() {
               {/* Left Scroll Arrow */}
               <Button
                 onClick={scrollLeft}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg hover:bg-white dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-600 -ml-4"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-8 md:h-8 rounded-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 text-white shadow-xl hover:shadow-2xl border border-slate-600 transition-all duration-300 -ml-4"
                 data-testid="scroll-left-button"
               >
-                <ChevronLeft className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                <ChevronLeft className="w-5 h-5 md:w-4 md:h-4" />
               </Button>
 
               {/* Right Scroll Arrow */}
               <Button
                 onClick={scrollRight}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white/90 dark:bg-gray-800/90 shadow-lg hover:bg-white dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-600 -mr-4"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-8 md:h-8 rounded-full bg-gradient-to-r from-slate-800 to-slate-900 hover:from-slate-700 hover:to-slate-800 text-white shadow-xl hover:shadow-2xl border border-slate-600 transition-all duration-300 -mr-4"
                 data-testid="scroll-right-button"
               >
-                <ChevronRight className="w-4 h-4 text-gray-700 dark:text-gray-300" />
+                <ChevronRight className="w-5 h-5 md:w-4 md:h-4" />
               </Button>
 
               {/* Scrollable Container */}
               <div
                 ref={scrollContainerRef}
-                className="flex gap-2 md:gap-4 overflow-x-auto scroll-smooth scrollbar-hide px-8"
+                className={`${
+                  isMobile 
+                    ? 'grid grid-cols-2 gap-2 overflow-x-auto scroll-smooth scrollbar-hide px-8' 
+                    : 'flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide px-8'
+                } ${isMobile ? 'auto-cols-max grid-flow-col' : ''}`}
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {scrollableVideos.map((video, index) => (
-                  <div key={video.id} className="flex-shrink-0 w-24 md:w-32">
+                  <div 
+                    key={video.id} 
+                    className={`${
+                      isMobile 
+                        ? 'col-span-1 w-36' 
+                        : 'flex-shrink-0 w-32'
+                    }`}
+                  >
                     <VideoCard
                       video={video}
                       index={index + gridVideos.length}
                       formatViewCount={formatViewCount}
                       formatPrice={formatPrice}
                       handleVideoClick={handleVideoClick}
-                      compact={true}
+                      compact={!isMobile}
                     />
                   </div>
                 ))}
