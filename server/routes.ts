@@ -666,13 +666,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         videoUrl = `/uploads/${videoFilename}`;
       }
       
-      // Handle thumbnail upload
+      // Handle thumbnail upload or auto-generate from product image
       if (files.thumbnail && files.thumbnail[0]) {
         const thumbnailFile = files.thumbnail[0];
         const thumbnailFilename = `thumb-${Date.now()}-${thumbnailFile.originalname}`;
         const thumbnailFilepath = path.join(uploadsDir, thumbnailFilename);
         await fs.promises.rename(thumbnailFile.path, thumbnailFilepath);
         thumbnailUrl = `/uploads/${thumbnailFilename}`;
+      } else if (videoData.productId) {
+        // Auto-generate thumbnail from product image
+        try {
+          const product = await storage.getProduct(videoData.productId);
+          if (product && product.images && product.images.length > 0) {
+            // Use the first product image as thumbnail
+            thumbnailUrl = product.images[0];
+            console.log(`Auto-generated thumbnail from product image: ${thumbnailUrl}`);
+          }
+        } catch (error) {
+          console.error('Failed to get product for thumbnail generation:', error);
+        }
       }
       
       const video = await storage.createVideo({

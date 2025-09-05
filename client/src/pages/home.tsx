@@ -130,7 +130,9 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
       amount: selectedCurrency === 'INR' ? '₹15,000' : 'BD 75',
       value: selectedCurrency === 'INR' ? 15000 : 75,
       description: 'Perfect starter pieces',
-      gradient: 'from-purple-500 via-pink-500 to-rose-500',
+      gradient: 'from-rose-400 via-pink-500 to-purple-600',
+      glowColor: 'bg-pink-500/20',
+      icon: '💎',
       size: 'small'
     },
     {
@@ -139,7 +141,9 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
       amount: selectedCurrency === 'INR' ? '₹30,000' : 'BD 150',
       value: selectedCurrency === 'INR' ? 30000 : 150,
       description: 'Elegant everyday jewelry',
-      gradient: 'from-amber-400 via-yellow-500 to-orange-500',
+      gradient: 'from-amber-400 via-orange-500 to-red-500',
+      glowColor: 'bg-orange-500/20',
+      icon: '✨',
       size: 'medium'
     },
     {
@@ -148,7 +152,9 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
       amount: selectedCurrency === 'INR' ? '₹60,000' : 'BD 300',
       value: selectedCurrency === 'INR' ? 60000 : 300,
       description: 'Luxury statement pieces',
-      gradient: 'from-emerald-400 via-teal-500 to-cyan-500',
+      gradient: 'from-emerald-400 via-teal-500 to-blue-600',
+      glowColor: 'bg-teal-500/20',
+      icon: '👑',
       size: 'large'
     }
   ];
@@ -300,38 +306,57 @@ function ShopByBudgetSection({ selectedCurrency }: { selectedCurrency: Currency 
                     }}
                   />
                   
+                  {/* Glow Effect */}
+                  <div 
+                    className={`absolute inset-0 ${budget.glowColor} rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 -z-10 scale-150`}
+                  />
+                  
                   {/* Content */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-4">
-                    {/* Black Jewelry Icon */}
-                    <div className="absolute top-4 left-4 opacity-20">
-                      {budget.size === 'small' && <Diamond className="w-6 h-6 text-black" />}
-                      {budget.size === 'medium' && <Crown className="w-8 h-8 text-black" />}
-                      {budget.size === 'large' && <Gem className="w-6 h-6 text-black" />}
+                    {/* Icon Badge */}
+                    <div className="absolute top-3 left-3 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+                      <span className="text-lg">{budget.icon}</span>
                     </div>
                     
-                    {/* Black Accent Lines */}
-                    <div className="absolute bottom-4 right-4 opacity-25">
-                      <div className="w-8 h-0.5 bg-black mb-1"></div>
-                      <div className="w-6 h-0.5 bg-black mb-1"></div>
-                      <div className="w-4 h-0.5 bg-black"></div>
+                    {/* Decorative Pattern */}
+                    <div className="absolute bottom-3 right-3 opacity-30">
+                      <div className="grid grid-cols-3 gap-1">
+                        {[...Array(9)].map((_, i) => (
+                          <div key={i} className="w-1 h-1 bg-white rounded-full opacity-60" />
+                        ))}
+                      </div>
                     </div>
                     
-                    <div className="space-y-2 relative z-10">
-                      <div className={`font-light ${textSizes[budget.size] || textSizes['medium']}`} style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+                    <div className="space-y-3 relative z-10">
+                      {/* Label */}
+                      <div className={`font-light ${textSizes[budget.size] || textSizes['medium']} tracking-wide`} style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                         {budget.label}
                       </div>
-                      <div className={`font-bold ${budget.size === 'medium' ? 'text-2xl md:text-4xl' : 'text-xl md:text-2xl'}`} style={{ fontFamily: 'Playfair Display, serif' }}>
+                      
+                      {/* Amount */}
+                      <div className={`font-bold ${budget.size === 'medium' ? 'text-3xl md:text-5xl' : 'text-2xl md:text-3xl'} leading-none drop-shadow-lg`} style={{ fontFamily: 'Playfair Display, serif' }}>
                         {budget.amount}
                       </div>
-                      <div className="text-xs md:text-sm font-medium opacity-90 max-w-32">
+                      
+                      {/* Description */}
+                      <div className="text-sm md:text-base font-medium opacity-95 max-w-36 leading-relaxed">
                         {budget.description}
                       </div>
+                      
+                      {/* Shop Now Button */}
+                      <motion.div 
+                        className="mt-4 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-xs font-semibold tracking-wide border border-white/30"
+                        whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.3)' }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        SHOP NOW
+                      </motion.div>
                     </div>
                     
                     {/* Arrow indicator */}
                     <motion.div 
-                      className="absolute bottom-6 right-6 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      whileHover={{ scale: 1.1 }}
+                      className="absolute bottom-4 right-4 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg"
+                      whileHover={{ scale: 1.2 }}
                     >
                       <ArrowRight className="w-4 h-4" />
                     </motion.div>
