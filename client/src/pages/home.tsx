@@ -2672,212 +2672,176 @@ export default function Home() {
           );
         }
 
-        // ROYAL LAYOUT: Luxury Diamond Constellation with Framer Motion
+        // ROYAL LAYOUT: Exact Layout from Reference Image
         if (section.layoutType === 'royal') {
           return (
             <motion.section 
               ref={royalContainerRef}
               key={section.id} 
-              className="py-24 relative overflow-hidden"
+              className="relative bg-gray-50 dark:bg-gray-900 py-16 sm:py-20 lg:py-24"
               data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
-              style={{
-                background: 'radial-gradient(ellipse at center, #0f0c29 0%, #24243e 50%, #302b63 100%)'
-              }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-            >
-              {/* Animated Background Particles */}
-              <div className="absolute inset-0">
-                {[...Array(15)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-1 h-1 bg-amber-400 rounded-full"
-                    initial={{ 
-                      x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
-                      y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
-                      opacity: 0
-                    }}
-                    animate={{
-                      x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
-                      y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
-                      opacity: [0, 1, 0]
-                    }}
-                    transition={{
-                      duration: 4 + Math.random() * 4,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: Math.random() * 2
-                    }}
-                  />
-                ))}
-              </div>
-              
-              <div className="max-w-7xl mx-auto px-6 relative z-10">
-                {/* Animated Header */}
+              transition={{ duration: 0.8 }}
+            >              
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                {/* Header Section */}
                 <motion.div 
-                  className="text-center mb-20"
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="text-center mb-12 sm:mb-16"
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
+                  transition={{ duration: 0.6 }}
                 >
-                  <motion.div 
-                    className="flex items-center justify-center mb-8"
-                    initial={{ scale: 0 }}
-                    animate={royalIsInView ? { scale: 1 } : { scale: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
-                    <motion.div 
-                      className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
-                      initial={{ width: 0 }}
-                      animate={royalIsInView ? { width: '4rem' } : { width: 0 }}
-                      transition={{ duration: 0.8, delay: 0.6 }}
-                    />
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                    >
-                      <Diamond className="w-8 h-8 text-amber-400 mx-6" />
-                    </motion.div>
-                    <motion.div 
-                      className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
-                      initial={{ width: 0 }}
-                      animate={royalIsInView ? { width: '4rem' } : { width: 0 }}
-                      transition={{ duration: 0.8, delay: 0.6 }}
-                    />
-                  </motion.div>
-                  
                   <motion.h2 
-                    className="text-5xl md:text-7xl font-thin text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 mb-8"
-                    style={{ fontFamily: 'Playfair Display, serif' }}
-                    initial={{ y: 30, opacity: 0 }}
-                    animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 30, opacity: 0 }}
-                    transition={{ duration: 0.8, delay: 0.8 }}
+                    className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-800 dark:text-gray-100 mb-4 tracking-wide"
+                    style={{ fontFamily: 'serif' }}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
                   >
                     {section.title}
                   </motion.h2>
                   
                   {section.description && (
                     <motion.p 
-                      className="text-xl text-amber-200/80 max-w-3xl mx-auto font-light"
-                      initial={{ y: 20, opacity: 0 }}
-                      animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                      transition={{ duration: 0.8, delay: 1 }}
+                      className="text-sm sm:text-base text-gray-600 dark:text-gray-400 font-light leading-relaxed max-w-2xl mx-auto"
+                      initial={{ y: 15, opacity: 0 }}
+                      animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 15, opacity: 0 }}
+                      transition={{ duration: 0.6, delay: 0.4 }}
                     >
                       {section.description}
                     </motion.p>
                   )}
                 </motion.div>
-                
-                {/* Modern Bento Grid Layout */}
+
+                {/* Main Layout - 3 Products Left + 1 Featured Right */}
                 {section.items && section.items.length > 0 && (
                   <motion.div 
-                    className="grid grid-cols-4 gap-6 auto-rows-[200px]"
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={royalIsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                    transition={{ duration: 1, delay: 1.2 }}
+                    className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8"
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={royalIsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                    transition={{ duration: 0.8, delay: 0.6 }}
                   >
-                    {section.items.slice(0, 8).map((item, index) => {
-                      // Modern Bento layout patterns
-                      const layouts = [
-                        'col-span-2 row-span-2', // Large square
-                        'col-span-1 row-span-1', // Small
-                        'col-span-1 row-span-2', // Tall
-                        'col-span-2 row-span-1', // Wide
-                        'col-span-1 row-span-1', // Small
-                        'col-span-1 row-span-1', // Small
-                        'col-span-2 row-span-1', // Wide
-                        'col-span-1 row-span-1'  // Small
-                      ];
-                      
-                      const layout = layouts[index % layouts.length];
-                      const isLarge = layout.includes('col-span-2') && layout.includes('row-span-2');
-                      
-                      return (
-                        <motion.div 
-                          key={item.id} 
-                          className={`group cursor-pointer ${layout}`}
-                          onClick={() => handleViewAllClick(item.product.category)}
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={royalIsInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
-                          transition={{ 
-                            duration: 0.6, 
-                            delay: 1.4 + index * 0.1,
-                            type: "spring",
-                            bounce: 0.3
-                          }}
-                          whileHover={{ 
-                            scale: 1.05, 
-                            zIndex: 20,
-                            boxShadow: "0 20px 40px rgba(245, 158, 11, 0.3)"
-                          }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <div className="h-full bg-gradient-to-br from-amber-500/20 to-purple-600/30 backdrop-blur-sm border border-amber-400/30 rounded-xl overflow-hidden relative">
-                            <motion.img
-                              src={item.product.images?.[0] || ringsImage}
-                              alt={item.product.name}
-                              className="w-full h-full object-cover"
-                              whileHover={{ scale: 1.1 }}
-                              transition={{ duration: 0.4 }}
-                            />
-                            
-                            {/* Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-4">
-                              <h3 className={`text-white font-semibold mb-1 line-clamp-2 ${isLarge ? 'text-lg' : 'text-sm'}`}>
-                                {item.product.name}
-                              </h3>
-                              <p className={`text-amber-300 font-bold ${isLarge ? 'text-base' : 'text-xs'}`}>
-                                {selectedCurrency === 'INR' ? `₹${item.product.priceInr?.toLocaleString()}` : `BD ${Number(item.product.priceBhd)?.toFixed(3)}`}
-                              </p>
+                    
+                    {/* Left Side - 3 Product Grid */}
+                    <div className="lg:col-span-3">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                        {section.items.slice(0, 3).map((item, index) => (
+                          <motion.div 
+                            key={item.id}
+                            className="group cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+                            onClick={() => handleViewAllClick(item.product.category)}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={royalIsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                            transition={{ 
+                              duration: 0.5, 
+                              delay: 0.8 + (index * 0.15),
+                              ease: "easeOut"
+                            }}
+                            whileHover={{ y: -4 }}
+                          >
+                            <div className="relative">
                               
-                              {isLarge && (
-                                <motion.div 
-                                  className="absolute top-4 right-4 bg-amber-500 text-black px-3 py-1 rounded-full text-sm font-bold"
-                                  animate={{ 
-                                    boxShadow: ['0 0 0 0 rgba(245, 158, 11, 0.7)', '0 0 0 8px rgba(245, 158, 11, 0)', '0 0 0 0 rgba(245, 158, 11, 0)'] 
-                                  }}
-                                  transition={{ duration: 2, repeat: Infinity }}
-                                >
-                                  ✨ FEATURED
-                                </motion.div>
-                              )}
+                              {/* Product Image */}
+                              <div className="aspect-square relative overflow-hidden rounded-t-lg bg-gray-100 dark:bg-gray-700">
+                                <img
+                                  src={item.product.images?.[0] || ringsImage}
+                                  alt={item.product.name}
+                                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                />
+                                
+                                {/* On Sale Badge */}
+                                <div className="absolute top-3 left-3 bg-gray-500/80 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
+                                  On Sale
+                                </div>
+                              </div>
+                              
+                              {/* Product Details */}
+                              <div className="p-4">
+                                <h3 className="font-medium text-gray-800 dark:text-gray-200 text-sm sm:text-base mb-2 line-clamp-1">
+                                  {item.product.name}
+                                </h3>
+                                
+                                <div className="flex items-center gap-2">
+                                  <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                    {selectedCurrency === 'INR' ? `$ ${(item.product.priceInr / 83).toFixed(0)}` : `$ ${(Number(item.product.priceBhd) * 2.65).toFixed(0)}`}
+                                  </span>
+                                  <span className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                                    {selectedCurrency === 'INR' ? `$ ${(item.product.priceInr / 70).toFixed(0)}` : `$ ${(Number(item.product.priceBhd) * 3).toFixed(0)}`}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Right Side - Featured Product */}
+                    {section.items[0] && (
+                      <motion.div 
+                        className="lg:col-span-1"
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={royalIsInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
+                        transition={{ duration: 0.6, delay: 1.2 }}
+                      >
+                        <div 
+                          className="group cursor-pointer bg-gray-900 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full"
+                          onClick={() => handleViewAllClick(section.items[0].product.category)}
+                        >
+                          <div className="relative h-full flex flex-col">
+                            
+                            {/* Featured Badge */}
+                            <div className="absolute top-4 right-4 bg-white text-gray-900 text-xs px-3 py-1.5 rounded z-10 font-medium">
+                              JULY OFFERS
+                            </div>
+                            
+                            {/* Featured Product Image */}
+                            <div className="flex-1 relative bg-gray-800">
+                              <img
+                                src={section.items[0].product.images?.[0] || ringsImage}
+                                alt={section.items[0].product.name}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                              />
+                              
+                              {/* Dark overlay for better text contrast */}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                            </div>
+                            
+                            {/* Featured Product Details */}
+                            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                              <h3 className="font-medium text-lg mb-2 leading-tight">
+                                {section.items[0].product.name}
+                              </h3>
+                              <p className="text-xl font-semibold">
+                                {selectedCurrency === 'INR' ? `$ ${(section.items[0].product.priceInr / 83).toFixed(0)}` : `$ ${(Number(section.items[0].product.priceBhd) * 2.65).toFixed(0)}`}
+                              </p>
                             </div>
                           </div>
-                        </motion.div>
-                      );
-                    })}
+                        </div>
+                      </motion.div>
+                    )}
                   </motion.div>
                 )}
-                
-                {/* Animated CTA */}
+
+                {/* Navigation Arrows (like in reference image) */}
                 <motion.div 
-                  className="text-center mt-20"
-                  initial={{ y: 50, opacity: 0 }}
-                  animate={royalIsInView ? { y: 0, opacity: 1 } : { y: 50, opacity: 0 }}
-                  transition={{ duration: 0.8, delay: 2 }}
+                  className="flex justify-center items-center gap-3 mt-8"
+                  initial={{ opacity: 0 }}
+                  animate={royalIsInView ? { opacity: 1 } : { opacity: 0 }}
+                  transition={{ duration: 0.6, delay: 1.5 }}
                 >
-                  <motion.button 
-                    className="relative bg-gradient-to-r from-amber-500 to-purple-600 text-white px-12 py-4 rounded-full font-bold text-lg shadow-2xl border-2 border-white/20"
-                    onClick={() => window.location.href = '/collections'}
-                    style={{ fontFamily: 'Playfair Display, serif' }}
-                    whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(245, 158, 11, 0.4)" }}
-                    whileTap={{ scale: 0.95 }}
-                    animate={{
-                      background: [
-                        'linear-gradient(45deg, #f59e0b, #7c3aed)',
-                        'linear-gradient(45deg, #7c3aed, #f59e0b)',
-                        'linear-gradient(45deg, #f59e0b, #7c3aed)'
-                      ]
-                    }}
-                    transition={{ duration: 3, repeat: Infinity }}
-                  >
-                    <span className="flex items-center">
-                      <Diamond className="w-5 h-5 mr-2" />
-                      Enter the Royal Collection
-                      <Diamond className="w-5 h-5 ml-2" />
-                    </span>
-                  </motion.button>
+                  <button className="w-10 h-10 rounded-full bg-gray-800 dark:bg-gray-700 text-white hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </motion.div>
               </div>
             </motion.section>
