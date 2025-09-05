@@ -87,67 +87,67 @@ function CurvedCarouselSection({
       data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
       style={{
         background: `
-          linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%),
-          linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
-          linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
-          linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%), 
-          linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%)
+          linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 25%, #1e1e1e 50%, #0f0f0f 75%, #000000 100%),
+          radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
+          linear-gradient(45deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px),
+          linear-gradient(-45deg, rgba(255, 215, 0, 0.02) 1px, transparent 1px)
         `,
-        backgroundSize: '100% 100%, 60px 60px, 60px 60px, 60px 60px, 60px 60px',
-        backgroundPosition: '0 0, 0 0, 30px 0, 30px -30px, 0px 30px'
+        backgroundSize: '100% 100%, 600px 600px, 400px 400px, 40px 40px, 40px 40px'
       }}
     >
-      {/* Ultra-Modern Animated Background Elements */}
+      {/* Luxury Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Floating Geometric Shapes */}
+        {/* Golden Floating Elements */}
         <motion.div
-          className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full backdrop-blur-sm"
+          className="absolute top-20 left-20 w-16 h-16 border border-yellow-500/20 rounded-full"
           animate={{
-            y: [0, -20, 0],
-            rotate: [0, 180, 360],
+            y: [0, -15, 0],
+            rotate: [0, 360],
             scale: [1, 1.1, 1],
           }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute top-40 right-32 w-24 h-24 bg-gradient-to-br from-white/20 to-transparent rounded-xl backdrop-blur-sm"
+          className="absolute top-40 right-32 w-8 h-8 bg-gradient-to-br from-yellow-500/30 to-yellow-600/10 rounded"
           animate={{
-            y: [0, 15, 0],
-            rotate: [0, -90, 0],
-            x: [0, 10, 0],
+            y: [0, 20, 0],
+            rotate: [0, -180, 0],
+            x: [0, -10, 0],
           }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         />
         <motion.div
-          className="absolute bottom-32 left-1/4 w-16 h-16 bg-white/15 rotate-45 backdrop-blur-sm"
+          className="absolute bottom-32 left-1/3 w-12 h-12 border-2 border-yellow-400/15 rotate-45"
           animate={{
-            rotate: [45, 225, 405],
+            rotate: [45, 405],
             scale: [1, 1.2, 1],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-to-r from-white/5 to-white/15 rounded-full backdrop-blur-sm"
-          animate={{
-            scale: [1, 1.3, 1],
             opacity: [0.3, 0.6, 0.3],
           }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-24 h-24 border border-yellow-500/10 rounded-full"
+          animate={{
+            scale: [1, 1.4, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 3 }}
         />
         
-        {/* Modern Mesh Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/20" />
-        <div className="absolute inset-0 bg-gradient-to-tl from-pink-500/10 via-transparent to-cyan-500/10" />
+        {/* Elegant Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/5 via-transparent to-yellow-600/5" />
+        <div className="absolute inset-0 bg-gradient-to-tl from-amber-500/3 via-transparent to-gold/3" />
         
-        {/* Subtle Grid Pattern */}
+        {/* Subtle Luxury Pattern */}
         <div 
-          className="absolute inset-0 opacity-20"
+          className="absolute inset-0 opacity-5"
           style={{
             backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+              linear-gradient(rgba(255, 215, 0, 0.3) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 215, 0, 0.3) 1px, transparent 1px)
             `,
-            backgroundSize: '50px 50px'
+            backgroundSize: '60px 60px'
           }}
         />
       </div>
