@@ -311,17 +311,17 @@ function CurvedCarouselSection({
           </div>
 
           {/* Navigation Controls */}
-          <div className="flex gap-8 mt-16">
+          <div className="flex gap-6 mt-16">
             <button
               onClick={() => rotate('left')}
-              className="px-8 py-4 bg-white border-2 border-amber-600 text-amber-600 rounded-full shadow-lg hover:bg-amber-600 hover:text-white transition-all duration-300 font-medium text-lg"
+              className="px-10 py-4 bg-gradient-to-r from-slate-800 to-slate-900 border border-slate-700 text-white rounded-2xl shadow-xl hover:from-slate-700 hover:to-slate-800 hover:shadow-2xl transition-all duration-500 font-medium text-lg backdrop-blur-sm hover:scale-105"
               data-testid="carousel-prev-button"
             >
               ← Previous
             </button>
             <button
               onClick={() => rotate('right')}
-              className="px-8 py-4 bg-white border-2 border-amber-600 text-amber-600 rounded-full shadow-lg hover:bg-amber-600 hover:text-white transition-all duration-300 font-medium text-lg"
+              className="px-10 py-4 bg-gradient-to-r from-slate-800 to-slate-900 border border-slate-700 text-white rounded-2xl shadow-xl hover:from-slate-700 hover:to-slate-800 hover:shadow-2xl transition-all duration-500 font-medium text-lg backdrop-blur-sm hover:scale-105"
               data-testid="carousel-next-button"
             >
               Next →
@@ -331,7 +331,7 @@ function CurvedCarouselSection({
           {/* View All Collection Button */}
           <div className="text-center mt-12">
             <button
-              className="bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-medium px-10 py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 text-lg"
+              className="bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-700 hover:via-teal-700 hover:to-cyan-700 text-white font-semibold px-12 py-5 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-110 text-xl border border-emerald-500/20 backdrop-blur-sm"
               style={{ fontFamily: 'Playfair Display, serif' }}
               onClick={() => window.location.href = '/collections'}
               data-testid="view-all-collections-button"
