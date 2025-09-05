@@ -60,13 +60,15 @@ function CurvedCarouselSection({
 }) {
   const [angle, setAngle] = useState(0);
   const [startX, setStartX] = useState(0);
-  const displayItems = section.items; // Use your actual 5 products
+  const displayItems = section.items; // Use all available products
+  
+  // Calculate angle step dynamically based on number of products
+  const angleStep = displayItems.length > 0 ? 360 / displayItems.length : 72;
   
   // Calculate which card is currently active (facing front)
-  const activeIndex = Math.round(((angle % 360) / -72) + displayItems.length) % displayItems.length;
+  const activeIndex = Math.round(((angle % 360) / -angleStep) + displayItems.length) % displayItems.length;
   
   const rotate = (direction: 'left' | 'right') => {
-    const angleStep = 72; // 360 / 5 products = 72 degrees
     setAngle(prev => prev + (direction === 'left' ? angleStep : -angleStep));
   };
 
@@ -117,7 +119,7 @@ function CurvedCarouselSection({
               style={{ transformStyle: 'preserve-3d' }}
             >
               {displayItems.map((item, index) => {
-                const itemAngle = index * 72; // 72 degrees apart (360/5)
+                const itemAngle = index * angleStep; // Dynamically calculated angle based on number of products
                 const isActive = index === activeIndex;
                 
                 return (
