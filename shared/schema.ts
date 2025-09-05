@@ -898,15 +898,11 @@ export const homeSections = pgTable("home_sections", {
   title: text("title").notNull(),
   subtitle: text("subtitle"),
   description: text("description"),
-  layoutType: text("layout_type").notNull().default("grid"), // 'grid', 'featured', 'mixed', 'split', 'festival', 'mosaic', 'luxury', 'magazine', 'carousel', 'diamond', 'floating', 'radial', 'artistic', 'royal', 'curved-grid', 'tilted-grid'
+  layoutType: text("layout_type").notNull().default("grid"), // 'grid', 'featured', 'mixed', 'festival', 'mosaic', 'magazine', 'carousel', 'royal', 'curved-grid', 'tilted-grid'
   isActive: boolean("is_active").notNull().default(true),
   displayOrder: integer("display_order").default(0),
   backgroundColor: text("background_color").default("#fff8e1"),
   textColor: text("text_color").default("#8b4513"),
-  splitLeftColor: text("split_left_color"),
-  splitRightColor: text("split_right_color"),
-  splitLeftTitle: text("split_left_title"),
-  splitRightTitle: text("split_right_title"),
   festivalImage: text("festival_image"), // URL to festival banner image
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

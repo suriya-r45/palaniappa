@@ -30,15 +30,11 @@ interface CreateHomeSectionData {
   title: string;
   subtitle: string;
   description: string;
-  layoutType: 'grid' | 'featured' | 'mixed' | 'split' | 'festival' | 'carousel' | 'mosaic' | 'luxury' | 'magazine' | 'new-arrivals' | 'diamond' | 'floating' | 'radial' | 'artistic' | 'premium' | 'zen' | 'royal' | 'curved-grid' | 'tilted-grid';
+  layoutType: 'grid' | 'featured' | 'mixed' | 'festival' | 'carousel' | 'mosaic' | 'magazine' | 'new-arrivals' | 'premium' | 'zen' | 'royal' | 'curved-grid' | 'tilted-grid';
   isActive: boolean;
   displayOrder: number;
   backgroundColor: string;
   textColor: string;
-  splitLeftColor?: string;
-  splitRightColor?: string;
-  splitLeftTitle?: string;
-  splitRightTitle?: string;
   festivalImage?: string;
 }
 
@@ -347,10 +343,6 @@ function CreateSectionDialog({
       displayOrder: parseInt(formData.get('displayOrder') as string),
       backgroundColor: formData.get('backgroundColor') as string,
       textColor: formData.get('textColor') as string,
-      splitLeftColor: formData.get('splitLeftColor') as string,
-      splitRightColor: formData.get('splitRightColor') as string,
-      splitLeftTitle: formData.get('splitLeftTitle') as string,
-      splitRightTitle: formData.get('splitRightTitle') as string,
     };
 
     // Upload image if provided
@@ -423,16 +415,10 @@ function CreateSectionDialog({
                   <SelectItem value="grid">Grid Layout</SelectItem>
                   <SelectItem value="featured">Featured Layout</SelectItem>
                   <SelectItem value="mixed">Mixed Layout</SelectItem>
-                  <SelectItem value="split">Split Layout (Two Categories)</SelectItem>
                   <SelectItem value="festival">Festival Banner (Image + Products)</SelectItem>
                   <SelectItem value="carousel">🎠 Carousel - Elegant Sliding Showcase</SelectItem>
                   <SelectItem value="mosaic">🎨 Mosaic - Pinterest Style Masonry</SelectItem>
-                  <SelectItem value="luxury">💎 Luxury - Hero Product Display</SelectItem>
                   <SelectItem value="magazine">📖 Magazine - Editorial Layout</SelectItem>
-                  <SelectItem value="diamond">💠 Diamond - Revolutionary Crystal Formation</SelectItem>
-                  <SelectItem value="floating">🌟 Floating - 3D Levitating Cards</SelectItem>
-                  <SelectItem value="radial">🌌 Radial - Celestial Constellation</SelectItem>
-                  <SelectItem value="artistic">🎭 Artistic - Creative Collage Vision</SelectItem>
                   <SelectItem value="royal">👑 Royal - Majestic Palace Layout</SelectItem>
                   <SelectItem value="new-arrivals">✨ New Arrivals - Auto-scrolling Showcase</SelectItem>
                   <SelectItem value="premium">👑 Premium - Ultra-Luxury Elite Showcase</SelectItem>
@@ -466,53 +452,7 @@ function CreateSectionDialog({
             />
           </div>
 
-          {formData.layoutType === 'split' ? (
-            <>
-              <div className="space-y-4">
-                <h4 className="font-medium text-sm">Split Layout Configuration</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="splitLeftTitle">Left Section Title</Label>
-                    <Input
-                      id="splitLeftTitle"
-                      value={formData.splitLeftTitle || ''}
-                      onChange={(e) => setFormData(prev => ({ ...prev, splitLeftTitle: e.target.value }))}
-                      placeholder="e.g., Mangalsutra"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="splitRightTitle">Right Section Title</Label>
-                    <Input
-                      id="splitRightTitle"
-                      value={formData.splitRightTitle || ''}
-                      onChange={(e) => setFormData(prev => ({ ...prev, splitRightTitle: e.target.value }))}
-                      placeholder="e.g., Pendants"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="splitLeftColor">Left Section Color</Label>
-                    <Input
-                      id="splitLeftColor"
-                      type="color"
-                      value={formData.splitLeftColor || '#E0F2FE'}
-                      onChange={(e) => setFormData(prev => ({ ...prev, splitLeftColor: e.target.value }))}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="splitRightColor">Right Section Color</Label>
-                    <Input
-                      id="splitRightColor"
-                      type="color"
-                      value={formData.splitRightColor || '#F0FDF4'}
-                      onChange={(e) => setFormData(prev => ({ ...prev, splitRightColor: e.target.value }))}
-                    />
-                  </div>
-                </div>
-              </div>
-            </>
-          ) : formData.layoutType === 'festival' ? (
+          {formData.layoutType === 'festival' ? (
             <>
               <div className="space-y-4">
                 <h4 className="font-medium text-sm">Festival Banner Configuration</h4>
