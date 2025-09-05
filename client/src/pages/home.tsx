@@ -1583,245 +1583,213 @@ export default function Home() {
           );
         }
 
-        // Sophisticated Art Gallery Mosaic - Mosaic
+        // Ultra-Modern Elegant Mosaic Layout - Completely Redesigned
         if (section.layoutType === 'mosaic') {
           return (
             <section 
               key={section.id} 
-              className="py-24 relative overflow-hidden" 
+              className="relative min-h-screen overflow-hidden" 
               data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
               style={{
                 background: `
-                  linear-gradient(180deg, #fafafa 0%, #ffffff 50%, #f8f8f8 100%)
+                  linear-gradient(135deg, #f8fafc 0%, #f1f5f9 25%, #e2e8f0 50%, #f8fafc 75%, #ffffff 100%),
+                  radial-gradient(circle at 20% 80%, #ddd6fe22 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, #fbbf2422 0%, transparent 50%),
+                  radial-gradient(circle at 40% 40%, #06b6d422 0%, transparent 50%)
                 `
               }}
             >
-              {/* Subtle Gallery Atmosphere */}
+              {/* Ultra-Modern Background Effects */}
               <div className="absolute inset-0">
-                {/* Gallery Lighting */}
-                <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-100/50 via-white/30 to-transparent"></div>
+                {/* Floating Glass Morphism Elements */}
+                <motion.div
+                  className="absolute top-20 left-20 w-96 h-96 rounded-full"
+                  style={{
+                    background: 'linear-gradient(45deg, rgba(139, 69, 19, 0.03), rgba(184, 134, 11, 0.05))',
+                    backdropFilter: 'blur(60px)',
+                    filter: 'blur(1px)'
+                  }}
+                  animate={{
+                    x: [0, 50, 0],
+                    y: [0, -30, 0],
+                  }}
+                  transition={{
+                    duration: 20,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
                 
-                {/* Refined Pattern */}
-                <div className="absolute inset-0 opacity-[0.015]">
-                  <div className="absolute inset-0" style={{
+                <motion.div
+                  className="absolute top-40 right-32 w-72 h-72 rounded-full"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.04), rgba(168, 85, 247, 0.03))',
+                    backdropFilter: 'blur(80px)',
+                  }}
+                  animate={{
+                    x: [0, -40, 0],
+                    y: [0, 40, 0],
+                  }}
+                  transition={{
+                    duration: 25,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+
+                {/* Ultra-Modern Grid Pattern */}
+                <div 
+                  className="absolute inset-0 opacity-[0.02]"
+                  style={{
                     backgroundImage: `
-                      linear-gradient(45deg, #000 1px, transparent 1px),
-                      linear-gradient(-45deg, #000 1px, transparent 1px)
+                      linear-gradient(90deg, #000 1px, transparent 1px),
+                      linear-gradient(0deg, #000 1px, transparent 1px)
                     `,
-                    backgroundSize: '40px 40px'
-                  }}></div>
+                    backgroundSize: '60px 60px'
+                  }}
+                />
+
+                {/* Floating Particles */}
+                <div className="absolute inset-0">
+                  {[...Array(12)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-amber-200 to-amber-300 opacity-20"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                      }}
+                      animate={{
+                        y: [0, -100, 0],
+                        opacity: [0.1, 0.3, 0.1],
+                        scale: [0.8, 1.2, 0.8],
+                      }}
+                      transition={{
+                        duration: Math.random() * 10 + 15,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: Math.random() * 10,
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
 
-              <div className="max-w-7xl mx-auto px-6 relative z-10">
-                {/* Sophisticated Gallery Header */}
-                <div className="text-center mb-24">
-                  <div className="inline-block relative">
-                    {/* Refined Header Decorations */}
-                    <div className="mb-12">
-                      <div className="flex items-center justify-center mb-6">
-                        <div className="w-20 h-px bg-gradient-to-r from-transparent via-black to-transparent"></div>
-                        <div className="mx-4 w-2 h-2 bg-black rounded-full"></div>
-                        <div className="w-12 h-px bg-black"></div>
-                        <div className="mx-4 w-1 h-1 bg-gray-400 rounded-full"></div>
-                        <div className="w-20 h-px bg-gradient-to-r from-transparent via-black to-transparent"></div>
-                      </div>
+              <div className="relative z-10 max-w-[1600px] mx-auto px-8 py-20">
+                {/* Ultra-Modern Header */}
+                <div className="text-center mb-20">
+                  <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="relative"
+                  >
+                    {/* Minimalist Line Accent */}
+                    <div className="flex items-center justify-center mb-8">
+                      <motion.div 
+                        className="h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: 200 }}
+                        transition={{ duration: 1.2, ease: "easeOut" }}
+                      />
                     </div>
-                    
-                    <h2 className="text-5xl md:text-7xl font-light text-black mb-8 tracking-wide hover:tracking-wider transition-all duration-700 transform hover:scale-105" 
+
+                    <h2 className="text-6xl md:text-8xl lg:text-9xl font-extralight text-slate-800 mb-6 tracking-[-0.02em] leading-none" 
                         style={{ 
-                          fontFamily: 'Playfair Display, serif',
-                          textShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+                          fontFamily: 'Inter, system-ui, sans-serif',
+                          fontWeight: 200,
                         }}>
-                      {section.title || 'Curated Collection'}
+                      {section.title || 'MOSAIC'}
                     </h2>
-                    
-                    {/* Enhanced Decorative Elements */}
-                    <div className="mb-12">
-                      <div className="flex items-center justify-center">
-                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                        <div className="mx-4 w-12 h-px bg-black"></div>
-                        <div className="mx-4 w-2 h-2 bg-black rounded-full"></div>
-                        <div className="mx-4 w-20 h-px bg-gradient-to-r from-transparent via-black to-transparent"></div>
-                        <div className="mx-4 w-2 h-2 bg-black rounded-full"></div>
-                        <div className="mx-4 w-12 h-px bg-black"></div>
-                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                      </div>
-                    </div>
-                    
+
+                    <motion.div
+                      className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent mb-8"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: 300 }}
+                      transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
+                    />
+
                     {section.description && (
-                      <p className="text-lg text-gray-700 font-light max-w-3xl mx-auto leading-relaxed hover:text-gray-600 transition-colors duration-500">
+                      <p className="text-xl text-slate-600 font-light max-w-2xl mx-auto leading-relaxed tracking-wide">
                         {section.description}
                       </p>
                     )}
-                    
-                    {/* Subtle Date/Time Display */}
-                    <div className="mt-8 text-xs text-gray-400 uppercase tracking-[0.3em] font-medium">
-                      Gallery Curated · {new Date().getFullYear()}
-                    </div>
-                  </div>
+                  </motion.div>
                 </div>
                 
-                {/* Premium Masonry Gallery Grid */}
-                <div className="grid grid-cols-2 md:columns-2 lg:columns-3 xl:columns-4 gap-4 md:gap-8 lg:gap-10 space-y-0 md:space-y-8 lg:space-y-10">
-                  {section.items.slice(0, 4).map((item, index) => {
-                    // Enhanced dynamic heights for sophisticated masonry effect
-                    const heights = ['h-72', 'h-80', 'h-96', 'h-64', 'h-88', 'h-76', 'h-84', 'h-68'];
+                {/* Revolutionary Mosaic Grid */}
+                <motion.div 
+                  className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 auto-rows-min"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                >
+                  {section.items.map((item, index) => {
+                    // Dynamic column spans for ultra-modern asymmetric layout
+                    const spans = [
+                      'md:col-span-7 md:row-span-2', // Large feature
+                      'md:col-span-5 md:row-span-1', // Medium
+                      'md:col-span-4 md:row-span-1', // Small
+                      'md:col-span-8 md:row-span-1', // Wide
+                      'md:col-span-6 md:row-span-2', // Tall
+                      'md:col-span-6 md:row-span-1', // Medium
+                      'md:col-span-5 md:row-span-1', // Small
+                      'md:col-span-7 md:row-span-1', // Wide
+                    ];
+                    const span = spans[index % spans.length];
+                    
+                    // Dynamic heights for sophisticated variety
+                    const heights = [
+                      'min-h-[500px] md:min-h-[600px]', // Extra large
+                      'min-h-[350px] md:min-h-[400px]', // Large
+                      'min-h-[280px] md:min-h-[320px]', // Medium
+                      'min-h-[300px] md:min-h-[350px]', // Medium-large
+                      'min-h-[450px] md:min-h-[500px]', // Large
+                      'min-h-[320px] md:min-h-[380px]', // Medium
+                      'min-h-[250px] md:min-h-[300px]', // Small
+                      'min-h-[380px] md:min-h-[420px]', // Large
+                    ];
                     const height = heights[index % heights.length];
                     
-                    // Enhanced styling variations
-                    const variations = [
-                      { shadow: 'shadow-lg', border: 'border-gray-200' },
-                      { shadow: 'shadow-md', border: 'border-gray-150' },
-                      { shadow: 'shadow-xl', border: 'border-gray-250' }
-                    ];
-                    const variation = variations[index % variations.length];
-                    
                     return (
-                      <div
+                      <motion.div
                         key={item.id}
-                        className={`break-inside-avoid mb-8 md:mb-10 group cursor-pointer transform transition-all duration-500 md:duration-700 hover:scale-[1.01] md:hover:scale-[1.02] active:scale-[0.98] md:active:scale-[1.02]`}
-                        onClick={() => handleViewAllClick(item.product.category)}
-                        onTouchStart={() => {}} // Enable touch interactions
-                        style={{ 
-                          animationDelay: `${index * 0.08}s`,
-                          opacity: 0,
-                          animation: 'fadeInUp 0.6s ease-out forwards'
+                        className={`${span} ${height} group cursor-pointer relative`}
+                        initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                        whileInView={{ 
+                          opacity: 1, 
+                          y: 0, 
+                          scale: 1,
                         }}
+                        transition={{ 
+                          duration: 0.8, 
+                          ease: [0.16, 1, 0.3, 1], 
+                          delay: index * 0.1 
+                        }}
+                        whileHover={{ 
+                          y: -8,
+                          transition: { duration: 0.3, ease: "easeOut" }
+                        }}
+                        onClick={() => handleViewAllClick(item.product.category)}
                       >
-                        <article className={`bg-white rounded-lg md:rounded-xl ${variation.shadow} md:shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 md:duration-700 overflow-hidden border ${variation.border} hover:border-gray-300 active:border-gray-400 relative group-hover:transform group-hover:-translate-y-0.5 md:group-hover:-translate-y-1 hover:rotate-0.5 md:hover:rotate-1`}>
-                          {/* Sophisticated Corner Accents - Hidden on mobile for performance */}
-                          <div className="hidden md:block absolute top-0 right-0 w-0 h-0 border-l-[20px] md:border-l-[24px] border-l-transparent border-t-[20px] md:border-t-[24px] border-t-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 md:duration-500"></div>
-                          <div className="hidden md:block absolute bottom-0 left-0 w-0 h-0 border-r-[20px] md:border-r-[24px] border-r-transparent border-b-[20px] md:border-b-[24px] border-b-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-500 md:duration-700"></div>
+                        {/* Ultra-Modern Card Container */}
+                        <div className="relative w-full h-full bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/20 shadow-[0_8px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-500">
                           
-                          {/* Mobile-optimized Image Container */}
-                          <div className={`relative ${height} overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100`}>
-                            {/* Subtle Pattern Overlay - Reduced on mobile */}
-                            <div className="absolute inset-0 opacity-[0.01] md:opacity-[0.02]">
-                              <div className="absolute inset-0" style={{
-                                backgroundImage: `radial-gradient(circle at 25% 25%, #000 1px, transparent 1px)`,
-                                backgroundSize: '15px 15px'
-                              }}></div>
-                            </div>
-                            
-                            <div className="absolute inset-0 flex items-center justify-center p-6 md:p-8">
-                              <div className="transform transition-all duration-500 md:duration-700 group-hover:scale-105 md:group-hover:scale-110 group-hover:rotate-0.5 md:group-hover:rotate-1 filter group-hover:drop-shadow-md md:group-hover:drop-shadow-lg w-full max-w-[260px] md:max-w-[300px]">
-                                <div className="scale-85 md:scale-95 origin-center">
-                                  <ProductCard
-                                    product={item.product}
-                                    currency={selectedCurrency}
-                                    showActions={false}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            
-                            {/* Mobile-optimized Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/6 md:from-black/8 via-transparent to-white/3 md:to-white/5 opacity-0 group-hover:opacity-100 transition-all duration-300 md:duration-500"></div>
-                            
-                            
-                            {/* Touch-friendly Category Badge */}
-                            <div className="absolute top-4 md:top-6 right-4 md:right-6 opacity-0 group-hover:opacity-100 transition-all duration-300 md:duration-500 transform translate-y-2 md:translate-y-3 group-hover:translate-y-0">
-                              <div className="bg-black/80 md:bg-black/85 backdrop-blur-sm px-3 md:px-4 py-1.5 md:py-2 text-xs text-white font-semibold uppercase tracking-wider rounded-full border border-white/20 shadow-md md:shadow-lg">
-                                {item.product.category}
-                              </div>
-                            </div>
-                            
-                            {/* Mobile-optimized Action Indicator */}
-                            <div className="absolute bottom-4 md:bottom-6 right-4 md:right-6 opacity-0 group-hover:opacity-100 transition-all duration-500 md:duration-700 transform translate-x-3 md:translate-x-4 group-hover:translate-x-0">
-                              <div className="w-10 md:w-12 h-10 md:h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-xl transition-all duration-200 md:duration-300 active:scale-95 md:hover:scale-110 border border-gray-200">
-                                <ArrowRight className="w-4 md:w-5 h-4 md:h-5 text-gray-700" />
-                              </div>
-                            </div>
-                          </div>
+                          {/* Gradient Overlay */}
+                          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/5 opacity-0 group-hover:opacity-100 transition-all duration-500" />
                           
-                          {/* Mobile-Optimized Gallery Information */}
-                          <div className="p-6 md:p-8 space-y-4 md:space-y-5">
-                            <div>
-                              <div className="flex items-center gap-2 mb-3">
-                                <div className="w-6 md:w-8 h-px bg-black"></div>
-                                <div className="text-xs text-gray-500 uppercase tracking-[0.15em] md:tracking-[0.2em] font-medium">
-                                  Collection
-                                </div>
-                              </div>
-                              
-                              <h3 className="text-xl md:text-2xl font-light text-black leading-tight mb-3 md:mb-4 group-hover:text-gray-700 transition-colors duration-200 md:duration-300" 
-                                  style={{ fontFamily: 'Playfair Display, serif' }}>
-                                {item.product.name}
-                              </h3>
-                              
-                              <div className="flex items-center justify-between">
-                                <div className="text-lg md:text-xl font-semibold text-black">
-                                  {selectedCurrency === 'BHD' ? 'BD ' : '₹'}
-                                  {selectedCurrency === 'BHD' 
-                                    ? (parseFloat(item.product.priceBhd || '0')).toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })
-                                    : (parseFloat(item.product.priceInr || '0')).toLocaleString('en-IN')
-                                  }
-                                </div>
-                                
-                                <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 md:duration-500 transform translate-x-3 md:translate-x-4 group-hover:translate-x-0">
-                                  <div className="w-9 md:w-10 h-9 md:h-10 border-2 border-black rounded-full flex items-center justify-center hover:bg-black hover:text-white active:bg-gray-800 transition-all duration-200 md:duration-300 active:scale-95 md:hover:rotate-90 touch-manipulation">
-                                    <ArrowRight className="w-4 md:w-5 h-4 md:h-5" />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                          {/* Glass Morphism Border Effect */}
+                          <div className="absolute inset-0 rounded-3xl border border-white/40 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+
+                          {/* Modern Content Layout */}
+                          <div className="relative z-10 flex flex-col h-full p-8">
                             
-                            {/* Mobile-Optimized Additional Details */}
-                            {item.product.description && (
-                              <div className="pt-4 md:pt-5 border-t border-gray-150">
-                                <p className="text-sm text-gray-600 font-light leading-relaxed line-clamp-2 md:line-clamp-3 group-hover:text-gray-700 transition-colors duration-200 md:duration-300">
-                                  {item.product.description}
-                                </p>
-                              </div>
-                            )}
-                            
-                            {/* Mobile-friendly Bottom Accent */}
-                            <div className="absolute bottom-0 left-6 md:left-8 right-6 md:right-8 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 md:duration-500"></div>
-                          </div>
-                        </article>
-                      </div>
-                    );
-                  })}
-                  {/* Show remaining items on larger screens */}
-                  <div className="hidden md:contents">
-                    {section.items.slice(4).map((item, index) => {
-                      const originalIndex = index + 4;
-                      const heights = ['h-72', 'h-80', 'h-96', 'h-64', 'h-88', 'h-76', 'h-84', 'h-68'];
-                      const height = heights[originalIndex % heights.length];
-                      
-                      const variations = [
-                        { shadow: 'shadow-lg', border: 'border-gray-200' },
-                        { shadow: 'shadow-md', border: 'border-gray-150' },
-                        { shadow: 'shadow-xl', border: 'border-gray-250' }
-                      ];
-                      const variation = variations[originalIndex % variations.length];
-                      
-                      return (
-                        <div
-                          key={item.id}
-                          className={`break-inside-avoid mb-8 md:mb-10 group cursor-pointer transform transition-all duration-500 md:duration-700 hover:scale-[1.01] md:hover:scale-[1.02] active:scale-[0.98] md:active:scale-[1.02]`}
-                          onClick={() => handleViewAllClick(item.product.category)}
-                          onTouchStart={() => {}}
-                          style={{ 
-                            animationDelay: `${originalIndex * 0.08}s`,
-                            opacity: 0,
-                            animation: 'fadeInUp 0.6s ease-out forwards'
-                          }}
-                        >
-                          <article className={`bg-white rounded-lg md:rounded-xl ${variation.shadow} md:shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-500 md:duration-700 overflow-hidden border ${variation.border} hover:border-gray-300 active:border-gray-400 relative group-hover:transform group-hover:-translate-y-0.5 md:group-hover:-translate-y-1 hover:rotate-0.5 md:hover:rotate-1`}>
-                            <div className="hidden md:block absolute top-0 right-0 w-0 h-0 border-l-[20px] md:border-l-[24px] border-l-transparent border-t-[20px] md:border-t-[24px] border-t-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 md:duration-500"></div>
-                            <div className="hidden md:block absolute bottom-0 left-0 w-0 h-0 border-r-[20px] md:border-r-[24px] border-r-transparent border-b-[20px] md:border-b-[24px] border-b-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-500 md:duration-700"></div>
-                            
-                            <div className={`relative ${height} overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100`}>
-                              <div className="absolute inset-0 opacity-[0.01] md:opacity-[0.02]">
-                                <div className="absolute inset-0" style={{
-                                  backgroundImage: `radial-gradient(circle at 25% 25%, #000 1px, transparent 1px)`,
-                                  backgroundSize: '15px 15px'
-                                }}></div>
-                              </div>
+                            {/* Product Image Area */}
+                            <div className="flex-1 flex items-center justify-center mb-6 relative">
+                              {/* Background Glow */}
+                              <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-amber-100/30 rounded-2xl transform rotate-3 scale-105 opacity-0 group-hover:opacity-100 transition-all duration-700" />
                               
-                              <div className="absolute inset-0 flex items-center justify-center p-6 md:p-8">
+                              <div className="relative z-10 w-full max-w-sm transform transition-all duration-500 group-hover:scale-105">
                                 <ProductCard
                                   product={item.product}
                                   currency={selectedCurrency}
@@ -1829,37 +1797,80 @@ export default function Home() {
                                 />
                               </div>
                             </div>
-                          </article>
+
+                            {/* Ultra-Modern Product Info */}
+                            <div className="space-y-4">
+                              
+                              {/* Category Badge */}
+                              <div className="flex items-center justify-between">
+                                <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-slate-600 bg-slate-100/80 rounded-full tracking-wide uppercase backdrop-blur-sm">
+                                  {item.product.category}
+                                </span>
+                                
+                                {/* Modern Action Icon */}
+                                <div className="w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-500 hover:scale-110">
+                                  <ArrowRight className="w-4 h-4 text-slate-700" />
+                                </div>
+                              </div>
+
+                              {/* Product Name */}
+                              <h3 className="text-2xl md:text-3xl font-light text-slate-800 leading-tight mb-3 group-hover:text-slate-700 transition-colors duration-300" 
+                                  style={{ fontFamily: 'Inter, system-ui, sans-serif', fontWeight: 300 }}>
+                                {item.product.name}
+                              </h3>
+
+                              {/* Price with Modern Typography */}
+                              <div className="flex items-center justify-between">
+                                <div className="text-xl md:text-2xl font-semibold text-slate-900 tracking-tight">
+                                  {selectedCurrency === 'BHD' ? 'BD ' : '₹'}
+                                  <span className="font-light">
+                                    {selectedCurrency === 'BHD' 
+                                      ? (parseFloat(item.product.priceBhd || '0')).toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })
+                                      : (parseFloat(item.product.priceInr || '0')).toLocaleString('en-IN')
+                                    }
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Minimal Divider */}
+                              <div className="h-px bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 transform scale-x-0 group-hover:scale-x-100 transition-all duration-500 origin-left" />
+                              
+                            </div>
+                          </div>
+
+                          {/* Ultra-Modern Hover Indicator */}
+                          <div className="absolute bottom-4 left-4 right-4 h-1 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-all duration-500 origin-left" />
                         </div>
-                      );
-                    })}
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+                
+                {/* Ultra-Modern Footer */}
+                <motion.div 
+                  className="text-center mt-20"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+                >
+                  <div className="flex items-center justify-center space-x-8">
+                    <motion.div 
+                      className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: 150 }}
+                      transition={{ duration: 1.2, ease: "easeOut" }}
+                    />
+                    <span className="text-sm text-slate-500 font-light tracking-[0.2em] uppercase">
+                      Curated Excellence
+                    </span>
+                    <motion.div 
+                      className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: 150 }}
+                      transition={{ duration: 1.2, ease: "easeOut" }}
+                    />
                   </div>
-                </div>
-                
-                {/* Enhanced Animation Styles */}
-                <style>{`
-                  @keyframes fadeInUp {
-                    from {
-                      opacity: 0;
-                      transform: translateY(30px);
-                    }
-                    to {
-                      opacity: 1;
-                      transform: translateY(0);
-                    }
-                  }
-                `}</style>
-                
-                {/* Gallery Footer */}
-                <div className="text-center mt-20 pt-12 border-t border-gray-200">
-                  <button 
-                    className="inline-flex items-center gap-3 bg-black text-white px-12 py-4 hover:bg-gray-800 transition-colors duration-300 font-medium tracking-wide"
-                    onClick={() => window.location.href = '/collections'}
-                  >
-                    View Complete Collection
-                    <ArrowRight className="w-5 h-5" />
-                  </button>
-                </div>
+                </motion.div>
               </div>
             </section>
           );
