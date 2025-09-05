@@ -288,7 +288,7 @@ export default function VideoManagement() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                 <div>
                   <Label htmlFor="displayOrder">Display Order</Label>
                   <Input
@@ -301,24 +301,26 @@ export default function VideoManagement() {
                   />
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3 p-2 min-h-[44px]">
                   <Switch
                     id="isFeatured"
                     checked={formData.isFeatured}
                     onCheckedChange={(checked) => setFormData(prev => ({ ...prev, isFeatured: checked }))}
                     data-testid="switch-featured"
+                    className="data-[state=checked]:bg-amber-600 data-[state=unchecked]:bg-gray-300"
                   />
-                  <Label htmlFor="isFeatured">Featured</Label>
+                  <Label htmlFor="isFeatured" className="text-sm font-medium cursor-pointer">Featured</Label>
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3 p-2 min-h-[44px]">
                   <Switch
                     id="isActive"
                     checked={formData.isActive}
                     onCheckedChange={(checked) => setFormData(prev => ({ ...prev, isActive: checked }))}
                     data-testid="switch-active"
+                    className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-gray-300"
                   />
-                  <Label htmlFor="isActive">Active</Label>
+                  <Label htmlFor="isActive" className="text-sm font-medium cursor-pointer">Active</Label>
                 </div>
               </div>
 
