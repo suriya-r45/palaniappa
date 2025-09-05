@@ -129,6 +129,7 @@ function TiltedGridSection({
                     }}
                     whileHover={{
                       scale: 1.05,
+                      rotate: rotation, // Keep the same rotation on hover
                       transition: { duration: 0.3 },
                     }}
                     onClick={() => (window.location.href = `/product/${item.product.id}`)}
