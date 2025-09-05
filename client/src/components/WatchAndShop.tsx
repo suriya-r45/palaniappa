@@ -30,6 +30,8 @@ export default function WatchAndShop() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [playingVideo, setPlayingVideo] = useState<Video | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Handle responsive detection
@@ -71,13 +73,13 @@ export default function WatchAndShop() {
   };
 
   // Desktop: Show first 7 videos in grid, rest are scrollable
-  // Mobile: All videos are manually scrollable in 1x2 grid
+  // Mobile: Show all videos in scrollable 1x2 grid format
   const gridVideos = videos.slice(0, isMobile ? 0 : 7);
   const scrollableVideos = isMobile ? videos : videos.slice(7);
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
-      // For mobile 1x2 grid, scroll by 2 videos width (288px), for desktop scroll by 300px
+      // For mobile 1x2 grid, scroll by full pair width (288px), for desktop scroll by 300px
       const scrollAmount = isMobile ? 288 : 300;
       const newPosition = Math.max(0, scrollPosition - scrollAmount);
       setScrollPosition(newPosition);
@@ -91,7 +93,7 @@ export default function WatchAndShop() {
   const scrollRight = () => {
     if (scrollContainerRef.current) {
       const maxScroll = scrollContainerRef.current.scrollWidth - scrollContainerRef.current.clientWidth;
-      // For mobile 1x2 grid, scroll by 2 videos width (288px), for desktop scroll by 300px
+      // For mobile 1x2 grid, scroll by full pair width (288px), for desktop scroll by 300px
       const scrollAmount = isMobile ? 288 : 300;
       const newPosition = Math.min(maxScroll, scrollPosition + scrollAmount);
       setScrollPosition(newPosition);
@@ -115,6 +117,47 @@ export default function WatchAndShop() {
   const closeVideo = () => {
     setPlayingVideo(null);
   };
+
+  // Handle touch events for swiping
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+    
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > 50; // Swipe left to go right
+    const isRightSwipe = distance < -50; // Swipe right to go left
+
+    if (isLeftSwipe) {
+      scrollRight(); // Swipe left = scroll right
+    }
+    if (isRightSwipe) {
+      scrollLeft(); // Swipe right = scroll left
+    }
+
+    // Reset touch positions
+    setTouchStartX(0);
+    setTouchEndX(0);
+  };
+
+  // Track scroll position
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      setScrollPosition(scrollContainer.scrollLeft);
+    };
+
+    scrollContainer.addEventListener('scroll', handleScroll);
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Handle escape key to close video
   useEffect(() => {
@@ -162,24 +205,9 @@ export default function WatchAndShop() {
             </h2>
           </div>
 
-          {/* Main Video Grid */}
-          <div className="mb-6">
-            {/* Desktop Grid (1x7) */}
-            <div className="hidden md:grid grid-cols-7 gap-2 mb-4">
-              {gridVideos.map((video, index) => (
-                <VideoCard
-                  key={video.id}
-                  video={video}
-                  index={index}
-                  formatViewCount={formatViewCount}
-                  formatPrice={formatPrice}
-                  handleVideoClick={handleVideoClick}
-                />
-              ))}
-            </div>
-
-            {/* Mobile Grid (1x2) */}
-            <div className="grid md:hidden grid-cols-2 gap-2 mb-4">
+          {/* Desktop Grid (1x7) */}
+          <div className="hidden md:block mb-6">
+            <div className="grid grid-cols-7 gap-2 mb-4">
               {gridVideos.map((video, index) => (
                 <VideoCard
                   key={video.id}
@@ -219,30 +247,59 @@ export default function WatchAndShop() {
                 ref={scrollContainerRef}
                 className={`${
                   isMobile 
-                    ? 'grid grid-cols-2 gap-2 overflow-x-auto scroll-smooth scrollbar-hide px-8' 
+                    ? 'flex overflow-x-auto scroll-smooth scrollbar-hide px-8' 
                     : 'flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide px-8'
-                } ${isMobile ? 'auto-cols-max grid-flow-col' : ''}`}
+                }`}
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
               >
-                {scrollableVideos.map((video, index) => (
-                  <div 
-                    key={video.id} 
-                    className={`${
-                      isMobile 
-                        ? 'col-span-1 w-36' 
-                        : 'flex-shrink-0 w-32'
-                    }`}
-                  >
-                    <VideoCard
-                      video={video}
-                      index={index + gridVideos.length}
-                      formatViewCount={formatViewCount}
-                      formatPrice={formatPrice}
-                      handleVideoClick={handleVideoClick}
-                      compact={!isMobile}
-                    />
-                  </div>
-                ))}
+                {scrollableVideos.map((video, index) => {
+                  // For mobile: arrange in pairs (1x2 grid), for desktop: single row
+                  if (isMobile && index % 2 === 0) {
+                    const nextVideo = scrollableVideos[index + 1];
+                    return (
+                      <div key={`pair-${index}`} className="flex-shrink-0 w-72 mr-4">
+                        <div className="grid grid-cols-2 gap-2">
+                          <VideoCard
+                            video={video}
+                            index={index}
+                            formatViewCount={formatViewCount}
+                            formatPrice={formatPrice}
+                            handleVideoClick={handleVideoClick}
+                          />
+                          {nextVideo && (
+                            <VideoCard
+                              video={nextVideo}
+                              index={index + 1}
+                              formatViewCount={formatViewCount}
+                              formatPrice={formatPrice}
+                              handleVideoClick={handleVideoClick}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    );
+                  } else if (isMobile && index % 2 === 1) {
+                    // Skip odd indices in mobile as they're handled in pairs
+                    return null;
+                  } else {
+                    // Desktop layout - single row
+                    return (
+                      <div key={video.id} className="flex-shrink-0 w-32">
+                        <VideoCard
+                          video={video}
+                          index={index + gridVideos.length}
+                          formatViewCount={formatViewCount}
+                          formatPrice={formatPrice}
+                          handleVideoClick={handleVideoClick}
+                          compact={true}
+                        />
+                      </div>
+                    );
+                  }
+                })}
               </div>
             </div>
           )}
@@ -252,7 +309,7 @@ export default function WatchAndShop() {
             <Button 
               className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-8 py-3 rounded-full font-semibold"
               data-testid="view-all-videos-button"
-              onClick={() => window.location.href = '/videos'}
+              onClick={() => window.location.href = '/collections'}
             >
               View All Videos
             </Button>

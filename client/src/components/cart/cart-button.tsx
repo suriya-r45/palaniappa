@@ -17,7 +17,7 @@ export default function CartButton() {
         className="relative p-1 md:p-2 text-amber-800 hover:bg-amber-50 rounded-lg transition-all duration-200"
         data-testid="button-cart"
       >
-        <ShoppingCart className="h-4 w-4 md:h-6 md:w-6" />
+        <ShoppingCart className="h-3 w-3 md:h-6 md:w-6" />
         {totalItems > 0 && (
           <Badge
             variant="destructive"
