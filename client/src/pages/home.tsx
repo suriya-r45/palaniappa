@@ -83,17 +83,84 @@ function CurvedCarouselSection({
 
   return (
     <section 
-      className="w-full bg-gradient-to-br from-gray-50 via-white to-gray-50 py-20 overflow-hidden" 
+      className="w-full relative py-20 overflow-hidden" 
       data-testid={`section-${section.title.toLowerCase().replace(/\s+/g, '-')}`}
+      style={{
+        background: `
+          linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%),
+          linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+          linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%), 
+          linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%), 
+          linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%)
+        `,
+        backgroundSize: '100% 100%, 60px 60px, 60px 60px, 60px 60px, 60px 60px',
+        backgroundPosition: '0 0, 0 0, 30px 0, 30px -30px, 0px 30px'
+      }}
     >
-      <div className="w-full px-4 md:px-8">
+      {/* Ultra-Modern Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Floating Geometric Shapes */}
+        <motion.div
+          className="absolute top-20 left-20 w-32 h-32 bg-white/10 rounded-full backdrop-blur-sm"
+          animate={{
+            y: [0, -20, 0],
+            rotate: [0, 180, 360],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-40 right-32 w-24 h-24 bg-gradient-to-br from-white/20 to-transparent rounded-xl backdrop-blur-sm"
+          animate={{
+            y: [0, 15, 0],
+            rotate: [0, -90, 0],
+            x: [0, 10, 0],
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
+        <motion.div
+          className="absolute bottom-32 left-1/4 w-16 h-16 bg-white/15 rotate-45 backdrop-blur-sm"
+          animate={{
+            rotate: [45, 225, 405],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-to-r from-white/5 to-white/15 rounded-full backdrop-blur-sm"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+        
+        {/* Modern Mesh Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/20" />
+        <div className="absolute inset-0 bg-gradient-to-tl from-pink-500/10 via-transparent to-cyan-500/10" />
+        
+        {/* Subtle Grid Pattern */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px'
+          }}
+        />
+      </div>
+
+      {/* Content Container with Glass Effect */}
+      <div className="w-full px-4 md:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-light text-gray-800 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
+          <h2 className="text-4xl md:text-5xl font-light text-white mb-4 drop-shadow-lg" style={{ fontFamily: 'Playfair Display, serif' }}>
             {section.title || '3D Curved Collection'}
           </h2>
           {section.description && (
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            <p className="text-lg text-white/90 max-w-2xl mx-auto drop-shadow-md" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
               {section.description}
             </p>
           )}
