@@ -377,6 +377,8 @@ function VideoCard({ video, index, formatViewCount, formatPrice, handleVideoClic
       }
       
       if (videoRef.current) {
+        // Enable sound when user taps to play
+        videoRef.current.muted = false;
         videoRef.current.play();
       }
     } else {
@@ -393,6 +395,7 @@ function VideoCard({ video, index, formatViewCount, formatPrice, handleVideoClic
     e.stopPropagation();
     if (videoRef.current) {
       if (videoRef.current.paused) {
+        videoRef.current.muted = false; // Enable sound when playing
         videoRef.current.play();
       } else {
         videoRef.current.pause();
