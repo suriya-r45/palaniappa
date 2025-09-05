@@ -125,7 +125,7 @@ function CurvedCarouselSection({
                 return (
                   <motion.div
                     key={item.id}
-                    className={`absolute w-64 h-80 p-6 bg-white rounded-3xl cursor-pointer group overflow-hidden transition-all duration-500 ${
+                    className={`absolute w-64 h-80 p-6 bg-white rounded-3xl cursor-pointer group overflow-hidden transition-all duration-300 hover:shadow-2xl ${
                       isActive 
                         ? 'shadow-3xl brightness-100 z-10' 
                         : 'shadow-lg brightness-75 blur-[1px] z-0'
@@ -137,10 +137,6 @@ function CurvedCarouselSection({
                       top: '50%',
                       marginLeft: '-128px', // Half width
                       marginTop: '-160px', // Half height
-                    }}
-                    whileHover={{ 
-                      scale: isActive ? 1.25 : 1.05,
-                      y: -10,
                     }}
                     onClick={() => window.location.href = `/product/${item.product.id}`}
                     data-testid={`curved-grid-item-${index}`}
